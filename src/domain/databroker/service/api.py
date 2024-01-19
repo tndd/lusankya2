@@ -1,6 +1,6 @@
 from typing import List
 
-from domain.databroker.model import ApiRequest
+from domain.databroker.model.api import ApiRequest
 from domain.databroker.repository.api import ApiRepository
 
 

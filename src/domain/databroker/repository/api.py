@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
-from domain.databroker.model import ApiRequest, ApiResponse
+from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.psql.client import PsqlClient
 
 
