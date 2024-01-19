@@ -1,8 +1,10 @@
 from dataclasses import dataclass
-from os import getenv
 
 from domain.databroker.model.api import ApiRequest
-from domain.databroker.service.value import ApiQuery
+from infra.api.alpaca.common import HEADER
+from infra.api.value import ApiQuery
+
+ENDPOINT = 'https://data.alpaca.markets/v2/stocks/bars'
 
 
 @dataclass
@@ -24,11 +26,6 @@ def make_request_alpaca_bar(query: QueryBar) -> ApiRequest:
     """
     クエリの情報を元にAPIリクエストを作成する。
     """
-    ENDPOINT = 'https://data.alpaca.markets/v2/stocks/bars'
-    HEADER = {
-        "APCA-API-KEY-ID": getenv('APCA_KEY_ID'),
-        "APCA-API-SECRET-KEY": getenv('APCA_SECRET')
-    }
     return ApiRequest(
         endpoint=ENDPOINT,
         header=HEADER,
