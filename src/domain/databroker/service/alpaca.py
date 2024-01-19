@@ -1,6 +1,6 @@
 from domain.databroker.model.api import ApiRequest
 from domain.databroker.repository import DataBrokerApiRepository
-from infra.api.alpaca.bar import ENDPOINT
+from infra.api.alpaca.bar import ENDPOINT as EP_APCA_BAR
 
 
 def chain_request(api_request: ApiRequest) -> None:
@@ -12,11 +12,14 @@ def chain_request(api_request: ApiRequest) -> None:
     pass
 
 
-def multi_requests_todo_api_alpaca_bar(rp: DataBrokerApiRepository) -> None:
+def multi_requests_todo_api_alpaca_bar(
+        rp: DataBrokerApiRepository,
+        n_max_worker: int = 8
+    ) -> None:
     """
     alpacaのbarエンドポイントについての未実行、あるいは失敗したリクエストを連鎖実行する。
     """
-    todo_bar_requests = rp.fetch_todo_requests_for_endpoint(ENDPOINT)
+    todo_bar_requests = rp.fetch_todo_requests_for_endpoint(EP_APCA_BAR)
     # TODO 並列実行
     for request in todo_bar_requests:
         chain_request(request)
