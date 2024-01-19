@@ -1,5 +1,5 @@
 from domain.databroker.model.api import ApiRequest
-from domain.databroker.repository import DataBrokerApiRepository
+from domain.databroker.repository.api import DataBrokerApiRepository
 from infra.api.alpaca.bar import ENDPOINT as EP_APCA_BAR
 
 
