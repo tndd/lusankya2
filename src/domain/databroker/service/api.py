@@ -8,11 +8,14 @@ def request_api(repo: ApiRepository, api_request: ApiRequest) -> None:
     """
     APIリクエストの内容を実行し、リクエストとその結果の保存を行う。
     """
-    # TODO
-    pass
+    multi_requests_api(repo, [api_request,])
 
 
-def multi_requests_api(repo: ApiRepository, api_requests: List[ApiRequest]) -> None:
+def multi_requests_api(
+        repo: ApiRepository,
+        api_requests: List[ApiRequest],
+        n_max_worker: int = 8
+    ) -> None:
     """
     複数のAPIリクエストの内容を実行し、リクエストとその結果の保存を行う。
     """
