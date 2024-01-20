@@ -3,7 +3,7 @@ from os.path import abspath, dirname
 
 
 class Schema(str, Enum):
-    DATAFLOW = "dataflow"
+    DATABROKER = "databroker"
     ALPACA = "alpaca"
 
 
