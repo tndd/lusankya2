@@ -9,7 +9,7 @@ from infra.psql.client import PsqlClient
 class DataBrokerApiRepository:
     cli_db: PsqlClient
 
-    def store_request(self, api_request: ApiRequest) -> None:
+    def store_request(self, request: ApiRequest) -> None:
         """
         APIリクエストの内容を保存する。
 
@@ -19,14 +19,14 @@ class DataBrokerApiRepository:
         # TODO
         pass
 
-    def store_response(self, api_response: ApiResponse) -> None:
+    def store_response(self, response: ApiResponse) -> None:
         """
         APIレスポンスの内容を保存する。
         """
         # TODO
         pass
 
-    def store_request_and_response(self, api_request: ApiRequest, api_response: ApiResponse) -> None:
+    def store_request_and_response(self, request: ApiRequest, response: ApiResponse) -> None:
         """
         APIリクエストとレスポンスの内容をトランザクション処理で確実に保存する。
         """
