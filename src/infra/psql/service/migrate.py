@@ -17,7 +17,7 @@ def queries_extension() -> List[str]:
 
 def queries_schema() -> List[str]:
     return [
-        load_query(Schema.DATABROKER, Command.CREATE, 'schema_dataflow'),
+        load_query(Schema.DATABROKER, Command.CREATE, 'schema_databroker'),
         load_query(Schema.ALPACA, Command.CREATE, 'schema_alpaca')
     ]
 

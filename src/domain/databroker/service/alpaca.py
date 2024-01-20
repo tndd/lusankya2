@@ -26,8 +26,8 @@ def chain_request(
         # 次のページ(next_page_token)がない場合は終了
         if not NEXT_PAGE_TOKEN in response.body:
             break
-        # api_requestのnext_page_tokenを更新して再実行
-        request.body[NEXT_PAGE_TOKEN] = response.body[NEXT_PAGE_TOKEN]
+        # api_requestのheaderを、取得したnext_page_tokenで更新して再実行
+        request.header[NEXT_PAGE_TOKEN] = response.body[NEXT_PAGE_TOKEN]
         """
         取得したレスポンスと、
         その結果を元にnext_page_tokenを更新し作成した新リクエストを保存する。

@@ -19,7 +19,7 @@ def request_api(api_request: ApiRequest) -> ApiResponse:
         api_request_id=api_request._id,
         status=response.status_code,
         header=dict(response.headers),
-        body=response.text
+        body=response.json()
     )
 
 
