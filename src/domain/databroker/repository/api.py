@@ -30,7 +30,7 @@ class DataBrokerApiRepository:
         # TODO
         pass
 
-    def fetch_todo_requests_for_endpoint(self, endpoint: str) -> List[ApiRequest]:
+    def fetch_todo_requests_by_endpoint(self, endpoint: str) -> List[ApiRequest]:
         """
         特定エンドポイントの未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
