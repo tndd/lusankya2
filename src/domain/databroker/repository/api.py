@@ -12,6 +12,9 @@ class DataBrokerApiRepository:
     def store_request(self, api_request: ApiRequest) -> None:
         """
         APIリクエストの内容を保存する。
+
+        Note:
+            - 二重登録は防ぐようにする。
         """
         # TODO
         pass
@@ -19,6 +22,13 @@ class DataBrokerApiRepository:
     def store_response(self, api_response: ApiResponse) -> None:
         """
         APIレスポンスの内容を保存する。
+        """
+        # TODO
+        pass
+
+    def store_request_and_response(self, api_request: ApiRequest, api_response: ApiResponse) -> None:
+        """
+        APIリクエストとレスポンスの内容をトランザクション処理で確実に保存する。
         """
         # TODO
         pass

@@ -1,14 +1,26 @@
 from typing import List
 
-from domain.databroker.model.api import ApiRequest
+from requests import get
+
+from domain.databroker.model.api import ApiRequest, ApiResponse
 from domain.databroker.repository.api import ApiRepository
 
 
-def request_api(repo: ApiRepository, api_request: ApiRequest) -> None:
+def request_api(api_request: ApiRequest) -> ApiResponse:
     """
-    APIリクエストの内容を実行し、リクエストとその結果の保存を行う。
+    APIリクエストを実行し、レスポンスを返す。
     """
-    multi_requests_api(repo, [api_request,])
+    response = get(
+        api_request.endpoint,
+        params=api_request.params,
+        headers=api_request.header
+    )
+    return ApiResponse(
+        api_request_id=api_request._id,
+        status=response.status_code,
+        header=dict(response.headers),
+        body=response.text
+    )
 
 
 def multi_requests_api(
