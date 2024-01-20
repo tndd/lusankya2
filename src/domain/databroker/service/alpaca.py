@@ -22,7 +22,7 @@ def chain_request(
     # 引数のrequestを元にAPIを連鎖実行
     while True:
         # データ取得
-        response = request_api(rp, request)
+        response = request_api(request)
         # 次のページ(next_page_token)がない場合は終了
         if not NEXT_PAGE_TOKEN in response.body:
             break
