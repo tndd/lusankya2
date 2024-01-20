@@ -14,9 +14,9 @@ def test_fetch_assets(asset_repo):
     assert isinstance(assets, List)
 
 def test_fetch_asset_by_name(asset_repo):
-    assets = asset_repo.fetch_assets_by_name('iShares Core')
+    assets = asset_repo.fetch_assets_by_name('iShares Core Total USD Bond Market ET')
     assert isinstance(assets, List)
-    assert len(assets) == 31
+    assert len(assets) == 1
 
 
 if __name__ == "__main__":
