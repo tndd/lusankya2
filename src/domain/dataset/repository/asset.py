@@ -29,13 +29,16 @@ class AssetRepository:
     現在はテスト用にローカルファイルから取得する仮実装形式をとる。
     """
 
-    def fetch_assets(self, tradable: bool = True) -> List[Asset]:
+    def fetch_assets(self, tradable: bool = True, shortable: bool = True) -> List[Asset]:
         """
         全てのAsset情報を取得
         """
+        assets = [to_asset(d) for d in self._fetch_raw_assets()]
         if tradable:
-            return [to_asset(d) for d in self._fetch_raw_assets() if d['tradable']]
-        return [to_asset(d) for d in self._fetch_raw_assets()]
+            assets = [a for a in assets if a.tradable]
+        if shortable:
+            assets = [a for a in assets if a.shortable]
+        return assets
 
     def fetch_assets_by_name(self, name: str) -> List[Asset]:
         """
