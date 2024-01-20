@@ -49,6 +49,6 @@ def multi_requests_todo_api_alpaca_bar(
     alpacaのbarエンドポイントについての未実行、あるいは失敗したリクエストを連鎖実行する。
     """
     todo_bar_requests = rp.fetch_todo_requests_by_endpoint(EP_APCA_BAR)
-    # TODO 並列実行
+    # FIXME 並列実行
     for request in todo_bar_requests:
         chain_request(request)
