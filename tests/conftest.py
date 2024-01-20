@@ -10,4 +10,7 @@ load_dotenv()
 
 @pytest.fixture
 def psql_client() -> PsqlClient:
-    return PsqlClient(url=getenv('PSQL_URL_TEST'))
+    url = getenv('PSQL_URL_TEST')
+    if url is None:
+        raise ValueError("Environment variable PSQL_URL_TEST is not set")
+    return PsqlClient(url=url)
