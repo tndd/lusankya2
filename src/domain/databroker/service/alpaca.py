@@ -5,7 +5,7 @@ from infra.api.alpaca.bar import ENDPOINT as EP_APCA_BAR
 
 
 def chain_request(
-        rp: DataBrokerApiRepository,
+        repo: DataBrokerApiRepository,
         request: ApiRequest
     ) -> None:
     """
@@ -18,7 +18,7 @@ def chain_request(
     """
     NEXT_PAGE_TOKEN = 'next_page_token'
     # これから実行するAPIリクエストの情報を保存
-    rp.store_request(request)
+    repo.store_request(request)
     # 引数のrequestを元にAPIを連鎖実行
     while True:
         # データ取得
@@ -38,17 +38,17 @@ def chain_request(
                 "request->response"という並びではなく、
                 "response->request"というペアを保存している点に注意。
         """
-        rp.store_request_and_response(request, response)
+        repo.store_request_and_response(request, response)
 
 
 def multi_requests_todo_api_alpaca_bar(
-        rp: DataBrokerApiRepository,
+        repo: DataBrokerApiRepository,
         n_max_worker: int = 8
     ) -> None:
     """
     alpacaのbarエンドポイントについての未実行、あるいは失敗したリクエストを連鎖実行する。
     """
-    todo_bar_requests = rp.fetch_todo_requests_by_endpoint(EP_APCA_BAR)
+    todo_bar_requests = repo.fetch_todo_requests_by_endpoint(EP_APCA_BAR)
     # FIXME 並列実行
     for request in todo_bar_requests:
-        chain_request(rp, request)
+        chain_request(repo, request)
