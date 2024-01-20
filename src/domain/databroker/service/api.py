@@ -3,7 +3,7 @@ from typing import List
 from requests import get
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
-from domain.databroker.repository.api import ApiRepository
+from domain.databroker.repository.api import DataBrokerApiRepository
 
 
 def request_api(api_request: ApiRequest) -> ApiResponse:
@@ -24,7 +24,7 @@ def request_api(api_request: ApiRequest) -> ApiResponse:
 
 
 def multi_requests_api(
-        repo: ApiRepository,
+        repo: DataBrokerApiRepository,
         api_requests: List[ApiRequest],
         n_max_worker: int = 8
     ) -> None:
@@ -35,7 +35,7 @@ def multi_requests_api(
     pass
 
 
-def multi_requests_todo_api(repo: ApiRepository) -> None:
+def multi_requests_todo_api(repo: DataBrokerApiRepository) -> None:
     """
     未実行あるいは失敗したAPIの実行を行う。
     """

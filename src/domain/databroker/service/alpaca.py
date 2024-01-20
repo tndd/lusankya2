@@ -51,4 +51,4 @@ def multi_requests_todo_api_alpaca_bar(
     todo_bar_requests = rp.fetch_todo_requests_by_endpoint(EP_APCA_BAR)
     # FIXME 並列実行
     for request in todo_bar_requests:
-        chain_request(request)
+        chain_request(rp, request)
