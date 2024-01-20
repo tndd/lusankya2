@@ -29,7 +29,7 @@ class AssetRepository:
     現在はテスト用にローカルファイルから取得する仮実装形式をとる。
     """
 
-    def fetch_assets(self, tradable: bool = True, shortable: bool = True) -> List[Asset]:
+    def fetch_assets(self, tradable: bool = True, shortable: bool = False) -> List[Asset]:
         """
         全てのAsset情報を取得
         """
@@ -40,11 +40,11 @@ class AssetRepository:
             assets = [a for a in assets if a.shortable]
         return assets
 
-    def fetch_assets_by_name(self, name: str) -> List[Asset]:
+    def fetch_assets_by_name(self, name: str, tradable: bool = True, shortable: bool = False) -> List[Asset]:
         """
         nameに部分一致するAsset情報を取得
         """
-        assets = self.fetch_assets()
+        assets = self.fetch_assets(tradable, shortable)
         return [a for a in assets if name in a.name]
 
     def _fetch_raw_assets(self) -> dict:
