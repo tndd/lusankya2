@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from domain.databroker.model.api import ApiRequest
 from infra.api.alpaca.common import HEADER
@@ -15,10 +16,10 @@ class QueryBar(ApiQuery):
     end: str
     limit: int = 10000
     adjustment: str = 'raw'
-    asof: str = None
+    asof: Optional[str] = None
     feed: str = 'iex'
-    currency: str = None
-    page_token: str = None
+    currency: Optional[str] = None
+    page_token: Optional[str] = None
     sort: str = 'asc'
 
 
