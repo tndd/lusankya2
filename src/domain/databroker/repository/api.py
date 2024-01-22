@@ -2,7 +2,10 @@ from dataclasses import dataclass
 from typing import List
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
+from infra.adapter.databroker.api import (api_request_to_param,
+                                          api_response_to_param)
 from infra.psql.client import PsqlClient
+from infra.psql.service.load_query import Command, Schema, load_query
 
 
 @dataclass
@@ -16,15 +19,17 @@ class DataBrokerApiRepository:
         Note:
             - 二重登録は防ぐようにする。
         """
-        # TODO
-        pass
+        query = load_query(Schema.DATABROKER, Command.INSERT, 'api_request')
+        param = api_request_to_param(request)
+        self.cli_db.execute_with_params(query, param)
 
     def store_response(self, response: ApiResponse) -> None:
         """
         APIレスポンスの内容を保存する。
         """
-        # TODO
-        pass
+        query = load_query(Schema.DATABROKER, Command.INSERT, 'api_response')
+        param = api_response_to_param(response)
+        self.cli_db.execute_with_params(query, param)
 
     def store_request_and_response(self, request: ApiRequest, response: ApiResponse) -> None:
         """
