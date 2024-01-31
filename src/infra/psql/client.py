@@ -64,7 +64,11 @@ class PsqlClient:
     ### Parallel Execution
     def parallel_executemany(self, query: str, data: list):
         """
-        大量のデータによるexecutemanyを並列実行で高速に実行する。
+        並列でexecutemanyを高速に実行する。
+
+        Note:
+            あまりに投入データが大量でパフォーマンス上の問題が起こった場合、
+            executemanyの代わりにこちらを使用する。
         """
         n_process = self._calc_optimum_process_num(data)
         with ProcessPoolExecutor(max_workers=n_process) as executor:
