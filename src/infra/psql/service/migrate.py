@@ -5,8 +5,9 @@ from infra.psql.service.load_query import Command, Schema, load_query
 
 
 def migrate(cli: PsqlClient):
-    q = queries_extension() + queries_schema() + queries_table() + queries_view()
-    cli.execute_queries(q)
+    query = queries_extension() + queries_schema() + queries_table() + queries_view()
+    query_with_params = [(q, ()) for q in query]
+    cli.execute_queries(query_with_params)
 
 
 def queries_extension() -> List[str]:

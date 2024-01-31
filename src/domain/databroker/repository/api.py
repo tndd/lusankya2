@@ -21,7 +21,7 @@ class DataBrokerApiRepository:
         """
         query = load_query(Schema.DATABROKER, Command.INSERT, 'api_request')
         param = api_request_to_param(request)
-        self.cli_db.execute_with_params(query, param)
+        self.cli_db.execute(query, param)
 
     def store_response(self, response: ApiResponse) -> None:
         """
@@ -29,7 +29,7 @@ class DataBrokerApiRepository:
         """
         query = load_query(Schema.DATABROKER, Command.INSERT, 'api_response')
         param = api_response_to_param(response)
-        self.cli_db.execute_with_params(query, param)
+        self.cli_db.execute(query, param)
 
     def store_request_and_response(self, request: ApiRequest, response: ApiResponse) -> None:
         """

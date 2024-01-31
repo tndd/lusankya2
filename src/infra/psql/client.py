@@ -10,7 +10,7 @@ class PsqlClient:
     url: str
     n_max_worker: int = 8
 
-    def execute(self, query: str, params: Any = ()) -> Any:
+    def execute(self, query: str, param: Any = ()) -> Any:
         """
         単発のクエリを実行し、結果を取得する。
 
@@ -23,7 +23,7 @@ class PsqlClient:
             例えばSELECT文など単発実行かつ結果がほしい場合など。
         """
         def _f(_cur, query):
-            _cur.execute(query, params)
+            _cur.execute(query, param)
             if _cur.description is not None:
                 # 結果を返すクエリの場合
                 return _cur.fetchall()

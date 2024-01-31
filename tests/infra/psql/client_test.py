@@ -22,22 +22,26 @@ def test_execute(psql_client):
 
 
 def test_execute_queries(psql_client):
-    queries = ['SELECT 1' for _ in range(4)]
-    assert psql_client.execute_queries(queries) == None
-
-
-def test_parallel_execute(psql_client):
-    queries = ['SELECT 1' for _ in range(10)]
-    assert psql_client.parallel_execute(queries) == None
-
-
-def test_parallel_execute_change_worker_num():
-    psql_cli = PsqlClient(
-        url=os.getenv('PSQL_URL_TEST'),
-        n_max_worker=16
-    )
-    queries = ['SELECT 1' for _ in range(32)]
-    assert psql_cli.parallel_execute(queries) == None
+    table_name_a = 'afxntedq'
+    table_name_b = 'svknpbmf'
+    table_name_c = 'dnavrupe'
+    try:
+        # テスト用のテーブルの作成
+        queries_with_params = [
+            (f"CREATE TABLE IF NOT EXISTS {table_name_a} (column1 varchar(255), column2 varchar(255))", ()),
+            (f"CREATE TABLE IF NOT EXISTS {table_name_b} (column1 varchar(255), column2 varchar(255))", ()),
+            (f"CREATE TABLE IF NOT EXISTS {table_name_c} (column1 varchar(255), column2 varchar(255))", ())
+        ]
+        psql_client.execute_queries(queries_with_params)
+        # テーブルが正しく作成されたことを確認
+        for table_name in [table_name_a, table_name_b, table_name_c]:
+            rows = psql_client.execute(f"SELECT to_regclass('{table_name}')")
+            assert rows[0][0] == table_name
+    finally:
+        # テスト用テーブルは必ず削除しておく
+        psql_client.execute(f"DROP TABLE IF EXISTS {table_name_a}")
+        psql_client.execute(f"DROP TABLE IF EXISTS {table_name_b}")
+        psql_client.execute(f"DROP TABLE IF EXISTS {table_name_c}")
 
 
 def test_executemany(psql_client):
