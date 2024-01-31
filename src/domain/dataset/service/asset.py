@@ -8,5 +8,9 @@ def get_sector_spdr_fund(rp: AssetRepository) -> List[Asset]:
     """
     ステートストリートのセクターETF一覧を取得する
     """
-    name = 'Sector SPDR Fund'
-    return rp.fetch_assets_by_name(name)
+    keyword = 'Sector SPDR Fund'
+    return rp.fetch_assets(
+        keyword=keyword,
+        tradable=True,
+        shortable=False
+    )

@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List
+from typing import List, Optional
 
 from domain.dataset.model.asset import Asset
 
@@ -29,23 +29,29 @@ class AssetRepository:
     現在はテスト用にローカルファイルから取得する仮実装形式をとる。
     """
 
-    def fetch_assets(self, tradable: bool = True, shortable: bool = False) -> List[Asset]:
+    def fetch_assets(
+        self,
+        keyword: Optional[str] = None,
+        tradable: bool = True,
+        shortable: bool = False
+    ) -> List[Asset]:
         """
         全てのAsset情報を取得
+
+        Note:
+            - 絞り込み条件はAND形式
         """
         assets = [to_asset(d) for d in self._fetch_raw_assets()]
+        if keyword:
+            # keywordに部分一致するAsset情報を絞り込み
+            assets = [a for a in assets if keyword in a.name]
         if tradable:
+            # 取引可能なAsset情報を絞り込み
             assets = [a for a in assets if a.tradable]
         if shortable:
+            # 空売り可能なAsset情報を絞り込み
             assets = [a for a in assets if a.shortable]
         return assets
-
-    def fetch_assets_by_name(self, name: str, tradable: bool = True, shortable: bool = False) -> List[Asset]:
-        """
-        nameに部分一致するAsset情報を取得
-        """
-        assets = self.fetch_assets(tradable, shortable)
-        return [a for a in assets if name in a.name]
 
     def _fetch_raw_assets(self) -> dict:
         """
