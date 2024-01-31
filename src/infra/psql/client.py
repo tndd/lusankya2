@@ -60,6 +60,7 @@ class PsqlClient:
             _cur.executemany(query, data)
         self._transact(_f, query, data)
 
+
     ### Parallel Execution
     def parallel_executemany(self, query: str, data: list):
         """
