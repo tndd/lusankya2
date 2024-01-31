@@ -14,8 +14,13 @@ class PsqlClient:
         """
         単発のクエリを実行し、結果を取得する。
 
-        引数はあってもなくてもOK。
-        結果を返さないタイプのクエリの場合はNoneを返す。
+        Note:
+            - 引数はあってもなくてもOK。
+            - 結果を返さないタイプのクエリの場合はNoneを返す。
+
+        Memo:
+            トランザクション処理が不要な単発での実行が必要なクエリで使うことを想定している。
+            例えばSELECT文など単発実行かつ結果がほしい場合など。
         """
         def _f(_cur, query):
             _cur.execute(query, params)
@@ -27,24 +32,19 @@ class PsqlClient:
         return self._transact(_f, query)
 
 
-    def execute_queries(self, queries: List[str]):
-        """
-        複数のクエリをトランザクション処理をして実行する。
-        """
-        def _f(_cur, queries):
-            for query in queries:
-                _cur.execute(query)
-        self._transact(_f, queries)
-
-
-    def execute_queries_with_params(self, queries_with_params: List[Tuple[str, Any]]):
+    def execute_queries(self, queries_with_params: List[Tuple[str, Any]]):
         """
         クエリとパラメータの複数ペアをトランザクション処理で一気に実行する。
-        こちらについてはexecute_with_paramsとは違い、結果を返さない。
+        これはexecuteとは違い、結果を返さない。
 
         Note:
             1. パラメータを渡す必要がないクエリの場合は空のタプル()を渡すようにすること。
             2. パラメータはdictあるいはtupleとして渡す。
+
+        Memo:
+            クエリのみの場合、空のパラメータを渡すという運用方法が正しいのかは分からない。
+            だが似たような関数を乱立させるというのも違う気がするので、
+            この程度の複雑度であれば統合したほうが良いと判断した。
         """
         def _f(_cur, queries_with_params):
             for query, params in queries_with_params:
