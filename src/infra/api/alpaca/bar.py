@@ -3,7 +3,7 @@ from typing import Optional
 
 from domain.databroker.model.api import ApiRequest
 from infra.api.alpaca.common import HEADER
-from infra.api.value import ApiQuery
+from infra.api.model import ApiQuery
 
 ENDPOINT = 'https://data.alpaca.markets/v2/stocks/bars'
 

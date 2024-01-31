@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from infra.api.value import ApiQuery
+from infra.api.model import ApiQuery
 
 
 def test_api_query():
