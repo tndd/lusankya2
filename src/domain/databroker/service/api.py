@@ -29,7 +29,7 @@ def multi_requests_api(
         n_max_worker: int = 8
     ) -> None:
     """
-    複数のAPIリクエストの内容を実行し、リクエストとその結果の保存を行う。
+    並列で複数のAPIリクエストの内容を実行し、リクエストとその結果の保存を行う。
     """
     # TODO
     pass
