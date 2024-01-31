@@ -10,27 +10,11 @@ class PsqlClient:
     url: str
     n_max_worker: int = 8
 
-    def execute(self, query: str) -> Any:
+    def execute(self, query: str, params: Any = ()) -> Any:
         """
         単発のクエリを実行し、結果を取得する。
-        結果を返さないタイプのクエリの場合はNoneを返す。
-        """
-        return self.execute_with_params(query, ())
 
-
-    def execute_queries(self, queries: List[str]):
-        """
-        複数のクエリを一気に実行する。
-        """
-        def _f(_cur, queries):
-            for query in queries:
-                _cur.execute(query)
-        self._transact(_f, queries)
-
-
-    def execute_with_params(self, query: str, params: Any) -> Any:
-        """
-        パラメータありで単発のクエリを実行し、結果を取得する。
+        引数はあってもなくてもOK。
         結果を返さないタイプのクエリの場合はNoneを返す。
         """
         def _f(_cur, query):
@@ -43,9 +27,19 @@ class PsqlClient:
         return self._transact(_f, query)
 
 
+    def execute_queries(self, queries: List[str]):
+        """
+        複数のクエリをトランザクション処理をして実行する。
+        """
+        def _f(_cur, queries):
+            for query in queries:
+                _cur.execute(query)
+        self._transact(_f, queries)
+
+
     def execute_queries_with_params(self, queries_with_params: List[Tuple[str, Any]]):
         """
-        クエリとパラメータの複数ペアを一気に実行する。
+        クエリとパラメータの複数ペアをトランザクション処理で一気に実行する。
         こちらについてはexecute_with_paramsとは違い、結果を返さない。
 
         Note:
@@ -66,18 +60,7 @@ class PsqlClient:
             _cur.executemany(query, data)
         self._transact(_f, query, data)
 
-
-    def parallel_execute(self, queries: List[str]):
-        """
-        複数のクエリを並列実行。
-        """
-        n_process = self._calc_optimum_process_num(queries)
-        with ProcessPoolExecutor(max_workers=n_process) as executor:
-            for i in range(n_process):
-                chunk = queries[i::n_process]
-                executor.submit(self.execute_queries, chunk)
-
-
+    ### Parallel Execution
     def parallel_executemany(self, query: str, data: list):
         """
         大量のデータによるexecutemanyを並列実行で高速に実行する。
@@ -89,6 +72,7 @@ class PsqlClient:
                 executor.submit(self.executemany, query, chunk)
 
 
+    ### Private Methods
     def _transact(self, f, *args, **kwargs):
         """
         トランザクション処理のラッパー関数。
