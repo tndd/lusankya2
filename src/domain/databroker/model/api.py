@@ -8,7 +8,7 @@ class ApiRequest:
     endpoint: str
     params: dict
     header: dict
-    _id: str = field(default_factory=lambda: str(uuid4()))
+    id_: str = field(default_factory=lambda: str(uuid4()))
     time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
 
@@ -18,7 +18,7 @@ class ApiResponse:
     status: int
     header: dict
     body: dict
-    _id: str = field(default_factory=lambda: str(uuid4()))
+    id_: str = field(default_factory=lambda: str(uuid4()))
     time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
 
@@ -30,5 +30,5 @@ class ApiResult:
     r_status: int
     r_header: dict
     r_body: str
-    _id: str = field(default_factory=lambda: str(uuid4()))
+    id_: str = field(default_factory=lambda: str(uuid4()))
     time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())

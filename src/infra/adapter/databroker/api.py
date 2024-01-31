@@ -6,7 +6,7 @@ def api_request_to_param(request: ApiRequest) -> dict:
     ApiRequestをクエリ用のパラメータ辞書に変換
     """
     return {
-        'id': request._id,
+        'id': request.id_,
         'time_stamp': request.time_stamp,
         'endpoint': request.endpoint,
         'params': request.params,
@@ -19,7 +19,7 @@ def api_response_to_param(response: ApiResponse) -> dict:
     ApiResponseをクエリ用のパラメータ辞書に変換
     """
     return {
-        'id': response._id,
+        'id': response.id_,
         'time_stamp': response.time_stamp,
         'api_request_id': response.api_request_id,
         'status': response.status,
