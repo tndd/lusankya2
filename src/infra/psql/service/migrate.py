@@ -33,5 +33,7 @@ def queries_table() -> List[str]:
 
 def queries_view() -> List[str]:
     return [
+        load_query(Schema.DATABROKER, Command.CREATE, 'view_latest_api_request_timestamp'),
         load_query(Schema.DATABROKER, Command.CREATE, 'view_latest_api_response'),
+        load_query(Schema.DATABROKER, Command.CREATE, 'view_latest_api_result')
     ]
