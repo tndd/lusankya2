@@ -49,8 +49,9 @@ class DataBrokerApiRepository:
         """
         未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
-        # TODO
-        pass
+        query = load_query(Schema.DATABROKER, Command.SELECT, 'todo_api_request')
+        result = self.cli_db.execute(query)
+        # TODO 結果を整形して返す
 
     def fetch_todo_requests_by_endpoint(self, endpoint: str) -> List[ApiRequest]:
         """
