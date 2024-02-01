@@ -35,11 +35,14 @@ class DataBrokerApiRepository:
         """
         APIリクエストとレスポンスの内容をトランザクション処理で確実に保存する。
         """
+        # クエリとパラメータを用意
         query_rq = load_query(Schema.DATABROKER, Command.INSERT, 'api_request')
         param_rq = api_request_to_param(request)
         query_rs = load_query(Schema.DATABROKER, Command.INSERT, 'api_response')
         param_rs = api_response_to_param(response)
+        # 引数用のペアを作成
         queries_with_params = [(query_rq, param_rq), (query_rs, param_rs)]
+        # 実行
         self.cli_db.execute_queries(queries_with_params)
 
     def fetch_todo_requests(self) -> List[ApiRequest]:
