@@ -2,12 +2,12 @@
 CREATE OR REPLACE VIEW databroker.view_latest_api_result AS
 select
 	rq.id,
-    rq."time_stamp" as timestamp_request,
+    rq.time_stamp as timestamp_request,
     rq.endpoint,
     rq.params,
     rq.req_header,
     lr.id as response_id,
-    lr.time_stamp  as "timestamp_response",
+    lr.time_stamp as timestamp_response,
     lr.status,
     lr.resp_header,
     lr.body
