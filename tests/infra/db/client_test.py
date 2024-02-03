@@ -1,10 +1,3 @@
-import os
-
-from dotenv import load_dotenv
-
-from src.infra.db.client import PsqlClient
-
-
 def test_execute(psql_client):
     """
     以下２点の要素を確認する。
