@@ -19,15 +19,15 @@ def migration(cli: PsqlClient):
     呼び出し側では頭から適宜実行しなければならない。
     """
     queries = (
-        queries_preparation() +
-        queries_schema() +
-        queries_table() +
-        queries_view()
+        _queries_preparation() +
+        _queries_schema() +
+        _queries_table() +
+        _queries_view()
     )
     cli.execute_queries(queries)
 
 
-def queries_preparation() -> List[str]:
+def _queries_preparation() -> List[str]:
     """
     設定などの、DB運用に必要なクエリを得る。
 
@@ -39,7 +39,7 @@ def queries_preparation() -> List[str]:
     ]
 
 
-def queries_schema() -> List[str]:
+def _queries_schema() -> List[str]:
     """
     スキーマの定義のためのクエリを得る
     """
@@ -49,7 +49,7 @@ def queries_schema() -> List[str]:
     ]
 
 
-def queries_table() -> List[str]:
+def _queries_table() -> List[str]:
     """
     テーブルの定義のためのクエリを得る
 
@@ -63,7 +63,7 @@ def queries_table() -> List[str]:
     ]
 
 
-def queries_view() -> List[str]:
+def _queries_view() -> List[str]:
     """
     ビューの定義のためのクエリを得る
     """
