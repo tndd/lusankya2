@@ -11,7 +11,7 @@ from infra.query.databroker.view import (view_latest_api_request_timestamp,
                                          view_latest_api_result)
 
 
-def migration(cli: PsqlClient) -> List[str]:
+def migration(cli: PsqlClient):
     """
     マイグレーション実行のためのクエリを得る。
 
