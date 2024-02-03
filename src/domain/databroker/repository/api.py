@@ -4,7 +4,7 @@ from typing import List, Optional
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.adapter.databroker.api import (api_request_to_param,
                                           api_response_to_param)
-from infra.db.client import PsqlClient
+from infra.db.psql import PsqlClient
 from infra.db.service.load_query import Command, Schema, load_query
 
 

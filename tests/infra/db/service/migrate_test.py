@@ -1,4 +1,4 @@
-from infra.db.client import PsqlClient
+from infra.db.psql import PsqlClient
 from infra.db.service.migrate import (migrate, queries_extension,
                                       queries_schema, queries_table,
                                       queries_view)

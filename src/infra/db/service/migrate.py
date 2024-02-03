@@ -1,6 +1,6 @@
 from typing import List
 
-from infra.db.client import PsqlClient
+from infra.db.psql import PsqlClient
 from infra.db.service.load_query import Command, Schema, load_query
 
 
