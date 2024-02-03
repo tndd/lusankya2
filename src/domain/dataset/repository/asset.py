@@ -32,8 +32,8 @@ class AssetRepository:
     def fetch_assets(
         self,
         keyword: Optional[str] = None,
-        tradable: bool = True,
-        shortable: bool = False
+        tradable: Optional[bool] = True,
+        shortable: Optional[bool] = None
     ) -> List[Asset]:
         """
         全てのAsset情報を取得
@@ -45,12 +45,12 @@ class AssetRepository:
         if keyword:
             # keywordに部分一致するAsset情報を絞り込み
             assets = [a for a in assets if keyword in a.name]
-        if tradable:
+        if tradable is not None:
             # 取引可能なAsset情報を絞り込み
-            assets = [a for a in assets if a.tradable]
-        if shortable:
+            assets = [a for a in assets if a.tradable == tradable]
+        if shortable is not None:
             # 空売り可能なAsset情報を絞り込み
-            assets = [a for a in assets if a.shortable]
+            assets = [a for a in assets if a.shortable == shortable]
         return assets
 
     def _fetch_raw_assets(self) -> dict:

@@ -1,29 +1,29 @@
 from typing import List
 
-import pytest
 
-from domain.dataset.repository.asset import AssetRepository
-
-
-@pytest.fixture
-def asset_repo():
-    return AssetRepository()
-
-def test_fetch_assets(asset_repo):
-    assets = asset_repo.fetch_assets()
+def test_fetch_assets(asset_repository):
+    """
+    アセットの取得が出来ているか
+    """
+    assets = asset_repository.fetch_assets()
     assert isinstance(assets, List)
 
-def test_fetch_asset_by_name(asset_repo):
-    assets = asset_repo.fetch_assets('iShares Core Total USD Bond Market ET')
+def test_fetch_assets_by_name(asset_repository):
+    """
+    名前での絞り込み
+    """
+    assets = asset_repository.fetch_assets('iShares Core Total USD Bond Market ET')
     assert isinstance(assets, List)
     assert len(assets) == 1
 
 
-if __name__ == "__main__":
+def test_fetch_assets_ishares_core(asset_repository):
     """
     "iShares Core"の件数が合わないため調査
     """
-    rp = AssetRepository()
-    assets = rp.fetch_assets('iShares Core')
-    for asset in assets:
-        print(asset.name)
+    assets = asset_repository.fetch_assets(
+        keyword='iShares Core',
+        tradable=True,
+        shortable=None
+    )
+    assert len(assets) == 26

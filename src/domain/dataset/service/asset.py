@@ -12,5 +12,5 @@ def get_sector_spdr_fund(rp: AssetRepository) -> List[Asset]:
     return rp.fetch_assets(
         keyword=keyword,
         tradable=True,
-        shortable=False
+        shortable=None
     )
