@@ -51,7 +51,16 @@ class DataBrokerApiRepository:
         """
         query = load_query(Schema.DATABROKER, Command.SELECT, 'todo_api_request')
         result = self.cli_db.execute(query)
-        # TODO 結果を整形して返す
+        return [
+            ApiRequest(
+                endpoint=r[2],
+                params=r[3],
+                header=r[4],
+                id_=r[0],
+                time_stamp=r[1]
+            )
+            for r in result
+        ]
 
     def fetch_todo_requests_by_endpoint(self, endpoint: str) -> List[ApiRequest]:
         """
