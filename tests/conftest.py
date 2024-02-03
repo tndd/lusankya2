@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.dataset.repository.asset import AssetRepository
-from infra.psql.client import PsqlClient
+from infra.db.client import PsqlClient
 
 load_dotenv()
 

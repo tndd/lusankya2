@@ -1,7 +1,7 @@
 from typing import List
 
-from infra.psql.client import PsqlClient
-from infra.psql.service.load_query import Command, Schema, load_query
+from infra.db.client import PsqlClient
+from infra.db.service.load_query import Command, Schema, load_query
 
 
 def migrate(cli: PsqlClient):

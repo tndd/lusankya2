@@ -1,12 +1,9 @@
 from dotenv import load_dotenv
 
-from infra.psql.client import PsqlClient
-from infra.psql.service.migrate import (migrate, queries_extension,
-                                        queries_schema, queries_table,
-                                        queries_view)
-from tests.conftest import psql_client
-
-load_dotenv()
+from infra.db.client import PsqlClient
+from infra.db.service.migrate import (migrate, queries_extension,
+                                      queries_schema, queries_table,
+                                      queries_view)
 
 
 def test_queries_extension():
