@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.adapter.databroker.api import (api_request_to_param,
@@ -45,29 +45,43 @@ class DataBrokerApiRepository:
         # 実行
         self.cli_db.execute_queries(queries_with_params)
 
-    def fetch_todo_requests(self) -> List[ApiRequest]:
+    def fetch_todo_requests(self, endpoint: Optional[str] = None) -> List[ApiRequest]:
         """
         未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
         query = load_query(Schema.DATABROKER, Command.SELECT, 'todo_api_request')
         result = self.cli_db.execute(query)
-        return [
-            ApiRequest(
-                endpoint=r[2],
-                params=r[3],
-                header=r[4],
-                id_=r[0],
-                time_stamp=r[1]
-            )
-            for r in result
-        ]
-
-    def fetch_todo_requests_by_endpoint(self, endpoint: str) -> List[ApiRequest]:
-        """
-        特定エンドポイントの未実行あるいは失敗したAPIのリクエスト一覧を取得する。
-        """
-        todo_api_requests = self.fetch_todo_requests()
-        return [r for r in todo_api_requests if r.endpoint == endpoint]
+        if endpoint:
+            """
+            エンドポイント指定がある場合、
+            そのエンドポイントの未実行あるいは失敗したAPIリクエストのみ取得する。
+            """
+            return [
+                ApiRequest(
+                    endpoint=r[2],
+                    params=r[3],
+                    header=r[4],
+                    id_=r[0],
+                    time_stamp=r[1]
+                )
+                for r in result
+                if r[2] == endpoint
+            ]
+        else:
+            """
+            デフォルト動作。
+            すべての未実行あるいは失敗したAPIリクエストを取得する。
+            """
+            return [
+                ApiRequest(
+                    endpoint=r[2],
+                    params=r[3],
+                    header=r[4],
+                    id_=r[0],
+                    time_stamp=r[1]
+                )
+                for r in result
+            ]
 
     def fetch_success_results_unmoved(self) -> List[ApiResponse]:
         """
