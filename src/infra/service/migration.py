@@ -27,7 +27,7 @@ def migration(cli: PsqlClient):
     cli.execute_queries(queries)
 
 
-def queries_preparation() :
+def queries_preparation() -> List[str]:
     """
     設定などの、DB運用に必要なクエリを得る。
 
