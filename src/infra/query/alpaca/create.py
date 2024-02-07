@@ -1,14 +1,14 @@
-def schema_alpaca() -> str:
+def create_schema_alpaca() -> str:
     return """
     CREATE SCHEMA IF NOT EXISTS alpaca AUTHORIZATION postgres;
     """
 
 
-def table_asset() -> str:
+def create_table_asset() -> str:
     pass
 
 
-def table_bar() -> str:
+def create_table_bar() -> str:
     return """
     CREATE TABLE IF NOT EXISTS alpaca.bar (
         time_stamp TIMESTAMP WITH TIME ZONE NOT NULL,

@@ -1,10 +1,10 @@
-def schema_databroker() -> str:
+def create_schema_databroker() -> str:
     return """
     CREATE SCHEMA IF NOT EXISTS databroker AUTHORIZATION postgres;
     """
 
 
-def table_api_request() -> str:
+def create_table_api_request() -> str:
     return """
     CREATE TABLE IF NOT EXISTS databroker.api_request (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -18,7 +18,7 @@ def table_api_request() -> str:
     """
 
 
-def table_api_response() -> str:
+def create_table_api_response() -> str:
     return """
     CREATE TABLE IF NOT EXISTS databroker.api_response (
         id uuid NOT NULL DEFAULT uuid_generate_v4(),

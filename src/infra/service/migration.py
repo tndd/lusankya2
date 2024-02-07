@@ -1,14 +1,14 @@
 from typing import List
 
 from infra.db.psql import PsqlClient
-from infra.query.alpaca.create import schema_alpaca, table_bar
-from infra.query.common import extension_uuid
-from infra.query.databroker.create import (schema_databroker,
-                                           table_api_request,
-                                           table_api_response)
-from infra.query.databroker.view import (view_latest_api_request_timestamp,
-                                         view_latest_api_response,
-                                         view_latest_api_result)
+from infra.query.alpaca.create import create_schema_alpaca, create_table_bar
+from infra.query.common import create_extension_uuid
+from infra.query.databroker.create import (create_schema_databroker,
+                                           create_table_api_request,
+                                           create_table_api_response)
+from infra.query.databroker.view import (
+    create_view_latest_api_request_timestamp, create_view_latest_api_response,
+    create_view_latest_api_result)
 
 
 def migrate(cli: PsqlClient):
@@ -35,7 +35,7 @@ def _queries_preparation() -> List[str]:
         1. uuidを使えるようにする
     """
     return [
-        extension_uuid(),
+        create_extension_uuid(),
     ]
 
 
@@ -44,8 +44,8 @@ def _queries_schema() -> List[str]:
     スキーマの定義のためのクエリを得る
     """
     return [
-        schema_alpaca(),
-        schema_databroker(),
+        create_schema_alpaca(),
+        create_schema_databroker(),
     ]
 
 
@@ -57,9 +57,9 @@ def _queries_table() -> List[str]:
         Table Assetはまだ未実装であるため、作成をスキップしている。
     """
     return [
-        table_bar(),
-        table_api_request(),
-        table_api_response(),
+        create_table_bar(),
+        create_table_api_request(),
+        create_table_api_response(),
     ]
 
 
@@ -68,7 +68,7 @@ def _queries_view() -> List[str]:
     ビューの定義のためのクエリを得る
     """
     return [
-        view_latest_api_request_timestamp(),
-        view_latest_api_response(),
-        view_latest_api_result(),
+        create_view_latest_api_request_timestamp(),
+        create_view_latest_api_response(),
+        create_view_latest_api_result(),
     ]
