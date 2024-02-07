@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.dataset.repository.asset import AssetRepository
 from infra.db.psql import PsqlClient
-from infra.service.migration import migration
+from infra.service.migration import migrate
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -15,7 +15,7 @@ def setup_session():
     load_dotenv()
     # 環境構築のためのマイグレーション実行
     cli_db = _make_psql_client()
-    migration(cli_db)
+    migrate(cli_db)
 
 
 @pytest.fixture

@@ -11,9 +11,9 @@ from infra.query.databroker.view import (view_latest_api_request_timestamp,
                                          view_latest_api_result)
 
 
-def migration(cli: PsqlClient):
+def migrate(cli: PsqlClient):
     """
-    マイグレーション実行のためのクエリを得る。
+    マイグレーションの実行
 
     クエリは必要な順番で並んでいるため、
     呼び出し側では頭から適宜実行しなければならない。
