@@ -1,4 +1,4 @@
-def create_view_latest_api_request_timestamp() -> str:
+def get_query_create_view_latest_api_request_timestamp() -> str:
     """
     各requestごとの最新responseの日付
     """
@@ -10,7 +10,7 @@ def create_view_latest_api_request_timestamp() -> str:
     """
 
 
-def create_view_latest_api_response() -> str:
+def get_query_view_latest_api_response() -> str:
     """
     各リクエストの最新のresponseの状態
     """
@@ -30,7 +30,7 @@ def create_view_latest_api_response() -> str:
     """
 
 
-def create_view_latest_api_result() -> str:
+def get_query_view_latest_api_result() -> str:
     """
     各リクエストの最新のレスポンスの結果のみを表示する
     """

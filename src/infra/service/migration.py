@@ -1,14 +1,15 @@
 from typing import List
 
 from infra.db.psql import PsqlClient
-from infra.query.alpaca.create import create_schema_alpaca, create_table_bar
-from infra.query.common import create_extension_uuid
-from infra.query.databroker.create import (create_schema_databroker,
-                                           create_table_api_request,
-                                           create_table_api_response)
+from infra.query.alpaca.create import (get_query_create_schema_alpaca,
+                                       get_query_create_table_bar)
+from infra.query.common import get_query_create_extension_uuid
+from infra.query.databroker.create import (get_query_create_schema_databroker,
+                                           get_query_create_table_api_request,
+                                           get_query_create_table_api_response)
 from infra.query.databroker.view import (
-    create_view_latest_api_request_timestamp, create_view_latest_api_response,
-    create_view_latest_api_result)
+    get_query_create_view_latest_api_request_timestamp,
+    get_query_view_latest_api_response, get_query_view_latest_api_result)
 
 
 def migrate(cli: PsqlClient):
@@ -35,7 +36,7 @@ def _queries_preparation() -> List[str]:
         1. uuidを使えるようにする
     """
     return [
-        create_extension_uuid(),
+        get_query_create_extension_uuid(),
     ]
 
 
@@ -44,8 +45,8 @@ def _queries_schema() -> List[str]:
     スキーマの定義のためのクエリを得る
     """
     return [
-        create_schema_alpaca(),
-        create_schema_databroker(),
+        get_query_create_schema_alpaca(),
+        get_query_create_schema_databroker(),
     ]
 
 
@@ -57,9 +58,9 @@ def _queries_table() -> List[str]:
         Table Assetはまだ未実装であるため、作成をスキップしている。
     """
     return [
-        create_table_bar(),
-        create_table_api_request(),
-        create_table_api_response(),
+        get_query_create_table_bar(),
+        get_query_create_table_api_request(),
+        get_query_create_table_api_response(),
     ]
 
 
@@ -68,7 +69,7 @@ def _queries_view() -> List[str]:
     ビューの定義のためのクエリを得る
     """
     return [
-        create_view_latest_api_request_timestamp(),
-        create_view_latest_api_response(),
-        create_view_latest_api_result(),
+        get_query_create_view_latest_api_request_timestamp(),
+        get_query_view_latest_api_response(),
+        get_query_view_latest_api_result(),
     ]

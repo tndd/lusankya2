@@ -1,4 +1,4 @@
-def select_todo_api_request() -> str:
+def get_query_select_todo_api_request() -> str:
     return """
     select
         id,

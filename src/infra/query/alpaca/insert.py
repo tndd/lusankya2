@@ -1,4 +1,4 @@
-def insert_bar() -> str:
+def get_query_insert_bar() -> str:
     return """
     INSERT INTO alpaca.bar (
         time_stamp,
