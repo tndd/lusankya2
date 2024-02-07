@@ -1,6 +1,6 @@
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
-from typing import Any, List, Tuple
+from typing import Any
 
 from psycopg2 import connect
 
@@ -31,24 +31,36 @@ class PsqlClient:
             return None
         return self._transact(_f, query)
 
-    def execute_queries(self, queries_with_params: List[Tuple[str, Any]]):
+    def execute_queries(self, queries: list):
         """
         クエリとパラメータの複数ペアをトランザクション処理で一気に実行する。
         これはexecuteとは違い、結果を返さない。
 
-        Note:
-            1. パラメータを渡す必要がないクエリの場合は空のタプル()を渡すようにすること。
-            2. パラメータはdictあるいはtupleとして渡す。
+        引数のパターン:
+            List[str | Tuple[str, Any]]
+
+            1. 単純な文字列のリスト
+                テーブルの作成などの引数を伴わないクエリの実行を想定。
+            2. (str, Any)のタプルのリスト
+                insertやselectなどの引数を伴う複雑なクエリの実行を想定。
+
+        引数の形式について
+            - 渡す引数の形式は単純なリストあるいはタプルリストいずれかの純粋な形でなければならない。
+            - もし両方の形式を同時に渡したいのであれば、呼び出し側でタプルリストの方に統一すること。
 
         Memo:
-            クエリのみの場合、空のパラメータを渡すという運用方法が正しいのかは分からない。
-            だが似たような関数を乱立させるというのも違う気がするので、
-            この程度の複雑度であれば統合したほうが良いと判断した。
+            型注釈をList[str | Tuple[str, Any]]と書くと警告文が出まくる。
+            どうやっても解消法が見つからないので、不本意だがlistとゆるい型になった。
         """
         def _f(_cur, queries_with_params):
             for query, params in queries_with_params:
                 _cur.execute(query, params)
-        self._transact(_f, queries_with_params)
+
+        # 引数の形式が単純な形式(List[str])であった場合、タプルリストに変換する
+        if isinstance(queries[0], str):
+            queries = [(q, ()) for q in queries]
+        # 実行
+        self._transact(_f, queries)
 
     def executemany(self, query: str, data: list):
         """

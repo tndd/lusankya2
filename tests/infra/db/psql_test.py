@@ -1,17 +1,3 @@
-import os
-
-from dotenv import load_dotenv
-
-from src.infra.psql.client import PsqlClient
-from tests.conftest import psql_client
-
-load_dotenv()
-
-
-def test_generate_psql_client(psql_client):
-    assert PsqlClient(url=os.getenv('PSQL_URL_TEST'))
-
-
 def test_execute(psql_client):
     """
     以下２点の要素を確認する。

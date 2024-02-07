@@ -1,4 +1,4 @@
-from infra.psql.service.load_query import Command, Schema, load_query
+from infra.db.service.load_query import Command, Schema, load_query
 
 
 def test_load_query():

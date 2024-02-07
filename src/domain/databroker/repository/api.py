@@ -4,8 +4,10 @@ from typing import List, Optional
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.adapter.databroker.api import (api_request_to_param,
                                           api_response_to_param)
-from infra.psql.client import PsqlClient
-from infra.psql.service.load_query import Command, Schema, load_query
+from infra.db.psql import PsqlClient
+from infra.query.databroker.insert import (get_query_insert_api_request,
+                                           get_query_insert_api_response)
+from infra.query.databroker.select import get_query_select_todo_api_request
 
 
 @dataclass
@@ -19,7 +21,7 @@ class DataBrokerApiRepository:
         Note:
             - 二重登録は防ぐようにする。
         """
-        query = load_query(Schema.DATABROKER, Command.INSERT, 'api_request')
+        query = get_query_insert_api_response()
         param = api_request_to_param(request)
         self.cli_db.execute(query, param)
 
@@ -27,7 +29,7 @@ class DataBrokerApiRepository:
         """
         APIレスポンスの内容を保存する。
         """
-        query = load_query(Schema.DATABROKER, Command.INSERT, 'api_response')
+        query = get_query_insert_api_response()
         param = api_response_to_param(response)
         self.cli_db.execute(query, param)
 
@@ -36,9 +38,9 @@ class DataBrokerApiRepository:
         APIリクエストとレスポンスの内容をトランザクション処理で確実に保存する。
         """
         # クエリとパラメータを用意
-        query_rq = load_query(Schema.DATABROKER, Command.INSERT, 'api_request')
+        query_rq = get_query_insert_api_request()
         param_rq = api_request_to_param(request)
-        query_rs = load_query(Schema.DATABROKER, Command.INSERT, 'api_response')
+        query_rs = get_query_insert_api_response()
         param_rs = api_response_to_param(response)
         # 引数用のペアを作成
         queries_with_params = [(query_rq, param_rq), (query_rs, param_rs)]
@@ -49,7 +51,7 @@ class DataBrokerApiRepository:
         """
         未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
-        query = load_query(Schema.DATABROKER, Command.SELECT, 'todo_api_request')
+        query = get_query_select_todo_api_request()
         result = self.cli_db.execute(query)
         if endpoint:
             """
