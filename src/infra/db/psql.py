@@ -1,6 +1,6 @@
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
-from typing import Any, List, Tuple
+from typing import Any
 
 from psycopg2 import connect
 
