@@ -14,13 +14,13 @@ def setup_session():
     # 環境変数の読み込み
     load_dotenv()
     # 環境構築のためのマイグレーション実行
-    cli_db = _make_psql_client()
+    cli_db = _make_test_psql_client()
     migrate(cli_db)
 
 
 @pytest.fixture
 def psql_client():
-    yield _make_psql_client()
+    yield _make_test_psql_client()
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def databroker_api_repository(psql_client):
     yield DataBrokerApiRepository(psql_client)
 
 
-def _make_psql_client() -> PsqlClient:
+def _make_test_psql_client() -> PsqlClient:
     url = getenv('PSQL_URL_TEST')
     if url is None:
         raise ValueError("Environment variable PSQL_URL_TEST is not set")
