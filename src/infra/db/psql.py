@@ -56,9 +56,8 @@ class PsqlClient:
             for query, params in queries_with_params:
                 _cur.execute(query, params)
 
-        # 引数の形式が単純な形式(List[str])であった場合、タプルリストに変換する
-        if isinstance(queries[0], str):
-            queries = [(q, ()) for q in queries]
+        # 引数の要素が単純なstrであった場合、要素を空のタプルリストに変換する
+        queries = [(q, ()) if isinstance(q, str) else q for q in queries]
         # 実行
         self._transact(_f, queries)
 
