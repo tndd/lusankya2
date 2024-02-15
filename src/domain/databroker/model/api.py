@@ -23,6 +23,17 @@ class ApiResponse:
 
 
 @dataclass
+class ApiResponseMetdata:
+    """
+    ApiResponseのbodyには非常に大きなデータが格納されていることがある。
+    そのため、ApiResponseのbodyにはデータのメタデータのみを格納し、
+    bodyの情報をこのクラスの情報をもとに適宜引き出せるようにする。
+    """
+    response_id: str
+    endpoint: str
+
+
+@dataclass
 class ApiResult:
     endpoint: str
     params: dict
