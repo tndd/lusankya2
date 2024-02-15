@@ -61,7 +61,7 @@ class DataBrokerApiRepository:
             return [
                 ApiRequest(
                     endpoint=r[2],
-                    params=r[3],
+                    parameter=r[3],
                     header=r[4],
                     id_=r[0],
                     time_stamp=r[1]
@@ -77,7 +77,7 @@ class DataBrokerApiRepository:
             return [
                 ApiRequest(
                     endpoint=r[2],
-                    params=r[3],
+                    parameter=r[3],
                     header=r[4],
                     id_=r[0],
                     time_stamp=r[1]

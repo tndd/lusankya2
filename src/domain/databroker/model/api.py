@@ -6,7 +6,7 @@ from uuid import uuid4
 @dataclass
 class ApiRequest:
     endpoint: str
-    params: dict
+    parameter: dict
     header: dict
     id_: str = field(default_factory=lambda: str(uuid4()))
     time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())

@@ -12,7 +12,7 @@ def request_api(api_request: ApiRequest) -> ApiResponse:
     """
     response = get(
         api_request.endpoint,
-        params=api_request.params,
+        params=api_request.parameter,
         headers=api_request.header
     )
     return ApiResponse(

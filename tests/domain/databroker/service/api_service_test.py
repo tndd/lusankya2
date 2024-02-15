@@ -11,7 +11,7 @@ def test_request_api():
     """
     request = ApiRequest(
         endpoint="https://httpbin.org/get",
-        params={
+        parameter={
             'p1': 'param1',
             'p2': 'param2'
         },

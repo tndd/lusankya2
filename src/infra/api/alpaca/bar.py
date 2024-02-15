@@ -30,5 +30,5 @@ def make_request_alpaca_bar(query: QueryBar) -> ApiRequest:
     return ApiRequest(
         endpoint=ENDPOINT,
         header=HEADER,
-        params=query.to_params()
+        parameter=query.to_params()
     )
