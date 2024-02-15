@@ -7,13 +7,12 @@ def get_query_create_schema_databroker() -> str:
 def get_query_create_table_api_request() -> str:
     return """
     CREATE TABLE IF NOT EXISTS databroker.api_request (
-        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-        url TEXT NOT NULL,
-        method TEXT NOT NULL,
-        headers JSONB NOT NULL,
-        body JSONB NOT NULL
+        id uuid NOT NULL DEFAULT uuid_generate_v4(),
+        time_stamp timestamptz NOT NULL DEFAULT now(),
+        endpoint text NOT NULL,
+        params json NOT NULL,
+        req_header json NOT NULL,
+        CONSTRAINT api_request_pkey PRIMARY KEY (id)
     );
     """
 
@@ -23,11 +22,11 @@ def get_query_create_table_api_response() -> str:
     CREATE TABLE IF NOT EXISTS databroker.api_response (
         id uuid NOT NULL DEFAULT uuid_generate_v4(),
         time_stamp timestamptz NOT NULL DEFAULT now(),
-        request_id uuid NOT NULL,
+        api_request_id uuid NOT NULL,
         status int4 NOT NULL,
         resp_header json NOT NULL,
         body json NOT NULL,
         CONSTRAINT api_response_pkey PRIMARY KEY (id),
-        CONSTRAINT api_response_fk FOREIGN KEY (request_id) REFERENCES databroker.api_request(id) ON DELETE CASCADE ON UPDATE CASCADE
+        CONSTRAINT api_response_fk FOREIGN KEY (api_request_id) REFERENCES databroker.api_request(id) ON DELETE CASCADE ON UPDATE CASCADE
     );
     """
