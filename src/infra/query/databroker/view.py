@@ -40,7 +40,7 @@ def get_query_view_latest_api_result() -> str:
         rq.id,
         rq.time_stamp as timestamp_request,
         rq.endpoint,
-        rq.params,
+        rq.parameter,
         rq.req_header,
         lr.id as response_id,
         lr.time_stamp as timestamp_response,

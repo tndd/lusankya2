@@ -1,8 +1,8 @@
 def get_query_insert_api_request() -> str:
     return """
     INSERT INTO databroker.api_request
-    (id, time_stamp, endpoint, params, req_header)
-    VALUES(%(id)s, %(time_stamp)s, %(endpoint)s, %(params)s, %(req_header)s)
+    (id, time_stamp, endpoint, parameter, req_header)
+    VALUES(%(id)s, %(time_stamp)s, %(endpoint)s, %(parameter)s, %(req_header)s)
     ON CONFLICT (id) DO NOTHING;
     """
 
