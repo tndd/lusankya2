@@ -25,7 +25,7 @@ def test_api_response_to_param():
     response = ApiResponse(
         id_='response_id',
         time_stamp='2021-01-01T00:00:00Z',
-        api_request_id='test_id',
+        request_id='test_id',
         status=200,
         header={'Content-Type': 'application/json'},
         body={'data': 'test'}
@@ -33,7 +33,7 @@ def test_api_response_to_param():
     expected_param = {
         'id': 'response_id',
         'time_stamp': '2021-01-01T00:00:00Z',
-        'api_request_id': 'test_id',
+        'request_id': 'test_id',
         'status': 200,
         'resp_header': {'Content-Type': 'application/json'},
         'body': {'data': 'test'}

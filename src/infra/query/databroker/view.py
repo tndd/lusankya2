@@ -4,9 +4,9 @@ def get_query_create_view_latest_api_request_timestamp() -> str:
     """
     return """
     CREATE OR REPLACE VIEW databroker.view_latest_request_timestamp AS
-    SELECT api_request_id, MAX(time_stamp) AS latest_timestamp
+    SELECT request_id, MAX(time_stamp) AS latest_timestamp
     FROM databroker.api_response
-    GROUP BY api_request_id;
+    GROUP BY request_id;
     """
 
 
@@ -19,13 +19,13 @@ def get_query_view_latest_api_response() -> str:
     select
         rs.id,
         rs.time_stamp,
-        rs.api_request_id,
+        rs.request_id,
         rs.status,
         rs.resp_header,
         rs.body
     FROM databroker.api_response rs
     JOIN databroker.view_latest_request_timestamp vlrt
-    on rs.api_request_id = vlrt.api_request_id
+    on rs.request_id = vlrt.request_id
     and rs.time_stamp = vlrt.latest_timestamp;
     """
 
@@ -49,5 +49,5 @@ def get_query_view_latest_api_result() -> str:
         lr.body
     from databroker.api_request rq
     left join databroker.view_latest_api_response lr
-    on rq.id = lr.api_request_id;
+    on rq.id = lr.request_id;
     """

@@ -21,7 +21,7 @@ def api_response_to_param(response: ApiResponse) -> dict:
     return {
         'id': response.id_,
         'time_stamp': response.time_stamp,
-        'api_request_id': response.api_request_id,
+        'request_id': response.request_id,
         'status': response.status,
         'resp_header': response.header,
         'body': response.body

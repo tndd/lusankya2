@@ -16,7 +16,7 @@ def request_api(api_request: ApiRequest) -> ApiResponse:
         headers=api_request.header
     )
     return ApiResponse(
-        api_request_id=api_request.id_,
+        request_id=api_request.id_,
         status=response.status_code,
         header=dict(response.headers),
         body=response.json()

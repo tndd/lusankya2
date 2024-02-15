@@ -14,7 +14,7 @@ class ApiRequest:
 
 @dataclass
 class ApiResponse:
-    api_request_id: str
+    request_id: str
     status: int
     header: dict
     body: dict
