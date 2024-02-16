@@ -14,9 +14,9 @@ def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
     }
 
 
-def transform_api_request_from_query_result(fetched_data: dict) -> ApiRequest:
+def transform_api_request_from_fetched_data(fetched_data: dict) -> ApiRequest:
     """
-    DBからフェッチしてきたデータをApiRequestモデルに変換
+    "view_latest_api_result"からフェッチしてきたデータをApiRequestモデルに変換
     """
     return ApiRequest(
         endpoint=fetched_data[2],
@@ -43,14 +43,14 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
 
 def transform_api_result_metadata_from_query_result(fetched_data: dict) -> ApiResultMetadata:
     """
-    DBからフェッチしてきたデータをApiResultMetadataモデルに変換
+    "view_latest_api_result"からフェッチしてきたデータをApiResultMetadataモデルに変換
     """
     return ApiResultMetadata(
         request_id=fetched_data[0],
-        endpoint=fetched_data[1],
-        parameter=fetched_data[2],
-        request_header=fetched_data[3],
-        response_id=fetched_data[4],
-        status=fetched_data[5],
-        response_header=fetched_data[6]
+        endpoint=fetched_data[2],
+        parameter=fetched_data[3],
+        request_header=fetched_data[4],
+        response_id=fetched_data[5],
+        status=fetched_data[7],
+        response_header=fetched_data[8]
     )
