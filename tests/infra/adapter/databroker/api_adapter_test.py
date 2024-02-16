@@ -1,6 +1,6 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse
-from infra.adapter.databroker.api import (api_request_to_param,
-                                          api_response_to_param)
+from infra.adapter.databroker.api import (api_request_to_query_parameter,
+                                          api_response_to_query_parameter)
 
 
 def test_api_request_to_param():
@@ -18,7 +18,7 @@ def test_api_request_to_param():
         'params': {'key': 'value'},
         'header': {'Content-Type': 'application/json'}
     }
-    assert api_request_to_param(request) == expected_param
+    assert api_request_to_query_parameter(request) == expected_param
 
 
 def test_api_response_to_param():
@@ -38,4 +38,4 @@ def test_api_response_to_param():
         'header': {'Content-Type': 'application/json'},
         'body': {'data': 'test'}
     }
-    assert api_response_to_param(response) == expected_param
+    assert api_response_to_query_parameter(response) == expected_param

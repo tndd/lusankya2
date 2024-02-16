@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
-from infra.adapter.databroker.api import (api_request_to_param,
-                                          api_response_to_param)
+from infra.adapter.databroker.api import (api_request_to_query_parameter,
+                                          api_response_to_query_parameter)
 from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
@@ -22,7 +22,7 @@ class DataBrokerApiRepository:
             - 二重登録は防ぐようにする。
         """
         query = get_query_insert_api_response()
-        param = api_request_to_param(request)
+        param = api_request_to_query_parameter(request)
         self.cli_db.execute(query, param)
 
     def store_response(self, response: ApiResponse) -> None:
@@ -30,7 +30,7 @@ class DataBrokerApiRepository:
         APIレスポンスの内容を保存する。
         """
         query = get_query_insert_api_response()
-        param = api_response_to_param(response)
+        param = api_response_to_query_parameter(response)
         self.cli_db.execute(query, param)
 
     def store_request_and_response(self, request: ApiRequest, response: ApiResponse) -> None:
@@ -39,9 +39,9 @@ class DataBrokerApiRepository:
         """
         # クエリとパラメータを用意
         query_rq = get_query_insert_api_request()
-        param_rq = api_request_to_param(request)
+        param_rq = api_request_to_query_parameter(request)
         query_rs = get_query_insert_api_response()
-        param_rs = api_response_to_param(response)
+        param_rs = api_response_to_query_parameter(response)
         # 引数用のペアを作成
         queries_with_params = [(query_rq, param_rq), (query_rs, param_rs)]
         # 実行

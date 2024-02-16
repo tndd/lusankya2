@@ -1,7 +1,7 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse
 
 
-def api_request_to_param(request: ApiRequest) -> dict:
+def api_request_to_query_parameter(request: ApiRequest) -> dict:
     """
     ApiRequestをクエリ用のパラメータ辞書に変換
     """
@@ -14,7 +14,7 @@ def api_request_to_param(request: ApiRequest) -> dict:
     }
 
 
-def api_response_to_param(response: ApiResponse) -> dict:
+def api_response_to_query_parameter(response: ApiResponse) -> dict:
     """
     ApiResponseをクエリ用のパラメータ辞書に変換
     """
