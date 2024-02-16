@@ -53,37 +53,20 @@ class DataBrokerApiRepository:
         """
         query = get_query_select_todo_api_request()
         result = self.cli_db.execute(query)
+        api_requests = [
+            ApiRequest(
+                endpoint=r[2],
+                parameter=r[3],
+                header=r[4],
+                id_=r[0],
+                time_stamp=r[1]
+            )
+            for r in result
+        ]
         if endpoint:
-            """
-            エンドポイント指定がある場合、
-            そのエンドポイントの未実行あるいは失敗したAPIリクエストのみ取得する。
-            """
-            return [
-                ApiRequest(
-                    endpoint=r[2],
-                    parameter=r[3],
-                    header=r[4],
-                    id_=r[0],
-                    time_stamp=r[1]
-                )
-                for r in result
-                if r[2] == endpoint
-            ]
-        else:
-            """
-            デフォルト動作。
-            すべての未実行あるいは失敗したAPIリクエストを取得する。
-            """
-            return [
-                ApiRequest(
-                    endpoint=r[2],
-                    parameter=r[3],
-                    header=r[4],
-                    id_=r[0],
-                    time_stamp=r[1]
-                )
-                for r in result
-            ]
+            # エンドポイント指定がある場合、絞り込みを行う
+            api_requests = [r for r in api_requests if r[2] == endpoint]
+        return api_requests
 
     def fetch_success_results_unmoved(self) -> List[ApiResponse]:
         """
