@@ -4,7 +4,7 @@ from typing import List, Optional
 from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
 from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
                                           transform_api_response_to_query_parameter,
-                                          transform_api_request_from_fetched_data)
+                                          transform_api_request_from_view_latest_api_result)
 from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
@@ -54,7 +54,7 @@ class DataBrokerApiRepository:
         """
         query = get_query_insert_api_request()
         fetched_data = self.cli_db.execute(query)
-        api_requests = [transform_api_request_from_fetched_data(d) for d in fetched_data]
+        api_requests = [transform_api_request_from_view_latest_api_result(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
             api_requests = [r for r in api_requests if r.endpoint == endpoint]
