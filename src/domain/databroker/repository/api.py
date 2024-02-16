@@ -4,11 +4,11 @@ from typing import List, Optional
 from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
 from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
                                           transform_api_response_to_query_parameter,
-                                          transform_api_result_metadata_from_query_result)
+                                          transform_api_request_from_query_result)
 from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
-from infra.query.databroker.select import get_query_select_latest_api_result_metadata
+from infra.query.databroker.select import get_query_select_todo_api_request
 
 
 @dataclass
@@ -48,25 +48,17 @@ class DataBrokerApiRepository:
         # 実行
         self.cli_db.execute_queries(queries_with_params)
 
-    def fetch_todo_requests(self, endpoint: Optional[str] = None) -> List[ApiResultMetadata]:
+    def fetch_todo_requests(self, endpoint: Optional[str] = None) -> List[ApiRequest]:
         """
         未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
-        query = get_query_select_latest_api_result_metadata()
-        result = self.cli_db.execute(query)
-        api_results_metadata = [transform_api_result_metadata_from_query_result(r) for r in result]
-        """
-        未実行あるいは失敗したapi_requestのみを抽出する。
-
-        条件:
-            1. 通信がまだ行われていない（statusがNone）
-            2. 通信が失敗。（statusが成功の200以外）
-        """
-        api_results_metadata = [r for r in api_results_metadata if r.status is None or r.status != 200]
+        query = get_query_insert_api_request()
+        fetched_data = self.cli_db.execute(query)
+        api_requests = [transform_api_request_from_query_result(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
-            api_results_metadata = [r for r in api_results_metadata if r.endpoint == endpoint]
-        return api_results_metadata
+            api_requests = [r for r in api_requests if r.endpoint == endpoint]
+        return api_requests
 
     def fetch_api_response_body_metadata_should_be_moved(self) -> List[ApiResultMetadata]:
         """

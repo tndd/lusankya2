@@ -13,6 +13,13 @@ def get_query_select_latest_api_result_metadata() -> str:
 
 
 def get_query_select_todo_api_request() -> str:
+    """
+    view_latest_api_resultからApiRequestの要素を取得する。
+    
+    条件:
+        1. 通信がまだ行われていない（つまりstatusがNone）
+        2. 通信が失敗（statusが成功の200以外）
+    """
     return """
     select
         id,
