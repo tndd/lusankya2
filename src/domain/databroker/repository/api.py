@@ -22,7 +22,7 @@ class DataBrokerApiRepository:
         Note:
             - 二重登録は防ぐようにする。
         """
-        query = get_query_insert_api_response()
+        query = get_query_insert_api_request()
         param = transform_api_request_to_query_parameter(request)
         self.cli_db.execute(query, param)
 

@@ -1,5 +1,5 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
-
+import json
 
 def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
     """
@@ -9,8 +9,8 @@ def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
         'id': request.id_,
         'time_stamp': request.timestamp,
         'endpoint': request.endpoint,
-        'parameter': request.parameter,
-        'header': request.header
+        'parameter': json.dumps(request.parameter),
+        'header': json.dumps(request.header)
     }
 
 
