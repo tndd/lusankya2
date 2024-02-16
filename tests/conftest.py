@@ -7,6 +7,7 @@ from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.dataset.repository.asset import AssetRepository
 from infra.db.psql import PsqlClient
 from infra.service.migration import migrate
+from tests._test_service.clear import clear_tables
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -16,11 +17,16 @@ def setup_session():
     # 環境構築のためのマイグレーション実行
     cli_db = _make_test_psql_client()
     migrate(cli_db)
+    # 前回のデータが残存している可能性があるため初期化する
+    clear_tables(cli_db)
 
 
 @pytest.fixture
 def psql_client():
-    yield _make_test_psql_client()
+    cli = _make_test_psql_client()
+    yield cli
+    # テスト終了毎にテーブルを初期化する
+    clear_tables(cli)
 
 
 @pytest.fixture

@@ -3,7 +3,15 @@ from infra.query.databroker.truncate import (
     get_query_truncate_api_request,
     get_query_truncate_api_response
 )
-from infra.service.decorator import test_only
+from tests._test_service.decorator import test_only
+
+
+@test_only
+def clear_tables(db_cli: PsqlClient):
+    """
+    全てのテーブルの初期化
+    """
+    clear_tables_databroker(db_cli)
 
 
 @test_only
