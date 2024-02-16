@@ -55,7 +55,13 @@ class DataBrokerApiRepository:
         query = get_query_select_latest_api_result_metadata()
         result = self.cli_db.execute(query)
         api_results_metadata = [transform_api_result_metadata_from_query_result(r) for r in result]
-        # 未実行あるいは失敗したapi_requestのみを抽出
+        """
+        未実行あるいは失敗したapi_requestのみを抽出する。
+
+        条件:
+            1. 通信がまだ行われていない（statusがNone）
+            2. 通信が失敗。（statusが成功の200以外）
+        """
         api_results_metadata = [r for r in api_results_metadata if r.status is None or r.status != 200]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
