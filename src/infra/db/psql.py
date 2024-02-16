@@ -84,6 +84,14 @@ class PsqlClient:
                 chunk = data[i::n_process]
                 executor.submit(self.executemany, query, chunk)
 
+    ### Utils ###
+    def is_test_mode(self) -> bool:
+        """
+        テストモードかどうかを判定する。
+        削除などの危険な操作を行う際に使用されることが想定される。
+        """
+        return self.url.endswith("_test")
+
     ### Private Methods
     def _transact(self, f, *args, **kwargs):
         """

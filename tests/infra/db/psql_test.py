@@ -64,3 +64,10 @@ def test_parallel_executemany(psql_client):
     finally:
         # テスト用テーブルは必ず削除しておく
         psql_client.execute(f"DROP TABLE IF EXISTS {table_name}")
+
+
+def test_is_test_mode(psql_client):
+    """
+    psql_client自身が、自らがテストモードであることを認識できているのかの確認
+    """
+    assert psql_client.is_test_mode() is True
