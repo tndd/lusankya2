@@ -92,3 +92,11 @@ def test_store_request_and_response(psql_client, databroker_api_repository):
     """
     result = psql_client.execute(query_confirm_api_response)
     assert len(result) == 1
+
+
+def test_fetch_todo_requests(psql_client, databroker_api_repository):
+    pass
+
+
+def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_repository):
+    pass
