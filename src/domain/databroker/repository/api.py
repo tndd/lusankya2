@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from domain.databroker.model.api import ApiRequest, ApiResponse
+from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResponseBodyMetadata
 from infra.adapter.databroker.api import (api_request_to_query_parameter,
                                           api_response_to_query_parameter,
                                           api_request_from_query_result)
@@ -60,9 +60,11 @@ class DataBrokerApiRepository:
             api_requests = [r for r in api_requests if r[2] == endpoint]
         return api_requests
 
-    def fetch_success_results_unmoved(self) -> List[ApiResponse]:
+    def fetch_api_response_body_metadata_should_be_moved(self) -> List[ApiResponseBodyMetadata]:
         """
-        まだdatasetに未移動の成功したAPIのレスポンス一覧を取得する。
+        概要
+            まだdatasetに未移動の成功したAPIレスポンスボディのメタデータの取得。
+            このメタデータを元に適宜bodyをDBから取り出す用途で使用される。
         """
         # TODO
         pass
