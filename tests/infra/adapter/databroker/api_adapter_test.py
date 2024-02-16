@@ -1,6 +1,8 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
-                                          transform_api_response_to_query_parameter)
+                                          transform_api_response_to_query_parameter, 
+                                          transform_api_request_from_view_latest_api_result,
+                                          transform_api_result_metadata_from_view_latest_api_result)
 import json
 
 
@@ -22,6 +24,10 @@ def test_transform_api_request_to_query_parameter():
     assert transform_api_request_to_query_parameter(request) == expected_param
 
 
+def test_transform_api_request_from_view_latest_api_result():
+    pass
+
+
 def test_transform_api_response_to_query_parameter():
     response = ApiResponse(
         id_='response_id',
@@ -40,3 +46,7 @@ def test_transform_api_response_to_query_parameter():
         'body': json.dumps({'data': 'test'})
     }
     assert transform_api_response_to_query_parameter(response) == expected_param
+
+
+def test_transform_api_result_metadata_from_view_latest_api_result():
+    pass
