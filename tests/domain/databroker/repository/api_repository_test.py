@@ -3,9 +3,6 @@ from domain.databroker.model.api import ApiRequest, ApiResponse
 
 
 def test_store_request(psql_client, databroker_api_repository):
-    # api_requestのテーブルを初期化
-    query_truncate_api_request = get_query_truncate_api_request()
-    psql_client.execute(query_truncate_api_request)
     # api_requestを作成
     request_id = 'b90287e9-5478-f434-8eff-20613ae0d1c1'
     api_request = ApiRequest(
@@ -30,9 +27,6 @@ def test_store_response(psql_client, databroker_api_repository):
     注意:
         api_responseの登録にはapi_requestを事前に登録する必要がある。
     """
-    # api_requestのテーブルを初期化
-    query_truncate_api_request = get_query_truncate_api_request()
-    psql_client.execute(query_truncate_api_request)
     # api_requestを作成
     request_id = 'b90287e9-5478-f434-8eff-20613ae0d1c1'
     api_request = ApiRequest(
@@ -44,9 +38,6 @@ def test_store_response(psql_client, databroker_api_repository):
     )
     # api_requestを保存
     databroker_api_repository.store_request(api_request)
-    # api_responseのテーブルを初期化
-    query_truncate_api_response = get_query_truncate_api_response()
-    psql_client.execute(query_truncate_api_response)
     # api_responseを作成
     response_id = '4ae3bc1a-db11-14a3-8f35-75d112b8bd79'
     api_response = ApiResponse(
