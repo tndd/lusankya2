@@ -26,3 +26,16 @@ def api_response_to_query_parameter(response: ApiResponse) -> dict:
         'header': response.header,
         'body': response.body
     }
+
+
+def api_request_from_query_result(fetched_data: dict) -> ApiRequest:
+    """
+    DBからフェッチしてきたデータをApiRequestモデルに変換
+    """
+    return ApiRequest(
+        endpoint=fetched_data[2],
+        parameter=fetched_data[3],
+        header=fetched_data[4],
+        id_=fetched_data[0],
+        timestamp=fetched_data[1]
+    )

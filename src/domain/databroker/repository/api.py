@@ -3,7 +3,8 @@ from typing import List, Optional
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.adapter.databroker.api import (api_request_to_query_parameter,
-                                          api_response_to_query_parameter)
+                                          api_response_to_query_parameter,
+                                          api_request_from_query_result)
 from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
@@ -53,16 +54,7 @@ class DataBrokerApiRepository:
         """
         query = get_query_select_todo_api_request()
         result = self.cli_db.execute(query)
-        api_requests = [
-            ApiRequest(
-                endpoint=r[2],
-                parameter=r[3],
-                header=r[4],
-                id_=r[0],
-                timestamp=r[1]
-            )
-            for r in result
-        ]
+        api_requests = [api_request_from_query_result(r) for r in result]
         if endpoint:
             # エンドポイント指定がある場合、絞り込みを行う
             api_requests = [r for r in api_requests if r[2] == endpoint]
