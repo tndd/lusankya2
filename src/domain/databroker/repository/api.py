@@ -60,7 +60,7 @@ class DataBrokerApiRepository:
             api_requests = [r for r in api_requests if r.endpoint == endpoint]
         return api_requests
 
-    def fetch_api_response_body_metadata_should_be_moved(self) -> List[ApiResultMetadata]:
+    def fetch_api_result_metadata_should_be_moved(self) -> List[ApiResultMetadata]:
         """
         概要
             まだdatasetに未移動の成功したAPIレスポンスボディのメタデータの取得。
