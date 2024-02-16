@@ -16,7 +16,7 @@ def test_api_request_to_param():
         'time_stamp': '2021-01-01T00:00:00Z',
         'endpoint': 'http://test.endpoint',
         'params': {'key': 'value'},
-        'req_header': {'Content-Type': 'application/json'}
+        'header': {'Content-Type': 'application/json'}
     }
     assert api_request_to_param(request) == expected_param
 
@@ -35,7 +35,7 @@ def test_api_response_to_param():
         'time_stamp': '2021-01-01T00:00:00Z',
         'request_id': 'test_id',
         'status': 200,
-        'resp_header': {'Content-Type': 'application/json'},
+        'header': {'Content-Type': 'application/json'},
         'body': {'data': 'test'}
     }
     assert api_response_to_param(response) == expected_param

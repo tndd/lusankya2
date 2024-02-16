@@ -21,7 +21,7 @@ def get_query_view_latest_api_response() -> str:
         rs.time_stamp,
         rs.request_id,
         rs.status,
-        rs.resp_header,
+        rs.header,
         rs.body
     FROM databroker.api_response rs
     JOIN databroker.view_latest_request_timestamp vlrt
@@ -41,11 +41,11 @@ def get_query_view_latest_api_result() -> str:
         rq.time_stamp as timestamp_request,
         rq.endpoint,
         rq.parameter,
-        rq.req_header,
+        rq.header as request_header,
         lr.id as response_id,
         lr.time_stamp as timestamp_response,
         lr.status,
-        lr.resp_header,
+        lr.header as response_header,
         lr.body
     from databroker.api_request rq
     left join databroker.view_latest_api_response lr

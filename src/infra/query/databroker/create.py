@@ -11,7 +11,7 @@ def get_query_create_table_api_request() -> str:
         time_stamp timestamptz NOT NULL DEFAULT now(),
         endpoint text NOT NULL,
         parameter json NOT NULL,
-        req_header json NOT NULL,
+        header json NOT NULL,
         CONSTRAINT api_request_pkey PRIMARY KEY (id)
     );
     """
@@ -24,7 +24,7 @@ def get_query_create_table_api_response() -> str:
         time_stamp timestamptz NOT NULL DEFAULT now(),
         request_id uuid NOT NULL,
         status int4 NOT NULL,
-        resp_header json NOT NULL,
+        header json NOT NULL,
         body json NOT NULL,
         CONSTRAINT api_response_pkey PRIMARY KEY (id),
         CONSTRAINT api_response_fk FOREIGN KEY (request_id) REFERENCES databroker.api_request(id) ON DELETE CASCADE ON UPDATE CASCADE
