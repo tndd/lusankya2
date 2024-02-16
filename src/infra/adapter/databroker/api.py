@@ -9,7 +9,7 @@ def api_request_to_param(request: ApiRequest) -> dict:
         'id': request.id_,
         'time_stamp': request.time_stamp,
         'endpoint': request.endpoint,
-        'params': request.parameter,
+        'parameter': request.parameter,
         'header': request.header
     }
 
