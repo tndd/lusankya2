@@ -23,23 +23,24 @@ class ApiResponse:
 
 
 @dataclass
-class ApiResponseMetdata:
-    """
-    ApiResponseのbodyには非常に大きなデータが格納されていることがある。
-    そのため、ApiResponseのbodyにはデータのメタデータのみを格納し、
-    bodyの情報をこのクラスの情報をもとに適宜引き出せるようにする。
-    """
-    response_id: str
-    endpoint: str
-
-
-@dataclass
 class ApiResult:
     endpoint: str
     parameter: dict
     request_header: dict
+    response_id: str
     status: int
     response_header: dict
-    body: str
+    body: dict
     id_: str = field(default_factory=lambda: str(uuid4()))
     time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())
+
+
+@dataclass
+class ApiResultMetdata:
+    """
+    ApiResponse（あるいはApiResult）のbodyには非常に大きなデータが格納されていることがある。
+    そのため、ApiResponseのbodyにはデータのメタデータのみを格納し、
+    bodyの情報をこのクラスの情報をもとに適宜引き出せるようにする。
+    """
+    endpoint: str
+    response_id: str
