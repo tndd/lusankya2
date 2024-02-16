@@ -1,9 +1,9 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse
-from infra.adapter.databroker.api import (api_request_to_query_parameter,
-                                          api_response_to_query_parameter)
+from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
+                                          transform_api_response_to_query_parameter)
 
 
-def test_api_request_to_param():
+def test_transform_api_request_to_query_parameter():
     request = ApiRequest(
         id_='test_id',
         timestamp='2021-01-01T00:00:00Z',
@@ -15,13 +15,13 @@ def test_api_request_to_param():
         'id': 'test_id',
         'time_stamp': '2021-01-01T00:00:00Z',
         'endpoint': 'http://test.endpoint',
-        'params': {'key': 'value'},
+        'parameter': {'key': 'value'},
         'header': {'Content-Type': 'application/json'}
     }
-    assert api_request_to_query_parameter(request) == expected_param
+    assert transform_api_request_to_query_parameter(request) == expected_param
 
 
-def test_api_response_to_param():
+def test_transform_api_response_to_query_parameter():
     response = ApiResponse(
         id_='response_id',
         timestamp='2021-01-01T00:00:00Z',
@@ -38,4 +38,4 @@ def test_api_response_to_param():
         'header': {'Content-Type': 'application/json'},
         'body': {'data': 'test'}
     }
-    assert api_response_to_query_parameter(response) == expected_param
+    assert transform_api_response_to_query_parameter(response) == expected_param
