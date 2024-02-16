@@ -7,7 +7,7 @@ def api_request_to_param(request: ApiRequest) -> dict:
     """
     return {
         'id': request.id_,
-        'time_stamp': request.time_stamp,
+        'time_stamp': request.timestamp,
         'endpoint': request.endpoint,
         'parameter': request.parameter,
         'header': request.header
@@ -20,7 +20,7 @@ def api_response_to_param(response: ApiResponse) -> dict:
     """
     return {
         'id': response.id_,
-        'time_stamp': response.time_stamp,
+        'time_stamp': response.timestamp,
         'request_id': response.request_id,
         'status': response.status,
         'header': response.header,

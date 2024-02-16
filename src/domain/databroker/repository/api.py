@@ -59,7 +59,7 @@ class DataBrokerApiRepository:
                 parameter=r[3],
                 header=r[4],
                 id_=r[0],
-                time_stamp=r[1]
+                timestamp=r[1]
             )
             for r in result
         ]

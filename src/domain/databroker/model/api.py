@@ -9,7 +9,7 @@ class ApiRequest:
     parameter: dict
     header: dict
     id_: str = field(default_factory=lambda: str(uuid4()))
-    time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
 
 @dataclass
@@ -19,7 +19,7 @@ class ApiResponse:
     header: dict
     body: dict
     id_: str = field(default_factory=lambda: str(uuid4()))
-    time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
 
 @dataclass
