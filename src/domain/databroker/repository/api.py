@@ -52,7 +52,7 @@ class DataBrokerApiRepository:
         """
         未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
-        query = get_query_insert_api_request()
+        query = get_query_select_todo_api_request()
         fetched_data = self.cli_db.execute(query)
         api_requests = [transform_api_request_from_view_latest_api_result(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
