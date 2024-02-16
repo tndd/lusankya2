@@ -56,3 +56,39 @@ def test_store_response(psql_client, databroker_api_repository):
     """
     result = psql_client.execute(query_confirm_api_response)
     assert len(result) == 1
+
+
+def test_store_request_and_response(psql_client, databroker_api_repository):
+    # api_requestを作成
+    request_id = '5473dd4e-be44-48a2-2f3b-58c99fd546c4'
+    api_request = ApiRequest(
+        endpoint='endpoint_a',
+        parameter={'param_a': 'value_a'},
+        header={'header_a': 'value_a'},
+        id_=request_id,
+        timestamp='2022-01-01 00:00:00'
+    )
+    # api_responseを作成
+    response_id = '4178ccb9-bd28-a398-92a3-e38cfcb741d7'
+    api_response = ApiResponse(
+        request_id=request_id,
+        status=200,
+        header={'header_a': 'value_a'},
+        body={'body_a': 'value_a'},
+        id_=response_id,
+        timestamp='2022-01-01 00:00:00'
+    )
+    # request,responseを同時に保存
+    databroker_api_repository.store_request_and_response(api_request, api_response)
+    # api_requestが保存されたかの確認
+    query_confirm_api_request = f"""
+        SELECT id FROM databroker.api_request WHERE id = '{request_id}';
+    """
+    result = psql_client.execute(query_confirm_api_request)
+    assert len(result) == 1
+    # api_requestが保存されたかの確認
+    query_confirm_api_response = f"""
+        SELECT id FROM databroker.api_response WHERE id = '{response_id}';
+    """
+    result = psql_client.execute(query_confirm_api_response)
+    assert len(result) == 1
