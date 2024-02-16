@@ -19,8 +19,8 @@ def test_store_request(psql_client, databroker_api_repository):
     databroker_api_repository.store_request(api_request)
     # api_requestが保存されたかの確認
     query_confirm_api_request = f"""
-        SELECT id FROM api_request WHERE id = '{request_id}';
+        SELECT id FROM databroker.api_request WHERE id = '{request_id}';
     """
     result = psql_client.execute(query_confirm_api_request)
-    assert result.fetchone() is not None
+    assert len(result) == 1
 
