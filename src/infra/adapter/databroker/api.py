@@ -41,7 +41,7 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
     }
 
 
-def transform_api_result_metadata_from_query_result(fetched_data: dict) -> ApiResultMetadata:
+def transform_api_result_metadata_from_fetched_data(fetched_data: dict) -> ApiResultMetadata:
     """
     "view_latest_api_result"からフェッチしてきたデータをApiResultMetadataモデルに変換
     """
