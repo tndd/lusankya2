@@ -36,10 +36,10 @@ class ApiResponseMetdata:
 @dataclass
 class ApiResult:
     endpoint: str
-    params: dict
-    header: dict
-    r_status: int
-    r_header: dict
-    r_body: str
+    parameter: dict
+    request_header: dict
+    status: int
+    response_header: dict
+    body: str
     id_: str = field(default_factory=lambda: str(uuid4()))
     time_stamp: str = field(default_factory=lambda: datetime.now().isoformat())
