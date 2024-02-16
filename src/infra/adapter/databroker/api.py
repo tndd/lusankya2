@@ -36,8 +36,8 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
         'time_stamp': response.timestamp,
         'request_id': response.request_id,
         'status': response.status,
-        'header': response.header,
-        'body': response.body
+        'header': json.dumps(response.header),
+        'body': json.dumps(response.body)
     }
 
 
