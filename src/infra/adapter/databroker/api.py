@@ -16,7 +16,7 @@ def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
     }
 
 
-def transform_api_request_from_view_latest_api_result(fetched_data: DictRow) -> ApiRequest:
+def transform_api_request_from_fetched_data(fetched_data: DictRow) -> ApiRequest:
     """
     "get_query_select_todo_api_request"からフェッチしてきたデータをApiRequestモデルに変換
     """
@@ -43,7 +43,7 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
     }
 
 
-def transform_api_result_metadata_from_view_latest_api_result(fetched_data: DictRow) -> ApiResultMetadata:
+def transform_api_result_metadata_from_fetched_data(fetched_data: DictRow) -> ApiResultMetadata:
     """
     "get_query_select_api_result_metadata_should_be_moved"からフェッチしてきたデータを、
     ApiResultMetadataモデルに変換

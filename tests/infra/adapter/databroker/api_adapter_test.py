@@ -1,8 +1,8 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
                                           transform_api_response_to_query_parameter, 
-                                          transform_api_request_from_view_latest_api_result,
-                                          transform_api_result_metadata_from_view_latest_api_result)
+                                          transform_api_request_from_fetched_data,
+                                          transform_api_result_metadata_from_fetched_data)
 import json
 
 
