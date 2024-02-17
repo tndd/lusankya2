@@ -212,6 +212,13 @@ def test_fetch_todo_requests(psql_client, databroker_api_repository):
     todo_requests = databroker_api_repository.fetch_todo_requests()
     # 取得されるのは、期待通りのIDであることを確認
     assert set([r.id_ for r in todo_requests]) == set([request2_failed.id_, request3_not_yet.id_, request5_failed_twice.id_])
+    """
+    エンドポイントの絞り込みのテスト:
+        エンドポイントがblueのもののみが取得されることを確認。
+        つまり期待されるレスポンスは2が除外され3,5となる。
+    """
+    todo_request_with_endpoint = databroker_api_repository.fetch_todo_requests('blue')
+    assert set([r.id_ for r in todo_request_with_endpoint]) == set([request3_not_yet.id_, request5_failed_twice.id_])
 
 
 def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_repository):
