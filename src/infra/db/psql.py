@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from psycopg2 import connect
+from psycopg2.extras import DictCursor
 
 
 @dataclass
@@ -98,7 +99,7 @@ class PsqlClient:
         トランザクション処理のラッパー関数。
         """
         conn = connect(self.url)
-        cur = conn.cursor()
+        cur = conn.cursor(cursor_factory=DictCursor)
         try:
             result = f(cur, *args, **kwargs)
             conn.commit()

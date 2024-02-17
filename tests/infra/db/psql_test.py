@@ -4,7 +4,7 @@ def test_execute(psql_client):
         1. 単発のクエリを実行出来ていること
         2. クエリの結果が取得できていること
     """
-    assert psql_client.execute('SELECT 1') == [(1,)]
+    assert psql_client.execute('SELECT 1') == [[1]]
 
 
 def test_execute_queries(psql_client):
