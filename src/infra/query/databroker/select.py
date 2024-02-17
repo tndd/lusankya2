@@ -20,6 +20,13 @@ def get_query_select_todo_api_request() -> str:
 
 
 def get_query_select_api_result_metadata_should_be_moved() -> str:
+    """
+    view_latest_api_resultから、datasetへ未移動のApiResultMetadataのリストを取得する。
+
+    条件:
+        - 通信が成功している (statusが200)
+        - bodyがnullではない (bodyが移動されていない)
+    """
     return """
     select
         id as request_id,
