@@ -1,19 +1,3 @@
-def get_query_select_api_result_metadata_should_be_moved() -> str:
-    return """
-    select
-        id as request_id,
-        endpoint,
-        parameter,
-        request_header,
-        response_id,
-        status,
-        response_header
-    from databroker.view_latest_api_result vr
-    where status = 200
-        and vr.body is not null;
-"""
-
-
 def get_query_select_todo_api_request() -> str:
     """
     view_latest_api_resultからApiRequestの要素を取得する。
@@ -32,4 +16,20 @@ def get_query_select_todo_api_request() -> str:
     from databroker.view_latest_api_result v
     where v.status is null
         or v.status <> 200;
+"""
+
+
+def get_query_select_api_result_metadata_should_be_moved() -> str:
+    return """
+    select
+        id as request_id,
+        endpoint,
+        parameter,
+        request_header,
+        response_id,
+        status,
+        response_header
+    from databroker.view_latest_api_result v
+    where status = 200
+        and v.body is not null;
 """
