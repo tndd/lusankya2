@@ -1,5 +1,4 @@
-from infra.query.databroker.truncate import get_query_truncate_api_request, get_query_truncate_api_response
-from domain.databroker.model.api import ApiRequest, ApiResponse
+from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
 
 
 def test_store_request(psql_client, databroker_api_repository):
