@@ -1,4 +1,4 @@
-def get_query_select_latest_api_result_metadata() -> str:
+def get_query_select_api_result_metadata_should_be_moved() -> str:
     return """
     select
         id as request_id,
@@ -8,7 +8,9 @@ def get_query_select_latest_api_result_metadata() -> str:
         response_id,
         status,
         response_header
-    from databroker.view_latest_api_result;
+    from databroker.view_latest_api_result vr
+    where status = 200
+        and vr.body is not null;
 """
 
 
