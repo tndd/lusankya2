@@ -16,7 +16,7 @@ def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
 
 def transform_api_request_from_view_latest_api_result(fetched_data: dict) -> ApiRequest:
     """
-    "view_latest_api_result"からフェッチしてきたデータをApiRequestモデルに変換
+    "get_query_select_todo_api_request"からフェッチしてきたデータをApiRequestモデルに変換
     """
     return ApiRequest(
         endpoint=fetched_data[2],
@@ -43,7 +43,8 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
 
 def transform_api_result_metadata_from_view_latest_api_result(fetched_data: dict) -> ApiResultMetadata:
     """
-    "view_latest_api_result"からフェッチしてきたデータをApiResultMetadataモデルに変換
+    "get_query_select_api_result_metadata_should_be_moved"からフェッチしてきたデータを、
+    ApiResultMetadataモデルに変換
     """
     return ApiResultMetadata(
         request_id=fetched_data[0],
