@@ -1,5 +1,7 @@
-from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
 import json
+from psycopg2.extras import DictRow
+from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
+
 
 def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
     """
@@ -14,16 +16,16 @@ def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
     }
 
 
-def transform_api_request_from_view_latest_api_result(fetched_data: dict) -> ApiRequest:
+def transform_api_request_from_view_latest_api_result(fetched_data: DictRow) -> ApiRequest:
     """
     "get_query_select_todo_api_request"からフェッチしてきたデータをApiRequestモデルに変換
     """
     return ApiRequest(
-        endpoint=fetched_data[2],
-        parameter=fetched_data[3],
-        header=fetched_data[4],
-        id_=fetched_data[0],
-        timestamp=fetched_data[1]
+        endpoint=fetched_data['endpoint'],
+        parameter=fetched_data['parameter'],
+        header=fetched_data['header'],
+        id_=fetched_data['id'],
+        timestamp=fetched_data['timestamp_request']
     )
 
 
@@ -41,17 +43,17 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
     }
 
 
-def transform_api_result_metadata_from_view_latest_api_result(fetched_data: dict) -> ApiResultMetadata:
+def transform_api_result_metadata_from_view_latest_api_result(fetched_data: DictRow) -> ApiResultMetadata:
     """
     "get_query_select_api_result_metadata_should_be_moved"からフェッチしてきたデータを、
     ApiResultMetadataモデルに変換
     """
     return ApiResultMetadata(
-        request_id=fetched_data[0],
-        endpoint=fetched_data[2],
-        parameter=fetched_data[3],
-        request_header=fetched_data[4],
-        response_id=fetched_data[5],
-        status=fetched_data[7],
-        response_header=fetched_data[8]
+        request_id=fetched_data['request_id'],
+        endpoint=fetched_data['endpoint'],
+        parameter=fetched_data['parameter'],
+        request_header=fetched_data['request_header'],
+        response_id=fetched_data['response_id'],
+        status=fetched_data['status'],
+        response_header=fetched_data['response_header']
     )

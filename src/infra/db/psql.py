@@ -15,6 +15,9 @@ class PsqlClient:
         """
         単発のクエリを実行し、結果を取得する。
 
+        戻り値の型:
+            None | List[DictRow]
+
         Note:
             - 引数はあってもなくてもOK。
             - 結果を返さないタイプのクエリの場合はNoneを返す。
