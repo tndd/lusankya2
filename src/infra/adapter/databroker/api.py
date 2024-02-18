@@ -1,6 +1,9 @@
 import json
+
 from psycopg2.extras import DictRow
-from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
+
+from domain.databroker.model.api import (ApiRequest, ApiResponse,
+                                         ApiResultMetadata)
 
 
 def transform_api_request_to_query_parameter(request: ApiRequest) -> dict:
