@@ -90,14 +90,16 @@ class DataBrokerApiRepository:
         """
         APIレスポンスidからボディを取得する。
 
-        レスポンスが見つからなかった場合はNoneを返す。
+        特殊な例:
+            - レスポンスIDのbodyが空であった場合はNoneを返す。
+            - 指定されたレスポンスID自体が存在しない場合もまたNoneを返す。
+
+        警告:
+            この実装ではIDは存在するがbodyが空の場合と、
+            レスポンス自体が存在しない事例を区別できないので注意が必要。
         """
         query = get_query_select_api_response_body()
         param = (response_id,)
         fetched_data = self.cli_db.execute(query, param)
-        # WARN: ここの変換はadapter無しに直接やっているので注意
-        if fetched_data[0]['body'] is not None:
-            result = json.loads(fetched_data[0]['body'])
-        else:
-            result = None
-        return result
+        # IDは存在するがbodyが空、あるいはレスポンス自体が存在しない場合はNoneを返す
+        return fetched_data[0]['body'] if fetched_data else None

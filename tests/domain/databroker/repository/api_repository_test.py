@@ -365,3 +365,68 @@ def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_r
             request6_failed_success.id_
         ]
     )
+
+
+def test_fetch_body(psql_client, databroker_api_repository):
+    """
+    概要:
+        APIレスポンスIDからボディを取得するテスト
+
+    テスト内容:
+        1. 通常の取得
+        2. 取得IDのbodyが空
+        3. 取得IDが存在しない (リクエスト未実行)
+    """
+    # 1.通常テスト
+    request1 = ApiRequest(
+        endpoint='red',
+        parameter={'param_a': 'value_a'},
+        header={'header_a': 'value_a'},
+        id_='b90287e9-5478-f434-8eff-20613ae0d1c1',
+        timestamp='2022-01-01 00:00:01'
+    )
+    response1 = ApiResponse(
+        request_id=request1.id_,
+        status=200,
+        header={'header_a': 'value_a'},
+        body={'body_a': 'content'},
+        id_='1603d215-b28f-29a8-d3f0-f4255c97ea8a',
+        timestamp='2022-01-02 00:00:00'
+    )
+    databroker_api_repository.store_request(request1)
+    databroker_api_repository.store_response(response1)
+    body = databroker_api_repository.fetch_body(response1.id_)
+    assert body == {'body_a': 'content'}
+    # 2. 取得IDのbodyが空
+    request2 = ApiRequest(
+        endpoint='red',
+        parameter={'param_a': 'value_a'},
+        header={'header_a': 'value_a'},
+        id_='f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        timestamp='2022-01-01 00:00:01'
+    )
+    response2 = ApiResponse(
+        request_id=request2.id_,
+        status=200,
+        header={'header_a': 'value_a'},
+        body=None,
+        id_='a3bb189e-8bf9-4c48-8aba-1c7d2452d2b2',
+        timestamp='2022-01-02 00:00:00'
+    )
+    databroker_api_repository.store_request(request2)
+    databroker_api_repository.store_response(response2)
+    body = databroker_api_repository.fetch_body(response2.id_)
+    assert body is None
+    # 3. 取得IDが存在しない (リクエスト未実行)
+    request3 = ApiRequest(
+        endpoint='red',
+        parameter={'param_c': 'value_c'},
+        header={'header_c': 'value_c'},
+        id_='00f6dd8f-8062-bc5f-9942-5b5fb6beb592',
+        timestamp='2022-01-01 00:00:03'
+    )
+    databroker_api_repository.store_request(request3)
+    # 存在しない適当なIDを指定する
+    body = databroker_api_repository.fetch_body('4199b619-419f-dd9a-56e7-2d22ae31f83b')
+    assert body is None
+
