@@ -1,16 +1,19 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
-from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
-                                          transform_api_response_to_query_parameter,
-                                          transform_api_request_from_fetched_data,
-                                          transform_api_result_metadata_from_fetched_data)
+from domain.databroker.model.api import (ApiRequest, ApiResponse,
+                                         ApiResultMetadata)
+from infra.adapter.databroker.api import (
+    transform_api_request_from_fetched_data,
+    transform_api_request_to_query_parameter,
+    transform_api_response_to_query_parameter,
+    transform_api_result_metadata_from_fetched_data)
 from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
-from infra.query.databroker.select import (get_query_select_todo_api_request,
-                                           get_query_select_api_result_metadata_should_be_moved)
+from infra.query.databroker.select import (
+    get_query_select_api_result_metadata_should_be_moved,
+    get_query_select_todo_api_request)
 
 
 @dataclass
@@ -28,6 +31,7 @@ class DataBrokerApiRepository:
         param = transform_api_request_to_query_parameter(request)
         self.cli_db.execute(query, param)
 
+
     def store_response(self, response: ApiResponse) -> None:
         """
         APIレスポンスの内容を保存する。
@@ -35,6 +39,7 @@ class DataBrokerApiRepository:
         query = get_query_insert_api_response()
         param = transform_api_response_to_query_parameter(response)
         self.cli_db.execute(query, param)
+
 
     def store_request_and_response(self, request: ApiRequest, response: ApiResponse) -> None:
         """
@@ -49,6 +54,7 @@ class DataBrokerApiRepository:
         queries_with_params = [(query_rq, param_rq), (query_rs, param_rs)]
         # 実行
         self.cli_db.execute_queries(queries_with_params)
+
 
     def fetch_todo_requests(self, endpoint: Optional[str] = None) -> List[ApiRequest]:
         """

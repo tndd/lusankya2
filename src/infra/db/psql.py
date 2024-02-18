@@ -35,6 +35,7 @@ class PsqlClient:
             return None
         return self._transact(_f, query)
 
+
     def execute_queries(self, queries: list):
         """
         クエリとパラメータの複数ペアをトランザクション処理で一気に実行する。
@@ -65,6 +66,7 @@ class PsqlClient:
         # 実行
         self._transact(_f, queries)
 
+
     def executemany(self, query: str, data: list):
         """
         単発のexecutemanyを実行。
@@ -72,6 +74,7 @@ class PsqlClient:
         def _f(_cur, query, data):
             _cur.executemany(query, data)
         self._transact(_f, query, data)
+
 
     ### Parallel Execution
     def parallel_executemany(self, query: str, data: list):
@@ -88,6 +91,7 @@ class PsqlClient:
                 chunk = data[i::n_process]
                 executor.submit(self.executemany, query, chunk)
 
+
     ### Utils ###
     def is_test_mode(self) -> bool:
         """
@@ -95,6 +99,7 @@ class PsqlClient:
         削除などの危険な操作を行う際に使用されることが想定される。
         """
         return self.url.endswith("_test")
+
 
     ### Private Methods
     def _transact(self, f, *args, **kwargs):
@@ -113,6 +118,7 @@ class PsqlClient:
         finally:
             cur.close()
             conn.close()
+
 
     def _calc_optimum_process_num(self, tasks: list) -> int:
         """
