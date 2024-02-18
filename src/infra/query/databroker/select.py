@@ -40,3 +40,15 @@ def get_query_select_api_result_metadata_should_be_moved() -> str:
     where status = 200
         and v.body is not null;
 """
+
+
+def get_query_select_api_response_body() -> str:
+    """
+    request_idのレスポンスボディを取得する。
+    """
+    return """
+    select
+        body
+    from databroker.api_response r
+    where r.id = %s;
+"""

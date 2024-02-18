@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -12,6 +13,7 @@ from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
 from infra.query.databroker.select import (
+    get_query_select_api_response_body,
     get_query_select_api_result_metadata_should_be_moved,
     get_query_select_todo_api_request)
 
@@ -82,3 +84,20 @@ class DataBrokerApiRepository:
         if endpoint:
             api_results_metadata = [rm for rm in api_results_metadata if rm.endpoint == endpoint]
         return api_results_metadata
+
+
+    def fetch_body(self, response_id: str) -> dict | None:
+        """
+        APIレスポンスidからボディを取得する。
+
+        レスポンスが見つからなかった場合はNoneを返す。
+        """
+        query = get_query_select_api_response_body()
+        param = (response_id,)
+        fetched_data = self.cli_db.execute(query, param)
+        # WARN: ここの変換はadapter無しに直接やっているので注意
+        if fetched_data[0]['body'] is not None:
+            result = json.loads(fetched_data[0]['body'])
+        else:
+            result = None
+        return result
