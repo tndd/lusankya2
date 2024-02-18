@@ -221,4 +221,24 @@ def test_fetch_todo_requests(psql_client, databroker_api_repository):
 
 
 def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_repository):
+    """
+    概要:
+        datasetデータベースに未移動のbodyに関するApiResultMetadataのみが、
+        きちんと取得されているのかを確認する
+
+    取得される条件: 全てを同時に満たすもののみ
+        - bodyがまだ存在している (bodyがNoneではない)
+        - 成功したリクエスト (statusが200)
+
+    登録するデータ:
+        1. リクエスト未実行
+        2. リクエスト失敗
+        3. リクエスト成功、body未移動
+        4. リクエスト成功、ただしbodyは移動済み
+        5. リクエスト成功、body未移動（異なるエンドポイント）
+
+    テスト条件:
+        1. 通常テスト。3,5のみが取得されればOK
+        2. エンドポイントの指定。3のみが取得されればOK
+    """
     pass
