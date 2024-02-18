@@ -1,4 +1,4 @@
-from domain.databroker.model.api import ApiRequest, ApiResponse
+from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
 from infra.adapter.databroker.api import (transform_api_request_to_query_parameter,
                                           transform_api_response_to_query_parameter, 
                                           transform_api_request_from_fetched_data,
@@ -64,4 +64,22 @@ def test_transform_api_response_to_query_parameter():
 
 
 def test_transform_api_result_metadata_from_fetched_data():
-    pass
+    fetched_data = {
+        'request_id': '2d4eeca1-0efd-e9d4-2eba-d3b5efb0e775',
+        'endpoint': 'http://test.endpoint',
+        'parameter': {'key': 'value'},
+        'request_header': {'Content-Type': 'application/json'},
+        'response_id': '4857b290-9d39-fd7d-0c83-38da2714012b',
+        'status': 200,
+        'response_header': {'Content-Type': 'application/json'}
+    }
+    expected_result_metadata = ApiResultMetadata(
+        request_id='2d4eeca1-0efd-e9d4-2eba-d3b5efb0e775',
+        endpoint='http://test.endpoint',
+        parameter={'key': 'value'},
+        request_header={'Content-Type': 'application/json'},
+        response_id='4857b290-9d39-fd7d-0c83-38da2714012b',
+        status=200,
+        response_header={'Content-Type': 'application/json'}
+    )
+    assert transform_api_result_metadata_from_fetched_data(fetched_data) == expected_result_metadata
