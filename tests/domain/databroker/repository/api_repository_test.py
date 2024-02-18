@@ -350,21 +350,18 @@ def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_r
     databroker_api_repository.store_response(response6_second_success)
     # 通常テスト
     metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved()
-    print([(m.request_id, m.response_id) for m in metadata])
-    # assert set([m.request_id for m in metadata]) == set(
-    #     [
-    #         request3_success_body_not_moved.id_, 
-    #         request5_success_body_not_moved_another_endpoint.id_,
-    #         request6_failed_success.id_
-    #     ]
-    # )
+    assert set([m.request_id for m in metadata]) == set(
+        [
+            request3_success_body_not_moved.id_, 
+            request5_success_body_not_moved_another_endpoint.id_,
+            request6_failed_success.id_
+        ]
+    )
     # エンドポイントを指定した場合のテスト
     metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved('red')
-    # assert set([m.request_id for m in metadata]) == set(
-    #     [
-    #         request3_success_body_not_moved.id_,
-    #         request6_failed_success.id_
-    #     ]
-    # )
-
-
+    assert set([m.request_id for m in metadata]) == set(
+        [
+            request3_success_body_not_moved.id_,
+            request6_failed_success.id_
+        ]
+    )

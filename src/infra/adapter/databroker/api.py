@@ -32,6 +32,10 @@ def transform_api_request_from_fetched_data(fetched_data: DictRow) -> ApiRequest
 def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
     """
     ApiResponseをクエリ用のパラメータ辞書に変換
+
+    警告:
+        json.dumpsにNoneを渡すと文字列で'null'という値を返してしまう。
+        そのため、bodyにNoneを渡す場合には特別な処理が必要となる。
     """
     return {
         'id': response.id_,
@@ -39,7 +43,7 @@ def transform_api_response_to_query_parameter(response: ApiResponse) -> dict:
         'request_id': response.request_id,
         'status': response.status,
         'header': json.dumps(response.header),
-        'body': json.dumps(response.body)
+        'body': json.dumps(response.body) if response.body is not None else None
     }
 
 
