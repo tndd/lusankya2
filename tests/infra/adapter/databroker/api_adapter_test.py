@@ -4,6 +4,7 @@ from infra.adapter.databroker.api import (transform_api_request_to_query_paramet
                                           transform_api_request_from_fetched_data,
                                           transform_api_result_metadata_from_fetched_data)
 import json
+from psycopg2.extras import DictRow
 
 
 def test_transform_api_request_to_query_parameter():
@@ -25,7 +26,21 @@ def test_transform_api_request_to_query_parameter():
 
 
 def test_transform_api_request_from_fetched_data():
-    pass
+    fetched_data = {
+        'id': 'c0fe6a69-aca7-4680-b29f-84788dc637d6',
+        'timestamp_request': '2021-01-01T00:00:00Z',
+        'endpoint': 'http://test.endpoint',
+        'parameter': {'key': 'value'},
+        'header': {'Content-Type': 'application/json'}
+    }
+    expected_request = ApiRequest(
+        id_='c0fe6a69-aca7-4680-b29f-84788dc637d6',
+        timestamp='2021-01-01T00:00:00Z',
+        endpoint='http://test.endpoint',
+        parameter={'key': 'value'},
+        header={'Content-Type': 'application/json'}
+    )
+    assert transform_api_request_from_fetched_data(fetched_data) == expected_request
 
 
 def test_transform_api_response_to_query_parameter():
