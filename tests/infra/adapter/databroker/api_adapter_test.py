@@ -24,7 +24,7 @@ def test_transform_api_request_to_query_parameter():
     assert transform_api_request_to_query_parameter(request) == expected_param
 
 
-def test_transform_api_request_from_view_latest_api_result():
+def test_transform_api_request_from_fetched_data():
     pass
 
 
@@ -48,5 +48,5 @@ def test_transform_api_response_to_query_parameter():
     assert transform_api_response_to_query_parameter(response) == expected_param
 
 
-def test_transform_api_result_metadata_from_view_latest_api_result():
+def test_transform_api_result_metadata_from_fetched_data():
     pass
