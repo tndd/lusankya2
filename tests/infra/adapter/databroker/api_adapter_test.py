@@ -4,7 +4,6 @@ from infra.adapter.databroker.api import (transform_api_request_to_query_paramet
                                           transform_api_request_from_fetched_data,
                                           transform_api_result_metadata_from_fetched_data)
 import json
-from psycopg2.extras import DictRow
 
 
 def test_transform_api_request_to_query_parameter():
