@@ -1,4 +1,4 @@
-from domain.databroker.model.api import ApiRequest, ApiResponse, ApiResultMetadata
+from domain.databroker.model.api import ApiRequest, ApiResponse
 
 
 def test_store_request(psql_client, databroker_api_repository):
