@@ -236,9 +236,135 @@ def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_r
         3. リクエスト成功、body未移動
         4. リクエスト成功、ただしbodyは移動済み
         5. リクエスト成功、body未移動（異なるエンドポイント）
+        6. 1度目のリクエストは失敗、2度目のリクエスト成功、bodyは未移動
 
     テスト条件:
-        1. 通常テスト。3,5のみが取得されればOK
-        2. エンドポイントの指定。3のみが取得されればOK
+        1. 通常テスト。3,5,6のみが取得されればOK
+        2. エンドポイントの指定。3,6のみが取得されればOK
     """
-    pass
+    # リクエスト群の作成
+    request1_no_response = ApiRequest(
+        endpoint='red',
+        parameter={'param_a': 'value_a'},
+        header={'header_a': 'value_a'},
+        id_='20e70eec-fda5-db6f-bf52-3798108c2784',
+        timestamp='2022-01-01 00:00:01'
+    )
+    request2_failed = ApiRequest(
+        endpoint='red',
+        parameter={'param_b': 'value_b'},
+        header={'header_b': 'value_b'},
+        id_='691fe01b-ba2a-efe1-3100-c2cac6fd8caa',
+        timestamp='2022-01-01 00:00:02'
+    )
+    request3_success_body_not_moved = ApiRequest(
+        endpoint='red',
+        parameter={'param_c': 'value_c'},
+        header={'header_c': 'value_c'},
+        id_='7bf68cef-e69a-9fc9-0636-83d936340269',
+        timestamp='2022-01-01 00:00:03'
+    )
+    request4_success_body_moved = ApiRequest(
+        endpoint='red',
+        parameter={'param_d': 'value_d'},
+        header={'header_d': 'value_d'},
+        id_='19ae2531-d78a-7553-86e5-74da1952deca',
+        timestamp='2022-01-01 00:00:04'
+    )
+    request5_success_body_not_moved_another_endpoint = ApiRequest(
+        endpoint='blue',
+        parameter={'param_e': 'value_e'},
+        header={'header_e': 'value_e'},
+        id_='8bd09965-a92a-da89-46b4-2704c61df569',
+        timestamp='2022-01-01 00:00:05'
+    )
+    request6_failed_success = ApiRequest(
+        endpoint='red',
+        parameter={'param_f': 'value_f'},
+        header={'header_f': 'value_f'},
+        id_='4cf8d655-fc85-bc17-3062-f15cc983f703',
+        timestamp='2022-01-01 00:00:06'
+    )
+    # リクエスト群の登録
+    databroker_api_repository.store_request(request1_no_response)
+    databroker_api_repository.store_request(request2_failed)
+    databroker_api_repository.store_request(request3_success_body_not_moved)
+    databroker_api_repository.store_request(request4_success_body_moved)
+    databroker_api_repository.store_request(request5_success_body_not_moved_another_endpoint)
+    databroker_api_repository.store_request(request6_failed_success)
+    # レスポンス群の作成
+    response2_failed = ApiResponse(
+        request_id=request2_failed.id_,
+        status=400,
+        header={'header_b': 'value_b'},
+        body={'body_b': '一発失敗'},
+        id_='f581c960-aee1-d73c-b5be-23b67a83a50e',
+        timestamp='2022-01-02 00:01:00'
+    )
+    response3 = ApiResponse(
+        request_id=request3_success_body_not_moved.id_,
+        status=200,
+        header={'header_c': 'value_c'},
+        body={'body_c': '成功、未移動'},
+        id_='17c5bc09-4e03-69f7-9b59-95941a05e459',
+        timestamp='2022-01-02 00:02:00'
+    )
+    response4 = ApiResponse(
+        request_id=request4_success_body_moved.id_,
+        status=200,
+        header={'header_d': 'value_d'},
+        body=None,
+        id_='0a5ec6b6-c799-9c42-9c2b-d16afa001617',
+        timestamp='2022-01-02 00:03:00'
+    )
+    response5 = ApiResponse(
+        request_id=request5_success_body_not_moved_another_endpoint.id_,
+        status=200,
+        header={'header_e': 'value_e'},
+        body={'body_e': '成功、未移動'},
+        id_='b80690e6-3f35-425d-306f-2c9c552db53e',
+        timestamp='2022-01-02 00:04:00'
+    )
+    response6_first_failed = ApiResponse(
+        request_id=request6_failed_success.id_,
+        status=400,
+        header={'header_f': 'value_f'},
+        body={'body_f': '１度目失敗'},
+        id_='034524d7-9c97-9931-c47f-175828b50997',
+        timestamp='2022-01-02 00:05:00'
+    )
+    response6_second_success = ApiResponse(
+        request_id=request6_failed_success.id_,
+        status=200,
+        header={'header_f': 'value_f'},
+        body={'body_f': '２度目成功'},
+        id_='65b574b6-e102-26b5-62e5-405b67a22d73',
+        timestamp='2022-01-02 00:06:00'
+    )
+    # レスポンス群の登録
+    databroker_api_repository.store_response(response2_failed)
+    databroker_api_repository.store_response(response3)
+    databroker_api_repository.store_response(response4)
+    databroker_api_repository.store_response(response5)
+    databroker_api_repository.store_response(response6_first_failed)
+    databroker_api_repository.store_response(response6_second_success)
+    # 通常テスト
+    metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved()
+    print([(m.request_id, m.response_id) for m in metadata])
+    # assert set([m.request_id for m in metadata]) == set(
+    #     [
+    #         request3_success_body_not_moved.id_, 
+    #         request5_success_body_not_moved_another_endpoint.id_,
+    #         request6_failed_success.id_
+    #     ]
+    # )
+    # エンドポイントを指定した場合のテスト
+    metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved('red')
+    # assert set([m.request_id for m in metadata]) == set(
+    #     [
+    #         request3_success_body_not_moved.id_,
+    #         request6_failed_success.id_
+    #     ]
+    # )
+
+

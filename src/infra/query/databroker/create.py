@@ -25,7 +25,7 @@ def get_query_create_table_api_response() -> str:
         request_id uuid NOT NULL,
         status int4 NOT NULL,
         header json NOT NULL,
-        body json NOT NULL,
+        body json,
         CONSTRAINT api_response_pkey PRIMARY KEY (id),
         CONSTRAINT api_response_fk FOREIGN KEY (request_id) REFERENCES databroker.api_request(id) ON DELETE CASCADE ON UPDATE CASCADE
     );

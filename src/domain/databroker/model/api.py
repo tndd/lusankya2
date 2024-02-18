@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import uuid4
+from typing import Optional
 
 
 @dataclass
@@ -17,7 +18,7 @@ class ApiResponse:
     request_id: str
     status: int
     header: dict
-    body: dict
+    body: Optional[dict]
     id_: str = field(default_factory=lambda: str(uuid4()))
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
