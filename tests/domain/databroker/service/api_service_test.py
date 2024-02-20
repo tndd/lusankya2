@@ -67,5 +67,37 @@ def test_multi_requests_api_and_store(databroker_api_repository, psql_client):
 
 
 @pytest.mark.api
-def test_parallel_requests_api():
-    pass
+def test_parallel_requests_api_and_store(databroker_api_repository, psql_client):
+    """
+    2つのリクエストの処理が正常に行われたかの検証
+    """
+    # リクエストの準備
+    request1 = ApiRequest(
+        endpoint="https://httpbin.org/get",
+        parameter={
+            'pa1': 'param1',
+            'pa2': 'param2'
+        },
+        header={
+            'ha1': 'header1',
+            'ha2': 'header2'
+        }
+    )
+    request2 = ApiRequest(
+        endpoint="https://httpbin.org/get",
+        parameter={
+            'pb1': 'param1',
+            'pb2': 'param2'
+        },
+        header={
+            'hb1': 'header1',
+            'hb2': 'header2'
+        }
+    )
+    api_requests = [request1, request2]
+    multi_requests_api_and_store(databroker_api_repository, api_requests)
+    # リクエストとレスポンスがデータベースに保存されているかの検証
+    r_req = psql_client.execute('SELECT count(*) FROM databroker.api_request')
+    assert r_req[0][0] == 2
+    r_res = psql_client.execute('SELECT count(*) FROM databroker.api_response')
+    assert r_res[0][0] == 2
