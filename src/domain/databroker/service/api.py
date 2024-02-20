@@ -24,7 +24,7 @@ def request_api(api_request: ApiRequest) -> ApiResponse:
     )
 
 
-def multi_requests_api(
+def multi_requests_api_and_store(
         repo: DataBrokerApiRepository,
         api_requests: List[ApiRequest],
     ) -> None:
@@ -36,7 +36,7 @@ def multi_requests_api(
         repo.store_request_and_response(req, res)
 
 
-def parallel_requests_api(
+def parallel_requests_api_and_store(
         repo: DataBrokerApiRepository,
         api_requests: List[ApiRequest],
         n_max_worker: int = 4
@@ -48,7 +48,7 @@ def parallel_requests_api(
     with ProcessPoolExecutor(max_workers=n_max_worker) as executor:
         for i in range(n_max_worker):
             chunk_requests = api_requests[i::n_max_worker]
-            executor.submit(multi_requests_api, repo, chunk_requests)
+            executor.submit(multi_requests_api_and_store, repo, chunk_requests)
 
 
 def multi_requests_todo_api(repo: DataBrokerApiRepository) -> None:
@@ -56,4 +56,4 @@ def multi_requests_todo_api(repo: DataBrokerApiRepository) -> None:
     未実行あるいは失敗したAPIの実行を行う。
     """
     todo_requests = repo.fetch_todo_requests()
-    multi_requests_api(repo, todo_requests)
+    multi_requests_api_and_store(repo, todo_requests)
