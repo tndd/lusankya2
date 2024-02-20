@@ -69,7 +69,7 @@ def test_multi_requests_api_and_store(databroker_api_repository, psql_client):
 @pytest.mark.api
 def test_parallel_requests_api_and_store(databroker_api_repository, psql_client):
     """
-    2つのリクエストの処理が正常に行われたかの検証
+    2つのリクエストの並列処理が正常に行われたかの検証
     """
     # リクエストの準備
     request1 = ApiRequest(
