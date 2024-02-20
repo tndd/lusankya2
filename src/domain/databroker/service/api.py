@@ -24,7 +24,7 @@ def request_api(api_request: ApiRequest) -> ApiResponse:
     )
 
 
-def requests_api_and_store(
+def multi_requests_api_and_store(
         repo: DataBrokerApiRepository,
         api_requests: List[ApiRequest],
         parallel_mode: bool = False
@@ -57,14 +57,14 @@ def requests_api_and_store(
             executor.submit(_serial_requests_api_and_store, repo, chunk_requests)
 
 
-def multi_requests_todo_api(
+def multi_requests_todo_api_and_store(
         repo: DataBrokerApiRepository,
         parallel_mode: bool = False
     ) -> None:
     """
-    未実行あるいは失敗したAPIの実行を行う。
+    未実行あるいは失敗したAPIの実行と保存を行う。
 
     並列処理モードも搭載されているが、基本的にはシリアル形式で実行する。
     """
     todo_requests = repo.fetch_todo_requests()
-    requests_api_and_store(repo, todo_requests, parallel_mode)
+    multi_requests_api_and_store(repo, todo_requests, parallel_mode)

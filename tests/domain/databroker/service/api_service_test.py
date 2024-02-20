@@ -1,7 +1,8 @@
 import pytest
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
-from domain.databroker.service.api import request_api, requests_api_and_store
+from domain.databroker.service.api import (multi_requests_api_and_store,
+                                           request_api)
 
 
 @pytest.mark.ext
@@ -29,7 +30,7 @@ def test_request_api():
 
 
 @pytest.mark.ext
-def test_requests_api_and_store(databroker_api_repository, psql_client):
+def test_multi_requests_api_and_store(databroker_api_repository, psql_client):
     """
     2つのリクエストの処理が正常に行われたかの検証
     """
@@ -57,7 +58,7 @@ def test_requests_api_and_store(databroker_api_repository, psql_client):
         }
     )
     api_requests = [request1, request2]
-    requests_api_and_store(databroker_api_repository, api_requests)
+    multi_requests_api_and_store(databroker_api_repository, api_requests)
     # リクエストとレスポンスがデータベースに保存されているかの検証
     r_req = psql_client.execute('SELECT count(*) FROM databroker.api_request')
     assert r_req[0][0] == 2
@@ -66,7 +67,7 @@ def test_requests_api_and_store(databroker_api_repository, psql_client):
 
 
 @pytest.mark.ext
-def test_requests_api_and_store_multi_process(databroker_api_repository, psql_client):
+def test_multi_requests_api_and_store_parallel(databroker_api_repository, psql_client):
     """
     requests_api_and_storeの並列処理オプションが機能しているのかのテスト。
     """
@@ -94,7 +95,7 @@ def test_requests_api_and_store_multi_process(databroker_api_repository, psql_cl
         }
     )
     api_requests = [request1, request2]
-    requests_api_and_store(databroker_api_repository, api_requests, parallel_mode=True)
+    multi_requests_api_and_store(databroker_api_repository, api_requests, parallel_mode=True)
     # リクエストとレスポンスがデータベースに保存されているかの検証
     r_req = psql_client.execute('SELECT count(*) FROM databroker.api_request')
     assert r_req[0][0] == 2
