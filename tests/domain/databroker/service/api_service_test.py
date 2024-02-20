@@ -4,7 +4,7 @@ from domain.databroker.model.api import ApiRequest, ApiResponse
 from domain.databroker.service.api import request_api, requests_api_and_store
 
 
-@pytest.mark.api
+@pytest.mark.ext
 def test_request_api():
     """
     APIリクエストが正常に行われているのかのテスト
@@ -28,7 +28,7 @@ def test_request_api():
     assert response.body['headers']['H2'] == 'header2'
 
 
-@pytest.mark.api
+@pytest.mark.ext
 def test_requests_api_and_store(databroker_api_repository, psql_client):
     """
     2つのリクエストの処理が正常に行われたかの検証
@@ -65,7 +65,7 @@ def test_requests_api_and_store(databroker_api_repository, psql_client):
     assert r_res[0][0] == 2
 
 
-@pytest.mark.api
+@pytest.mark.ext
 def test_requests_api_and_store_multi_process(databroker_api_repository, psql_client):
     """
     requests_api_and_storeの並列処理オプションが機能しているのかのテスト。
