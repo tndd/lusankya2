@@ -84,7 +84,7 @@ class PsqlClient:
         """
         並列でexecutemanyを高速に実行する。
 
-        n_max_workerを指定した場合のみ並列処理を行う。
+        parallel_modeが有効な場合のみ並列処理を行う。
         """
         n_process = 1
         if parallel_mode:
