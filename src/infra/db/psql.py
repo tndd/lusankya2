@@ -67,7 +67,7 @@ class PsqlClient:
         self._transact(_f, queries)
 
 
-    def executemany(self, query: str, data: list):
+    def _executemany(self, query: str, data: list):
         """
         単発のexecutemanyを実行。
         """
@@ -76,20 +76,23 @@ class PsqlClient:
         self._transact(_f, query, data)
 
 
-    ### Parallel Execution
-    def parallel_executemany(self, query: str, data: list):
+    def executemany(
+            self, query: str,
+            data: list,
+            parallel_mode: bool = False
+        ):
         """
         並列でexecutemanyを高速に実行する。
 
-        Note:
-            あまりに投入データが大量でパフォーマンス上の問題が起こった場合、
-            executemanyの代わりにこちらを使用する。
+        n_max_workerを指定した場合のみ並列処理を行う。
         """
-        n_process = self._calc_optimum_process_num(data)
+        n_process = 1
+        if parallel_mode:
+            n_process = self._calc_optimum_process_num(data)
         with ProcessPoolExecutor(max_workers=n_process) as executor:
             for i in range(n_process):
                 chunk = data[i::n_process]
-                executor.submit(self.executemany, query, chunk)
+                executor.submit(self._executemany, query, chunk)
 
 
     ### Utils ###

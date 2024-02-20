@@ -48,7 +48,10 @@ def test_executemany(psql_client):
         psql_client.execute(f"DROP TABLE IF EXISTS {table_name}")
 
 
-def test_parallel_executemany(psql_client):
+def test_executemany_parallel(psql_client):
+    """
+    executemanyの並列実行モードのテスト
+    """
     table_name = 'crtdzgur'
     try:
         # テスト用の一時的なテーブルを作成
@@ -57,7 +60,7 @@ def test_parallel_executemany(psql_client):
         query = f"INSERT INTO {table_name} (column1, column2) VALUES (%s, %s)"
         data = [(f"value1_{i}", f"value2_{i}") for i in range(10)]
         # parallel_executemanyの動作確認
-        assert psql_client.parallel_executemany(query, data) == None
+        assert psql_client.executemany(query, data, parallel_mode=True) == None
         # テーブルにデータが入っていることを確認
         rows = psql_client.execute(f'select * from {table_name}')
         assert len(rows) == 10
