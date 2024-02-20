@@ -46,9 +46,10 @@ def requests_api_and_store(
             res = request_api(req)
             repo.store_request_and_response(req, res)
     # api_requestsをスレッド数に応じて分割
-    with ThreadPoolExecutor(max_workers=n_max_worker) as executor:
-        for i in range(n_max_worker):
-            chunk_requests = api_requests[i::n_max_worker]
+    n_process = min(len(api_requests), n_max_worker)
+    with ThreadPoolExecutor(max_workers=n_process) as executor:
+        for i in range(n_process):
+            chunk_requests = api_requests[i::n_process]
             executor.submit(_serial_requests_api_and_store, repo, chunk_requests)
 
 
