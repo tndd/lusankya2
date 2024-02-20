@@ -67,15 +67,6 @@ class PsqlClient:
         self._transact(_f, queries)
 
 
-    def _executemany(self, query: str, data: list):
-        """
-        単発のexecutemanyを実行。
-        """
-        def _f(_cur, query, data):
-            _cur.executemany(query, data)
-        self._transact(_f, query, data)
-
-
     def executemany(
             self, query: str,
             data: list,
@@ -128,3 +119,14 @@ class PsqlClient:
         実行に最適なプロセス数を計算する。
         """
         return min(len(tasks), self.n_max_worker)
+
+
+    def _executemany(self, query: str, data: list):
+        """
+        単発のexecutemanyを実行。
+        
+        これは部品として呼び出されることを想定している。
+        """
+        def _f(_cur, query, data):
+            _cur.executemany(query, data)
+        self._transact(_f, query, data)
