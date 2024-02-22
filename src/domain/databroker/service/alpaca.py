@@ -23,8 +23,19 @@ def chain_api_request(
     while True:
         # データ取得
         response = request_api(api_request)
-        # レスポンスボディが存在しない場合は終了
-        if response.body is None:
+        """
+        強制終了条件:
+            1. レスポンスボディが存在しない
+            2. next_page_tokenが存在しない
+            3. next_page_tokenが空
+        """
+        if (
+            response.body is None
+            or NEXT_PAGE_TOKEN not in response.body
+            or response.body[NEXT_PAGE_TOKEN] == ''
+        ):
+            # レスポンスを保存して終了
+            databroker_api_repository.store_response(response)
             break
         # 次のページ(next_page_token)がない場合は終了
         if not NEXT_PAGE_TOKEN in response.body:
