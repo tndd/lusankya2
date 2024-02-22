@@ -24,6 +24,7 @@ def test_request_api():
     response = request_api(request)
     assert isinstance(response, ApiResponse)
     assert response.status == 200
+    assert response.body is not None
     assert response.body['url'] == 'https://httpbin.org/get?p1=param1&p2=param2'
     assert response.body['headers']['H1'] == 'header1'
     assert response.body['headers']['H2'] == 'header2'
