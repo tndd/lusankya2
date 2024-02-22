@@ -37,9 +37,6 @@ def chain_api_request(
             # レスポンスを保存して終了
             databroker_api_repository.store_response(response)
             break
-        # 次のページ(next_page_token)がない場合は終了
-        if not NEXT_PAGE_TOKEN in response.body:
-            break
         # api_requestのheaderを、取得したnext_page_tokenで更新して再実行
         api_request.header[NEXT_PAGE_TOKEN] = response.body[NEXT_PAGE_TOKEN]
         """
