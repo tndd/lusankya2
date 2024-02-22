@@ -23,6 +23,9 @@ def chain_api_request(
     while True:
         # データ取得
         response = request_api(api_request)
+        # レスポンスボディが存在しない場合は終了
+        if response.body is None:
+            break
         # 次のページ(next_page_token)がない場合は終了
         if not NEXT_PAGE_TOKEN in response.body:
             break
