@@ -53,8 +53,19 @@ def chain_api_request(
             # レスポンスを保存して終了
             databroker_api_repository.store_response(response)
             break
-        # api_requestのheaderを、取得したnext_page_tokenで更新して再実行
-        api_request.header[NEXT_PAGE_TOKEN] = response.body[NEXT_PAGE_TOKEN]
+        """
+        api_requestのheaderを、取得したnext_page_tokenで更新
+
+        注意:
+            response側のbodyのトークン名'next_page_token'だが、
+            request側のparameterのトークン名'page_token'であるため注意が必要。
+        """
+        api_request.parameter['page_token'] = response.body[NEXT_PAGE_TOKEN]
+        api_request = ApiRequest(
+            endpoint=api_request.endpoint,
+            parameter=api_request.parameter,
+            header=api_request.header,
+        )
         """
         取得したレスポンスと、
         その結果を元にnext_page_tokenを更新し作成した新リクエストを保存する。
