@@ -67,7 +67,7 @@ class DataBrokerApiRepository:
         api_requests = [transform_api_request_from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
-            api_requests = [r for r in api_requests if r.endpoint == endpoint]
+            api_requests = [r for r in api_requests if endpoint in r.endpoint]
         return api_requests
 
 
@@ -82,7 +82,7 @@ class DataBrokerApiRepository:
         api_results_metadata = [transform_api_result_metadata_from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
-            api_results_metadata = [rm for rm in api_results_metadata if rm.endpoint == endpoint]
+            api_results_metadata = [rm for rm in api_results_metadata if endpoint in rm.endpoint]
         return api_results_metadata
 
 
