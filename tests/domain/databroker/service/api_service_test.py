@@ -32,7 +32,7 @@ def test_request_api():
 
 
 @pytest.mark.ext
-def test_multi_requests_api_and_store(databroker_api_repository, psql_client):
+def test_multi_requests_api_and_store(databroker_api_repository):
     """
     2つのリクエストの処理が正常に行われたかの検証
     """
@@ -62,14 +62,14 @@ def test_multi_requests_api_and_store(databroker_api_repository, psql_client):
     api_requests = [request1, request2]
     multi_requests_api_and_store(databroker_api_repository, api_requests)
     # リクエストとレスポンスがデータベースに保存されているかの検証
-    r_req = psql_client.execute('SELECT count(*) FROM databroker.api_request')
+    r_req = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_request')
     assert r_req[0][0] == 2
-    r_res = psql_client.execute('SELECT count(*) FROM databroker.api_response')
+    r_res = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_response')
     assert r_res[0][0] == 2
 
 
 @pytest.mark.ext
-def test_multi_requests_api_and_store_parallel(databroker_api_repository, psql_client):
+def test_multi_requests_api_and_store_parallel(databroker_api_repository):
     """
     requests_api_and_storeの並列処理オプションが機能しているのかのテスト。
     """
@@ -99,14 +99,14 @@ def test_multi_requests_api_and_store_parallel(databroker_api_repository, psql_c
     api_requests = [request1, request2]
     multi_requests_api_and_store(databroker_api_repository, api_requests, parallel_mode=True)
     # リクエストとレスポンスがデータベースに保存されているかの検証
-    r_req = psql_client.execute('SELECT count(*) FROM databroker.api_request')
+    r_req = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_request')
     assert r_req[0][0] == 2
-    r_res = psql_client.execute('SELECT count(*) FROM databroker.api_response')
+    r_res = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_response')
     assert r_res[0][0] == 2
 
 
 @pytest.mark.ext
-def test_multi_requests_todo_api_and_store(databroker_api_repository, psql_client):
+def test_multi_requests_todo_api_and_store(databroker_api_repository):
     """
     概要:
         登録した条件から適切なリクエストのみが抽出され実行されたかのテスト
@@ -217,19 +217,19 @@ def test_multi_requests_todo_api_and_store(databroker_api_repository, psql_clien
             - ２つのレスポンスが登録されている
             - （事前登録された失敗分および成功分の２つ）
     """
-    r_rs1 = psql_client.execute(
+    r_rs1 = databroker_api_repository.cli_db.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq1.id_}'"
     )
     assert r_rs1[0][0] == 1
-    r_rs2 = psql_client.execute(
+    r_rs2 = databroker_api_repository.cli_db.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq2.id_}'"
     )
     assert r_rs2[0][0] == 1
-    r_rs3 = psql_client.execute(
+    r_rs3 = databroker_api_repository.cli_db.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq3.id_}'"
     )
     assert r_rs3[0][0] == 2
-    r_rs4 = psql_client.execute(
+    r_rs4 = databroker_api_repository.cli_db.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq4.id_}'"
     )
     assert r_rs4[0][0] == 2
