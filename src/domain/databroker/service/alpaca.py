@@ -1,3 +1,5 @@
+from typing import Optional
+
 from domain.databroker.model.api import ApiRequest
 from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.databroker.service.api import request_api
@@ -6,17 +8,30 @@ from infra.api.alpaca.common import APCA_ENDPOINT
 
 def chain_api_request(
         databroker_api_repository: DataBrokerApiRepository,
-        api_request: ApiRequest
+        api_request: ApiRequest,
+        chain_limit_num: Optional[int] = None
     ) -> None:
     """
     クエリの情報を元にAPIリクエストを作成する。
     next_page_tokenのみを書き換えて連鎖的に再実行する。
 
+    引数:
+        databroker_api_repository:
+            - リクエストとレスポンスの保存用リポジトリ
+        api_request:
+            - 連鎖実行するAPIリクエストの火種
+            - これを起点に連鎖実行を行う
+        chain_limit_num:
+            - 連鎖回数に制限をかける場合は、その回数を指定する。
+            - Noneであれば連鎖回数は無制限。これがデフォルト動作。
+
     Note:
         - このメソッドはリクエストが未登録の状態でいきなり実行されることを想定している。
         - todoリクエストとして取得された登録済みリクエストとして実行されうることもあるため注意。
     """
+    # 定数
     NEXT_PAGE_TOKEN = 'next_page_token'
+
     # これから実行するAPIリクエストの情報を保存
     databroker_api_repository.store_request(api_request)
     # 引数のrequestを元にAPIを連鎖実行
@@ -28,6 +43,7 @@ def chain_api_request(
             1. レスポンスボディが存在しない
             2. next_page_tokenが存在しない
             3. next_page_tokenが空
+            4. limit_chainの連鎖回数が上限に達した場合
         """
         if (
             response.body is None
@@ -50,6 +66,11 @@ def chain_api_request(
                 "response->request"というペアを保存している点に注意。
         """
         databroker_api_repository.store_request_and_response(api_request, response)
+        # 連鎖実行制限時、ここで処理を強制終了する必要がある
+        if chain_limit_num is not None:
+            chain_limit_num -= 1
+            if chain_limit_num <= 0:
+                break
 
 
 def multi_requests_todo_api_alpaca_bar(
