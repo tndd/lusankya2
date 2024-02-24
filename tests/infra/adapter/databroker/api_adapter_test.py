@@ -42,7 +42,7 @@ def test_transform_api_request_from_fetched_data():
         parameter={'key': 'value'},
         header={'Content-Type': 'application/json'}
     )
-    assert transform_api_request_from_fetched_data(fetched_data) == expected_request
+    assert transform_api_request_from_fetched_data(fetched_data) == expected_request # type: ignore
 
 
 def test_transform_api_response_to_query_parameter():
@@ -84,4 +84,4 @@ def test_transform_api_result_metadata_from_fetched_data():
         status=200,
         response_header={'Content-Type': 'application/json'}
     )
-    assert transform_api_result_metadata_from_fetched_data(fetched_data) == expected_result_metadata
+    assert transform_api_result_metadata_from_fetched_data(fetched_data) == expected_result_metadata # type: ignore
