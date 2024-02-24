@@ -93,7 +93,7 @@ def test_store_request_and_response(databroker_api_repository):
     assert len(result) == 1
 
 
-def test_fetch_todo_requests(psql_client, databroker_api_repository):
+def test_fetch_todo_requests(databroker_api_repository):
     """
     概要:
         未実行あるいは失敗したリクエストのみが取得されていることを確かめる
@@ -139,7 +139,7 @@ def test_fetch_todo_requests(psql_client, databroker_api_repository):
         timestamp='2022-01-01 00:00:04'
     )
     request5_failed_twice = ApiRequest(
-        endpoint='blue',
+        endpoint='blue/igaonjo/iane/weinf/target',
         parameter={'param_e': 'value_e'},
         header={'header_e': 'value_e'},
         id_='8f025e21-3a5f-f165-b747-cb1271ef95ce',
@@ -213,11 +213,15 @@ def test_fetch_todo_requests(psql_client, databroker_api_repository):
     assert set([r.id_ for r in todo_requests]) == set([request2_failed.id_, request3_not_yet.id_, request5_failed_twice.id_])
     """
     エンドポイントの絞り込みのテスト:
-        エンドポイントがblueのもののみが取得されることを確認。
-        つまり期待されるレスポンスは2が除外され3,5となる。
+        1. 単純にエンドポイントにblueという文字列が含まれている場合
+        2. エンドポイントがblue/****/targetというパターンのみ一致する場合
     """
+    # 1のテスト
     todo_request_with_endpoint = databroker_api_repository.fetch_todo_requests('blue')
     assert set([r.id_ for r in todo_request_with_endpoint]) == set([request3_not_yet.id_, request5_failed_twice.id_])
+    # 2のテスト
+    todo_request_with_endpoint = databroker_api_repository.fetch_todo_requests(r'blue/.+/target')
+    assert set([r.id_ for r in todo_request_with_endpoint]) == set([request5_failed_twice.id_])
 
 
 def test_fetch_api_result_metadata_should_be_moved(databroker_api_repository):
@@ -357,7 +361,15 @@ def test_fetch_api_result_metadata_should_be_moved(databroker_api_repository):
             request6_failed_success.id_
         ]
     )
-    # エンドポイントを指定した場合のテスト
+    # エンドポイントにredという文字列が含まれているものを抽出するテスト
+    metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved('red')
+    assert set([m.request_id for m in metadata]) == set(
+        [
+            request3_success_body_not_moved.id_,
+            request6_failed_success.id_
+        ]
+    )
+    # red/***/targetというパターンのエンドポイント抽出テスト
     ep_pattern = r'red/.+/target'
     metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved(ep_pattern)
     assert set([m.request_id for m in metadata]) == set(

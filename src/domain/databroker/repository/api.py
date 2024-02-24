@@ -62,10 +62,7 @@ class DataBrokerApiRepository:
         api_requests = [ApiRequest.from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
-            # 正規表現のためのエスケープ処理をしておく
-            pattern = re.escape(endpoint)
-            # 絞り込み
-            api_requests = [r for r in api_requests if re.search(pattern, r.endpoint)]
+            api_requests = [r for r in api_requests if re.search(endpoint, r.endpoint)]
         return api_requests
 
 
