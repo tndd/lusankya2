@@ -4,11 +4,6 @@ from typing import List, Optional
 
 from domain.databroker.model.api import (ApiRequest, ApiResponse,
                                          ApiResultMetadata)
-from infra.adapter.databroker.api import (
-    transform_api_request_from_fetched_data,
-    transform_api_request_to_query_parameter,
-    transform_api_response_to_query_parameter,
-    transform_api_result_metadata_from_fetched_data)
 from infra.db.psql import PsqlClient
 from infra.query.databroker.insert import (get_query_insert_api_request,
                                            get_query_insert_api_response)
@@ -30,7 +25,7 @@ class DataBrokerApiRepository:
             - 二重登録は防ぐようにする。
         """
         query = get_query_insert_api_request()
-        param = transform_api_request_to_query_parameter(request)
+        param = request.to_query_parameter()
         self.cli_db.execute(query, param)
 
 
@@ -39,7 +34,7 @@ class DataBrokerApiRepository:
         APIレスポンスの内容を保存する。
         """
         query = get_query_insert_api_response()
-        param = transform_api_response_to_query_parameter(response)
+        param = response.to_query_parameter()
         self.cli_db.execute(query, param)
 
 
@@ -49,9 +44,9 @@ class DataBrokerApiRepository:
         """
         # クエリとパラメータを用意
         query_rq = get_query_insert_api_request()
-        param_rq = transform_api_request_to_query_parameter(request)
+        param_rq = request.to_query_parameter()
         query_rs = get_query_insert_api_response()
-        param_rs = transform_api_response_to_query_parameter(response)
+        param_rs = response.to_query_parameter()
         # 引数用のペアを作成
         queries_with_params = [(query_rq, param_rq), (query_rs, param_rs)]
         # 実行
@@ -64,7 +59,7 @@ class DataBrokerApiRepository:
         """
         query = get_query_select_todo_api_request()
         fetched_data = self.cli_db.execute(query)
-        api_requests = [transform_api_request_from_fetched_data(d) for d in fetched_data]
+        api_requests = [ApiRequest.from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
             # 正規表現のためのエスケープ処理をしておく
@@ -82,7 +77,7 @@ class DataBrokerApiRepository:
         """
         query = get_query_select_api_result_metadata_should_be_moved()
         fetched_data = self.cli_db.execute(query)
-        api_results_metadata = [transform_api_result_metadata_from_fetched_data(d) for d in fetched_data]
+        api_results_metadata = [ApiResultMetadata.from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
             # 正規表現のためのエスケープ処理をしておく
