@@ -1,7 +1,7 @@
 from domain.databroker.model.api import ApiRequest, ApiResponse
 
 
-def test_store_request(psql_client, databroker_api_repository):
+def test_store_request(databroker_api_repository):
     # api_requestを作成
     request_id = 'b90287e9-5478-f434-8eff-20613ae0d1c1'
     api_request = ApiRequest(
@@ -17,11 +17,11 @@ def test_store_request(psql_client, databroker_api_repository):
     query_confirm_api_request = f"""
         SELECT id FROM databroker.api_request WHERE id = '{request_id}';
     """
-    result = psql_client.execute(query_confirm_api_request)
+    result = databroker_api_repository.cli_db.execute(query_confirm_api_request)
     assert len(result) == 1
 
 
-def test_store_response(psql_client, databroker_api_repository):
+def test_store_response(databroker_api_repository):
     """
     注意:
         api_responseの登録にはapi_requestを事前に登録する必要がある。
@@ -53,11 +53,11 @@ def test_store_response(psql_client, databroker_api_repository):
     query_confirm_api_response = f"""
         SELECT id FROM databroker.api_response WHERE id = '{response_id}';
     """
-    result = psql_client.execute(query_confirm_api_response)
+    result = databroker_api_repository.cli_db.execute(query_confirm_api_response)
     assert len(result) == 1
 
 
-def test_store_request_and_response(psql_client, databroker_api_repository):
+def test_store_request_and_response(databroker_api_repository):
     # api_requestを作成
     request_id = '5473dd4e-be44-48a2-2f3b-58c99fd546c4'
     api_request = ApiRequest(
@@ -83,13 +83,13 @@ def test_store_request_and_response(psql_client, databroker_api_repository):
     query_confirm_api_request = f"""
         SELECT id FROM databroker.api_request WHERE id = '{request_id}';
     """
-    result = psql_client.execute(query_confirm_api_request)
+    result = databroker_api_repository.cli_db.execute(query_confirm_api_request)
     assert len(result) == 1
     # api_requestが保存されたかの確認
     query_confirm_api_response = f"""
         SELECT id FROM databroker.api_response WHERE id = '{response_id}';
     """
-    result = psql_client.execute(query_confirm_api_response)
+    result = databroker_api_repository.cli_db.execute(query_confirm_api_response)
     assert len(result) == 1
 
 
@@ -220,7 +220,7 @@ def test_fetch_todo_requests(psql_client, databroker_api_repository):
     assert set([r.id_ for r in todo_request_with_endpoint]) == set([request3_not_yet.id_, request5_failed_twice.id_])
 
 
-def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_repository):
+def test_fetch_api_result_metadata_should_be_moved(databroker_api_repository):
     """
     概要:
         datasetデータベースに未移動のbodyに関するApiResultMetadataのみが、
@@ -352,7 +352,7 @@ def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_r
     metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved()
     assert set([m.request_id for m in metadata]) == set(
         [
-            request3_success_body_not_moved.id_, 
+            request3_success_body_not_moved.id_,
             request5_success_body_not_moved_another_endpoint.id_,
             request6_failed_success.id_
         ]
@@ -367,7 +367,7 @@ def test_fetch_api_result_metadata_should_be_moved(psql_client, databroker_api_r
     )
 
 
-def test_fetch_body(psql_client, databroker_api_repository):
+def test_fetch_body(databroker_api_repository):
     """
     概要:
         APIレスポンスIDからボディを取得するテスト
@@ -429,4 +429,3 @@ def test_fetch_body(psql_client, databroker_api_repository):
     # 存在しない適当なIDを指定する
     body = databroker_api_repository.fetch_body('4199b619-419f-dd9a-56e7-2d22ae31f83b')
     assert body is None
-
