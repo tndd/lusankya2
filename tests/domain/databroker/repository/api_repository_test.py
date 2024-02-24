@@ -279,7 +279,7 @@ def test_fetch_api_result_metadata_should_be_moved(databroker_api_repository):
         timestamp='2022-01-01 00:00:05'
     )
     request6_failed_success = ApiRequest(
-        endpoint='red',
+        endpoint='red/prkxa/target',
         parameter={'param_f': 'value_f'},
         header={'header_f': 'value_f'},
         id_='4cf8d655-fc85-bc17-3062-f15cc983f703',
@@ -358,10 +358,10 @@ def test_fetch_api_result_metadata_should_be_moved(databroker_api_repository):
         ]
     )
     # エンドポイントを指定した場合のテスト
-    metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved('red')
+    ep_pattern = r'red/.+/target'
+    metadata = databroker_api_repository.fetch_api_result_metadata_should_be_moved(ep_pattern)
     assert set([m.request_id for m in metadata]) == set(
         [
-            request3_success_body_not_moved.id_,
             request6_failed_success.id_
         ]
     )

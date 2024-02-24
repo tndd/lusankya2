@@ -80,10 +80,7 @@ class DataBrokerApiRepository:
         api_results_metadata = [ApiResultMetadata.from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
-            # 正規表現のためのエスケープ処理をしておく
-            pattern = re.escape(endpoint)
-            # 絞り込み
-            api_results_metadata = [rm for rm in api_results_metadata if re.search(pattern, rm.endpoint)]
+            api_results_metadata = [rm for rm in api_results_metadata if re.search(endpoint, rm.endpoint)]
         return api_results_metadata
 
 

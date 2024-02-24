@@ -1,3 +1,4 @@
+from re import escape
 from typing import Optional
 
 from domain.databroker.model.api import ApiRequest
@@ -92,7 +93,7 @@ def multi_requests_todo_api_alpaca_bar(
     alpacaのbarエンドポイントについての未実行、あるいは失敗したリクエストを連鎖実行する。
     """
     # 対象エンドポイント絞り込み用のパターン作成
-    pattern = APCA_ENDPOINT['bar'].replace('{symbol}', '.+')
+    pattern = escape(APCA_ENDPOINT['bar'].replace('{symbol}', '.+'))
     # 対象エンドポイントのリクエストを取得
     todo_bar_requests = repo.fetch_todo_requests(pattern)
     # リクエスト実行
