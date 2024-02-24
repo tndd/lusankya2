@@ -36,4 +36,4 @@ def test_from_fetched_data():
         parameter={'key': 'value'},
         header={'Content-Type': 'application/json'}
     )
-    assert ApiRequest.from_fetched_data(fetched_data) == expected_request
+    assert ApiRequest.from_fetched_data(fetched_data) == expected_request # type: ignore
