@@ -44,12 +44,11 @@ def chain_api_request(
             1. レスポンスボディが存在しない
             2. next_page_tokenが存在しない
             3. next_page_tokenが空
-            4. limit_chainの連鎖回数が上限に達した場合
         """
         if (
             response.body is None
             or NEXT_PAGE_TOKEN not in response.body
-            or response.body[NEXT_PAGE_TOKEN] == ''
+            or response.body[NEXT_PAGE_TOKEN] == None
         ):
             # レスポンスを保存して終了
             databroker_api_repository.store_response(response)
@@ -93,7 +92,7 @@ def multi_requests_todo_api_alpaca_bar(
     alpacaのbarエンドポイントについての未実行、あるいは失敗したリクエストを連鎖実行する。
     """
     # 対象エンドポイント絞り込み用のパターン作成
-    pattern = escape(APCA_ENDPOINT['bar'].replace('{symbol}', '.+'))
+    pattern = APCA_ENDPOINT['bar'].replace('{symbol}', '.+')
     # 対象エンドポイントのリクエストを取得
     todo_bar_requests = repo.fetch_todo_requests(pattern)
     # リクエスト実行
