@@ -14,16 +14,14 @@ def setup_session():
     # 環境構築のためのマイグレーション実行
     cli_db = make_test_psql_client()
     migrate(cli_db)
-    # 前回のデータが残存している可能性があるため初期化する
-    clear_tables(cli_db)
 
 
 @pytest.fixture
 def psql_client():
     psql_cli = make_test_psql_client()
-    yield psql_cli
-    # テスト終了毎にテーブルを初期化する
+    # テスト前にテーブルは綺麗にしておく
     clear_tables(psql_cli)
+    yield psql_cli
 
 
 @pytest.fixture
