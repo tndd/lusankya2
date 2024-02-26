@@ -67,7 +67,7 @@ def test_chain_api_request(databroker_api_repository):
     assert r_res[2]['body']['next_page_token'] == r_req[3]['parameter']['page_token']
 
 
-# @pytest.mark.ext
+@pytest.mark.ext
 def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
     """
     概要:
@@ -119,13 +119,13 @@ def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
         endpoint='https://data.lama.markets/v2/stocks/{symbol}/bar',
         parameter={'param_a': 'value_a'},
         header={'header_a': 'value_a'},
-        id_='1c25f217-86cc-476c-90e7-fa20ff600e79'
+        id_='dd28444f-34bb-4a4f-8e87-b3285ec7ee73'
     )
     rq7 = ApiRequest(
         endpoint='https://data.alpaca.markets/v1/stocks/{symbol}/bar',
         parameter={'param_a': 'value_a'},
         header={'header_a': 'value_a'},
-        id_='4c40d425-a503-4bc1-b090-85f464287c03'
+        id_='af6955b5-f057-42d5-8807-81e6b60e660c'
     )
     databroker_api_repository.store_request(rq6)
     databroker_api_repository.store_request(rq7)
@@ -209,10 +209,10 @@ def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
     expect_ids_cond2 = [rq_ids[0], rq_ids[1], rq_ids[4]]
     assert set(expect_ids_cond2) == set(todo_request_ids)
     # リクエストの実行
-    # multi_requests_todo_api_alpaca_bar(databroker_api_repository)
-    # """
-    # リクエスト実行後の状態確認:
-    #     リクエストが実行されたならば、1,2,5のリクエストが実行されているはずだ。
-    #     リクエスト実行後、fetch_todo_requestsの結果は0となっていることが期待される。
-    # """
-    # assert len(databroker_api_repository.fetch_todo_requests(endpoint)) == 0
+    multi_requests_todo_api_alpaca_bar(databroker_api_repository)
+    """
+    リクエスト実行後の状態確認:
+        リクエストが実行されたならば、1,2,5のリクエストが実行されているはずだ。
+        リクエスト実行後、fetch_todo_requestsの結果は0となっていることが期待される。
+    """
+    assert len(databroker_api_repository.fetch_todo_requests(endpoint)) == 0
