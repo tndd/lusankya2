@@ -200,16 +200,16 @@ def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
     # 条件1の確認
     requests_cond1 = databroker_api_repository.fetch_todo_requests()
     todo_request_ids = [request.id_ for request in requests_cond1]
-    expect_ids = [rq_ids[0], rq_ids[1], rq_ids[4], rq6.id_, rq7.id_]
-    assert set(expect_ids) == set(todo_request_ids)
+    expect_ids_cond1 = [rq_ids[0], rq_ids[1], rq_ids[4], rq6.id_, rq7.id_]
+    assert set(expect_ids_cond1) == set(todo_request_ids)
     # 条件2の確認
     endpoint = r'https://data.alpaca.markets/v2/stocks/.+/bars'
     requests_cond2 = databroker_api_repository.fetch_todo_requests(endpoint)
     todo_request_ids = [request.id_ for request in requests_cond2]
-    expect_ids = [rq_ids[0], rq_ids[1], rq_ids[4]]
-    assert set(expect_ids) == set(todo_request_ids)
+    expect_ids_cond2 = [rq_ids[0], rq_ids[1], rq_ids[4]]
+    assert set(expect_ids_cond2) == set(todo_request_ids)
     # リクエストの実行
-    multi_requests_todo_api_alpaca_bar(databroker_api_repository)
+    # multi_requests_todo_api_alpaca_bar(databroker_api_repository)
     # """
     # リクエスト実行後の状態確認:
     #     リクエストが実行されたならば、1,2,5のリクエストが実行されているはずだ。
