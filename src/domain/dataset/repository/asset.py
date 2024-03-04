@@ -5,24 +5,6 @@ from typing import List, Optional
 from domain.dataset.model.asset import Asset
 
 
-def to_asset(data: dict) -> Asset:
-    return Asset(
-        id_=data['id'],
-        class_=data['class'],
-        exchange=data['exchange'],
-        symbol=data['symbol'],
-        name=data['name'],
-        status=data['status'],
-        tradable=data['tradable'],
-        marginable=data['marginable'],
-        maintenance_margin_requirement=data['maintenance_margin_requirement'],
-        shortable=data['shortable'],
-        easy_to_borrow=data['easy_to_borrow'],
-        fractionable=data['fractionable'],
-        attributes=data['attributes']
-    )
-
-
 class AssetRepository:
     """
     本来はAPI経由でAsset情報を取得する必要があるが、
@@ -41,7 +23,7 @@ class AssetRepository:
         Note:
             - 絞り込み条件はAND形式
         """
-        assets = [to_asset(d) for d in self._fetch_raw_assets()]
+        assets = [self._to_asset(d) for d in self._fetch_raw_assets()]
         if keyword:
             # keywordに部分一致するAsset情報を絞り込み
             assets = [a for a in assets if keyword in a.name]
@@ -62,3 +44,25 @@ class AssetRepository:
         with open(file_path, 'r') as f:
             data = json.load(f)
         return data
+
+
+    @staticmethod
+    def _to_asset(data: dict) -> 'Asset':
+        """
+        dict形式のAsset情報をAssetモデルに変換
+        """
+        return Asset(
+            id_=data['id'],
+            class_=data['class'],
+            exchange=data['exchange'],
+            symbol=data['symbol'],
+            name=data['name'],
+            status=data['status'],
+            tradable=data['tradable'],
+            marginable=data['marginable'],
+            maintenance_margin_requirement=data['maintenance_margin_requirement'],
+            shortable=data['shortable'],
+            easy_to_borrow=data['easy_to_borrow'],
+            fractionable=data['fractionable'],
+            attributes=data['attributes']
+        )
