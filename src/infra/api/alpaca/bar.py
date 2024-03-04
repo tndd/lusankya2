@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 from domain.databroker.model.api import ApiRequest
 from infra.api.alpaca.common import APCA_ENDPOINT, APCA_HEADER
@@ -50,3 +50,23 @@ def convert_query_bar_to_api_request(query: QueryBar) -> ApiRequest:
         header=APCA_HEADER,
         parameter=query.to_params()
     )
+
+
+def make_query_bars_from_symbols(
+        symbols: List[str],
+        timeframe: str,
+        start: str,
+        end: str,
+    ) -> List[QueryBar]:
+    """
+    シンボルのリストと条件を指定し、QueryBarのリストを作成する。
+    """
+    return [
+        QueryBar(
+            symbol=symbol,
+            timeframe=timeframe,
+            start=start,
+            end=end
+        )
+        for symbol in symbols
+    ]
