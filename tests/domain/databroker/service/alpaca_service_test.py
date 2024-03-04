@@ -5,7 +5,7 @@ import pytest
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from domain.databroker.service.alpaca import (
     chain_api_request, multi_requests_todo_api_alpaca_bar)
-from infra.api.alpaca.bar import QueryBar, make_request_alpaca_bar
+from infra.api.alpaca.bar import QueryBar, convert_query_bar_to_api_request
 
 
 @pytest.mark.ext
@@ -33,7 +33,7 @@ def test_chain_api_request(databroker_api_repository):
         page_token=None,
         sort='asc'
     )
-    rq = make_request_alpaca_bar(query)
+    rq = convert_query_bar_to_api_request(query)
     # chain_api_requestの実行
     chain_api_request(databroker_api_repository, rq, 3)
     """
@@ -109,7 +109,7 @@ def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
             page_token=None,
             sort='asc'
         )
-        rq = make_request_alpaca_bar(q)
+        rq = convert_query_bar_to_api_request(q)
         # デバッグしやすいように固定IDにする
         rq.id_ = id_
         # リクエスト保存
