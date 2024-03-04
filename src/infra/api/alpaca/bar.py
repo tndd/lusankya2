@@ -41,7 +41,7 @@ class QueryBar:
         return {k: v for k, v in params.items() if v is not None}
 
 
-def make_request_alpaca_bar(query: QueryBar) -> ApiRequest:
+def convert_query_bar_to_api_request(query: QueryBar) -> ApiRequest:
     """
     クエリの情報を元にAPIリクエストを作成する。
     """
