@@ -1,10 +1,12 @@
-from re import escape
-from typing import Optional
+from datetime import datetime, timedelta
+from typing import List, Optional
 
 from domain.databroker.model.api import ApiRequest
 from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.databroker.service.api import request_api
 from infra.api.alpaca.common import APCA_ENDPOINT
+from src.infra.api.alpaca.bar import (convert_query_bar_to_api_request,
+                                      make_query_bars_from_symbols)
 
 
 def chain_api_request(
@@ -99,3 +101,27 @@ def multi_requests_todo_api_alpaca_bar(
     # FIXME 並列実行
     for request in todo_bar_requests:
         chain_api_request(repo, request)
+
+
+def regist_schedule_bars(
+        repo: DataBrokerApiRepository,
+        symbols: List[str],
+        timeframe: str,
+        start: str = (datetime.now() - timedelta(days=7*365)).strftime('%Y-%m-%dT00:00:00Z'),
+        end: str = datetime.now().strftime('%Y-%m-%dT00:00:00Z'),
+) -> None:
+    """
+    barエンドポイントのリクエストをスケジュールする。
+
+    時間幅は、デフォルトで今日の日付から過去7年間を設定する。
+    """
+    # シンボルごとにクエリを作成
+    query_bars = make_query_bars_from_symbols(symbols, timeframe, start, end)
+    # クエリをAPIリクエストに変換
+    api_requests = [
+        convert_query_bar_to_api_request(query_bar)
+        for query_bar in query_bars
+    ]
+    # APIリクエストを保存
+    for api_request in api_requests:
+        repo.store_request(api_request)

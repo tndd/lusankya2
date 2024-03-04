@@ -4,7 +4,8 @@ import pytest
 
 from domain.databroker.model.api import ApiRequest, ApiResponse
 from domain.databroker.service.alpaca import (
-    chain_api_request, multi_requests_todo_api_alpaca_bar)
+    chain_api_request, multi_requests_todo_api_alpaca_bar,
+    regist_schedule_bars)
 from infra.api.alpaca.bar import QueryBar, convert_query_bar_to_api_request
 
 
@@ -216,3 +217,23 @@ def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
         リクエスト実行後、fetch_todo_requestsの結果は0となっていることが期待される。
     """
     assert len(databroker_api_repository.fetch_todo_requests(endpoint)) == 0
+
+
+def test_regist_schedule_bars(databroker_api_repository):
+    """
+    概要:
+        シンボルのリストを指定し、
+        そのシンボルにまつわるリクエストが保存されているかを確認
+    """
+    # リクエストの登録
+    symbols = ['AAPL', 'GOOGL']
+    regist_schedule_bars(
+        repo=databroker_api_repository,
+        symbols=symbols,
+        timeframe='1D',
+        start='2023-01-01T00:00:00Z',
+        end='2023-01-31T00:00:00Z'
+    )
+    # リクエストの登録確認
+    requests = databroker_api_repository.fetch_todo_requests()
+    assert len(requests) == 2
