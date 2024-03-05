@@ -40,21 +40,19 @@ def multi_requests_api_and_store(
     ) -> None:
         """
         単純な、リクエストを実行し結果を保存する関数。
-        これを呼び出し側で利用することで並列処理を実現する。
         """
         for req in api_requests:
             res = request_api(req)
             repo.store_request_and_response(req, res)
-    # 条件に応じてプロセス数を決定
-    n_max_worker = 4
-    n_process = 1
+
     if parallel_mode:
-        n_process = min(len(api_requests), n_max_worker)
-    # 処理
-    with ThreadPoolExecutor(max_workers=n_process) as executor:
-        for i in range(n_process):
-            chunk_requests = api_requests[i::n_process]
-            executor.submit(_serial_requests_api_and_store, repo, chunk_requests)
+        # 並列処理を行う
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            for request in api_requests:
+                executor.submit(_serial_requests_api_and_store, repo, [request])
+    else:
+        # シリアル処理を行う
+        _serial_requests_api_and_store(repo, api_requests)
 
 
 def multi_requests_todo_api_and_store(
