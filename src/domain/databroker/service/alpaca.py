@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from typing import List, Optional
 
@@ -88,7 +89,7 @@ def chain_api_request(
 
 def multi_requests_todo_api_alpaca_bar(
         repo: DataBrokerApiRepository,
-        n_max_worker: int = 4
+        parallel_mode: bool = False
     ) -> None:
     """
     alpacaのbarエンドポイントについての未実行、あるいは失敗したリクエストを連鎖実行する。
@@ -98,9 +99,14 @@ def multi_requests_todo_api_alpaca_bar(
     # 対象エンドポイントのリクエストを取得
     todo_bar_requests = repo.fetch_todo_requests(pattern)
     # リクエスト実行
-    # FIXME 並列実行
-    for request in todo_bar_requests:
-        chain_api_request(repo, request)
+    if parallel_mode:
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            for request in todo_bar_requests:
+                executor.submit(chain_api_request, repo, request)
+    else:
+        for request in todo_bar_requests:
+            chain_api_request(repo, request)
+
 
 
 def regist_schedule_bars(
