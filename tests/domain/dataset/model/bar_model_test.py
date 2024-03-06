@@ -2,6 +2,7 @@ from datetime import datetime
 
 from domain.databroker.model.api import ApiResultMetadata
 from domain.dataset.model.bar import Adjustment, Bar, Bars, Timeframe
+from tests.tests_service.factory.domain.dataset.bar import factory_bars
 
 
 def test_bar_from_json():
@@ -75,3 +76,49 @@ def test_bars_from_metadata_and_body():
     assert bars.timeframe == Timeframe.DAY
     assert bars.adjustment == Adjustment.RAW
     assert len(bars.bars) == 4
+
+
+def test_bars_to_parameter():
+    bars = factory_bars()
+    # 注意: factoryの実装に依存したテスト
+    assert bars.to_parameter() == [
+        {
+            'adjustment': 'raw',
+            'close': 141.15,
+            'high': 142.075,
+            'low': 139.55,
+            'open': 139.63,
+            'symbol': 'AAPL',
+            'time_stamp': '2024-02-20T05:00:00+00:00',
+            'timeframe': '1D',
+            'trade_count': 6395,
+            'volume': 485786,
+            'vwap': 140.9291
+        },
+        {
+            'adjustment': 'raw',
+            'close': 142.54,
+            'high': 142.68,
+            'low': 140.7,
+            'open': 141.37,
+            'symbol': 'AAPL',
+            'time_stamp': '2024-02-21T05:00:00+00:00',
+            'timeframe': '1D',
+            'trade_count': 5835,
+            'volume': 386976,
+            'vwap': 141.990892
+        },
+        {
+            'adjustment': 'raw',
+            'close': 144.02,
+            'high': 145,
+            'low': 142.8,
+            'open': 144.96,
+            'symbol': 'AAPL',
+            'time_stamp': '2024-02-22T05:00:00+00:00',
+            'timeframe': '1D',
+            'trade_count': 6183,
+            'volume': 538093,
+            'vwap': 143.926125
+        }
+    ]

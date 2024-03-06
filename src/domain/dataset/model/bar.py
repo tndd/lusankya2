@@ -101,3 +101,14 @@ class Bars:
             adjustment=Adjustment(metadata.parameter['adjustment']),
             bars=[Bar.from_json(data) for data in body['bars']],
         )
+
+    def to_parameter(self) -> List[dict]:
+        return [
+            {
+                **bar.to_parameter(),
+                "symbol": self.symbol,
+                "timeframe": self.timeframe.value,
+                "adjustment": self.adjustment.value,
+            }
+            for bar in self.bars
+        ]
