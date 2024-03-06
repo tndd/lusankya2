@@ -92,8 +92,8 @@ class Bars:
 
     @staticmethod
     def from_metadata_and_body(
-            metadata: ApiResultMetadata,
-            body: dict
+        metadata: ApiResultMetadata,
+        body: dict
     ) -> "Bars":
         return Bars(
             symbol=body['symbol'],
