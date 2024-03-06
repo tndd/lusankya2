@@ -1,6 +1,31 @@
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from typing import List
+
+from domain.dataset.model.asset import Asset
+
+
+class Timeframe(Enum):
+    """
+    ローソク足の時間軸を表す列挙型。
+    """
+    MIN = "1T"
+    HOUR = "1H"
+    DAY = "1D"
+    WEEK = "1W"
+    MONTH = "1M"
+
+
+
+class Adjustment(Enum):
+    """
+    ローソク足の調整方法を表す列挙型。
+    """
+    RAW = "raw"
+    SPLIT = "split"
+    DIVIDEND = "dividend"
+    ALL = "all"
 
 
 @dataclass
@@ -26,6 +51,7 @@ class Bars:
     """
     ローソク足の集合体を表すモデル。
     """
-    symbol: str
-    timeframe: str
+    asset: Asset
+    timeframe: Timeframe
+    adjustment: Adjustment
     bars: List[Bar]
