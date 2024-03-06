@@ -4,6 +4,9 @@ from domain.dataset.model.bar import Bar
 
 
 def test_bar_from_json():
+    """
+    bodyの要素Barsの１要素が変換できていることを確認
+    """
     data = {
         "c": 141.15,
         "h": 142.075,
