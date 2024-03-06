@@ -6,7 +6,8 @@ from domain.databroker.model.api import ApiRequest
 from infra.api.alpaca.common import APCA_ENDPOINT, APCA_HEADER
 
 """
-Memo:
+CARE: 接尾辞Qの命名懸念
+
     ドメイン側の値オブジェクトと区別するため、
     接尾辞にQをつけているのだがコレジャナイ感がする。
     なんかいい名前ないかな。
