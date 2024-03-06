@@ -65,6 +65,9 @@ class Bar:
         )
 
     def to_parameter(self) -> dict:
+        """
+        クエリ用のパラメータに変換
+        """
         return {
             "time_stamp": self.ts.isoformat(),
             "open": self.open,
