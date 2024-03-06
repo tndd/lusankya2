@@ -17,7 +17,6 @@ class Timeframe(Enum):
     MONTH = "1M"
 
 
-
 class Adjustment(Enum):
     """
     ローソク足の調整方法を表す列挙型。
