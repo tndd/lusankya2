@@ -24,6 +24,32 @@ def test_bar_from_json():
     assert bar.open == 139.63
 
 
+def test_bar_to_parameter():
+    """
+    パラメータに変換できていることを確認
+    """
+    bar = Bar(
+        ts=datetime.fromisoformat("2024-02-20T05:00:00+00:00"),
+        open=139.63,
+        high=142.075,
+        low=139.55,
+        close=141.15,
+        volume=485786,
+        trade_count=6395,
+        vwap=140.9291
+    )
+    assert bar.to_parameter() == {
+        "time_stamp": "2024-02-20T05:00:00+00:00",
+        "open": 139.63,
+        "high": 142.075,
+        "low": 139.55,
+        "close": 141.15,
+        "volume": 485786,
+        "trade_count": 6395,
+        "vwap": 140.9291
+    }
+
+
 def test_bars_from_metadata_and_body():
     metadata = ApiResultMetadata(
         request_id='aa8fcbe8-1820-49b7-aa4a-4cd96453d6b9',

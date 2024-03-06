@@ -64,6 +64,18 @@ class Bar:
             vwap=data["vw"],
         )
 
+    def to_parameter(self) -> dict:
+        return {
+            "time_stamp": self.ts.isoformat(),
+            "open": self.open,
+            "high": self.high,
+            "low": self.low,
+            "close": self.close,
+            "volume": self.volume,
+            "trade_count": self.trade_count,
+            "vwap": self.vwap,
+        }
+
 
 @dataclass
 class Bars:
