@@ -3,7 +3,7 @@ from datetime import datetime
 from enum import Enum
 from typing import List
 
-from domain.dataset.model.asset import Asset
+from domain.databroker.model.api import ApiResultMetadata
 
 
 class Timeframe(Enum):
@@ -70,7 +70,19 @@ class Bars:
     """
     ローソク足の集合体を表すモデル。
     """
-    asset: Asset
+    symbol: str
     timeframe: Timeframe
     adjustment: Adjustment
     bars: List[Bar]
+
+    @staticmethod
+    def from_metadata_and_body(
+            metadata: ApiResultMetadata,
+            body: dict
+    ) -> "Bars":
+        return Bars(
+            symbol=body['symbol'],
+            timeframe=Timeframe(metadata.parameter['timeframe']),
+            adjustment=Adjustment(metadata.parameter['adjustment']),
+            bars=[Bar.from_json(data) for data in body['bars']],
+        )
