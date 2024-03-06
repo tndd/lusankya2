@@ -6,6 +6,7 @@ from infra.query.databroker.truncate import (get_query_truncate_api_request,
                                              get_query_truncate_api_response)
 
 
+### Decorator ###
 def test_only(f):
     """
     関数をテストモード時のみ実行可能にするデコレータ
@@ -18,6 +19,7 @@ def test_only(f):
     return wrapper
 
 
+### Test only ###
 @test_only
 def clear_tables(db_cli: PsqlClient):
     """
@@ -38,7 +40,8 @@ def clear_tables_databroker(db_cli: PsqlClient):
     db_cli.execute_queries(queries_truncate)
 
 
-def make_test_psql_client() -> PsqlClient:
+### Factory ###
+def factory_test_psql_client() -> PsqlClient:
     url = getenv('PSQL_URL_TEST')
     if url is None:
         raise ValueError("Environment variable PSQL_URL_TEST is not set")
