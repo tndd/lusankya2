@@ -44,6 +44,26 @@ class Bar:
     trade_count: int
     vwap: float
 
+    @staticmethod
+    def from_json(data: dict) -> "Bar":
+        """
+        json形式のデータをBarモデルに変換
+
+        Note:
+            - 変換が失敗するのでZを+00:00に置き換える
+        """
+        ts = data["t"].replace("Z", "+00:00")
+        return Bar(
+            ts=datetime.fromisoformat(ts),
+            open=data["o"],
+            high=data["h"],
+            low=data["l"],
+            close=data["c"],
+            volume=data["v"],
+            trade_count=data["n"],
+            vwap=data["vw"],
+        )
+
 
 @dataclass
 class Bars:
