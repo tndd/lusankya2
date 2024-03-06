@@ -6,7 +6,8 @@ from domain.databroker.model.api import ApiRequest, ApiResponse
 from domain.databroker.service.alpaca import (
     chain_api_request, multi_requests_todo_api_alpaca_bar,
     regist_schedule_bars)
-from infra.api.alpaca.bar import QueryBar, convert_query_bar_to_api_request
+from infra.api.alpaca.bar import (Adjustment_Q, QueryBar, Timeframe_Q,
+                                  convert_query_bar_to_api_request)
 
 
 @pytest.mark.ext
@@ -23,11 +24,11 @@ def test_chain_api_request(databroker_api_repository):
     """
     query = QueryBar(
         symbol='AAPL',
-        timeframe='1Day',
+        timeframe=Timeframe_Q.DAY,
         start='2023-01-01T00:00:00Z',
         end='2023-01-31T00:00:00Z',
         limit=5,
-        adjustment='raw',
+        adjustment=Adjustment_Q.RAW,
         asof=None,
         feed='iex',
         currency=None,
@@ -99,11 +100,11 @@ def test_multi_requests_todo_api_alpaca_bar(databroker_api_repository):
     for id_, symbol in zip(rq_ids, symbols):
         q = QueryBar(
             symbol=symbol,
-            timeframe='1Day',
+            timeframe=Timeframe_Q.DAY,
             start=(datetime.now() - timedelta(days=7)).strftime('%Y-%m-%dT00:00:00Z'),
             end=datetime.now().strftime('%Y-%m-%dT00:00:00Z'),
             limit=5,
-            adjustment='raw',
+            adjustment=Adjustment_Q.RAW,
             asof=None,
             feed='iex',
             currency=None,
@@ -230,7 +231,7 @@ def test_regist_schedule_bars(databroker_api_repository):
     regist_schedule_bars(
         repo=databroker_api_repository,
         symbols=symbols,
-        timeframe='1D',
+        timeframe=Timeframe_Q.DAY,
         start='2023-01-01T00:00:00Z',
         end='2023-01-31T00:00:00Z'
     )

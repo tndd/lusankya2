@@ -6,7 +6,8 @@ from domain.databroker.model.api import ApiRequest
 from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.databroker.service.api import request_api
 from infra.api.alpaca.common import APCA_ENDPOINT
-from src.infra.api.alpaca.bar import (convert_query_bar_to_api_request,
+from src.infra.api.alpaca.bar import (Timeframe_Q,
+                                      convert_query_bar_to_api_request,
                                       make_query_bars_from_symbols)
 
 
@@ -112,7 +113,7 @@ def multi_requests_todo_api_alpaca_bar(
 def regist_schedule_bars(
         repo: DataBrokerApiRepository,
         symbols: List[str],
-        timeframe: str,
+        timeframe: Timeframe_Q,
         start: str = (datetime.now() - timedelta(days=7*365)).strftime('%Y-%m-%dT00:00:00Z'),
         end: str = datetime.now().strftime('%Y-%m-%dT00:00:00Z'),
 ) -> None:

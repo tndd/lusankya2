@@ -1,18 +1,47 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import List, Optional
 
 from domain.databroker.model.api import ApiRequest
 from infra.api.alpaca.common import APCA_ENDPOINT, APCA_HEADER
 
+"""
+Memo:
+    ドメイン側の値オブジェクトと区別するため、
+    接尾辞にQをつけているのだがコレジャナイ感がする。
+    なんかいい名前ないかな。
+
+    中身も完全にドメイン側と同一であるため、扱いが難しい。
+"""
+class Timeframe_Q(Enum):
+    """
+    クエリでローソク足の時間軸を指定するための列挙型。
+    """
+    MIN = "1T"
+    HOUR = "1H"
+    DAY = "1D"
+    WEEK = "1W"
+    MONTH = "1M"
+
+
+class Adjustment_Q(Enum):
+    """
+    クエリでローソク足の調整方法を指定するための列挙型。
+    """
+    RAW = "raw"
+    SPLIT = "split"
+    DIVIDEND = "dividend"
+    ALL = "all"
+
 
 @dataclass
 class QueryBar:
     symbol: str
-    timeframe: str
+    timeframe: Timeframe_Q
     start: str
     end: str
     limit: int = 10000
-    adjustment: str = 'raw'
+    adjustment: Adjustment_Q = Adjustment_Q.RAW
     asof: Optional[str] = None
     feed: str = 'iex'
     currency: Optional[str] = None
@@ -27,11 +56,11 @@ class QueryBar:
         パラメータには含めない。
         """
         params = {
-            'timeframe': self.timeframe,
+            'timeframe': self.timeframe.value,
             'start': self.start,
             'end': self.end,
             'limit': self.limit,
-            'adjustment': self.adjustment,
+            'adjustment': self.adjustment.value,
             'asof': self.asof,
             'feed': self.feed,
             'currency': self.currency,
@@ -54,7 +83,7 @@ def convert_query_bar_to_api_request(query: QueryBar) -> ApiRequest:
 
 def make_query_bars_from_symbols(
         symbols: List[str],
-        timeframe: str,
+        timeframe: Timeframe_Q,
         start: str,
         end: str,
     ) -> List[QueryBar]:
