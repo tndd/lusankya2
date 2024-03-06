@@ -1,5 +1,4 @@
 from functools import wraps
-from os import getenv
 
 from infra.db.psql import PsqlClient
 from infra.query.databroker.truncate import (get_query_truncate_api_request,
@@ -38,11 +37,3 @@ def clear_tables_databroker(db_cli: PsqlClient):
         get_query_truncate_api_request()
     ]
     db_cli.execute_queries(queries_truncate)
-
-
-### Factory ###
-def factory_test_psql_client() -> PsqlClient:
-    url = getenv('PSQL_URL_TEST')
-    if url is None:
-        raise ValueError("Environment variable PSQL_URL_TEST is not set")
-    return PsqlClient(url=url)
