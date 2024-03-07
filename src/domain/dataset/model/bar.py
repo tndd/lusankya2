@@ -81,9 +81,9 @@ class Bar:
 
 
 @dataclass
-class Bars:
+class Chart:
     """
-    ローソク足の集合体を表すモデル。
+    ローソク足の集合体であるチャートを表すモデル
     """
     symbol: str
     timeframe: Timeframe
@@ -94,8 +94,8 @@ class Bars:
     def from_metadata_and_body(
         metadata: ApiResultMetadata,
         body: dict
-    ) -> "Bars":
-        return Bars(
+    ) -> "Chart":
+        return Chart(
             symbol=body['symbol'],
             timeframe=Timeframe(metadata.parameter['timeframe']),
             adjustment=Adjustment(metadata.parameter['adjustment']),

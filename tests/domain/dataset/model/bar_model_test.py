@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from domain.databroker.model.api import ApiResultMetadata
-from domain.dataset.model.bar import Adjustment, Bar, Bars, Timeframe
-from tests.tests_service.factory.domain.dataset.bar import factory_bars
+from domain.dataset.model.bar import Adjustment, Bar, Chart, Timeframe
+from tests.tests_service.factory.domain.dataset.bar import factory_chart
 
 
 def test_bar_from_json():
@@ -51,7 +51,7 @@ def test_bar_to_parameter():
     }
 
 
-def test_bars_from_metadata_and_body():
+def test_chart_from_metadata_and_body():
     metadata = ApiResultMetadata(
         request_id='aa8fcbe8-1820-49b7-aa4a-4cd96453d6b9',
         endpoint='https://data.alpaca.markets/v2/stocks/AAPL/bars',
@@ -71,15 +71,15 @@ def test_bars_from_metadata_and_body():
         "next_page_token": None,
         "symbol": "GOOGL"
     }
-    bars = Bars.from_metadata_and_body(metadata, body)
+    bars = Chart.from_metadata_and_body(metadata, body)
     assert bars.symbol == "GOOGL"
     assert bars.timeframe == Timeframe.DAY
     assert bars.adjustment == Adjustment.RAW
     assert len(bars.bars) == 4
 
 
-def test_bars_to_parameter():
-    bars = factory_bars()
+def test_chart_to_parameter():
+    bars = factory_chart()
     # 注意: factoryの実装に依存したテスト
     assert bars.to_parameter() == [
         {
