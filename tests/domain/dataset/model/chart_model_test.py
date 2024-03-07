@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from domain.databroker.model.api import ApiResultMetadata
-from domain.dataset.model.bar import Adjustment, Bar, Chart, Timeframe
-from tests.tests_service.factory.domain.dataset.bar import factory_chart
+from domain.dataset.model.chart import Adjustment, Bar, Chart, Timeframe
+from tests.tests_service.factory.domain.dataset.chart import factory_chart
 
 
 def test_bar_from_json():

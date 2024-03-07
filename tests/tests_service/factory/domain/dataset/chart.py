@@ -1,4 +1,4 @@
-from domain.dataset.model.bar import Adjustment, Bar, Chart, Timeframe
+from domain.dataset.model.chart import Adjustment, Bar, Chart, Timeframe
 
 
 def factory_chart() -> Chart:
