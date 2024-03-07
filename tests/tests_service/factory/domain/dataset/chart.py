@@ -1,4 +1,6 @@
 from domain.dataset.model.chart import Adjustment, Bar, Chart, Timeframe
+from domain.dataset.repository.chart import ChartRepository
+from infra.db.psql import PsqlClient
 
 
 def factory_chart() -> Chart:
@@ -13,3 +15,7 @@ def factory_chart() -> Chart:
         adjustment=Adjustment.RAW,
         bars=[Bar.from_json(data) for data in bar_data]
     )
+
+
+def factory_chart_repository(psql_client: PsqlClient) -> ChartRepository:
+    return ChartRepository(psql_client)
