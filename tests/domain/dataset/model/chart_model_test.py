@@ -5,7 +5,7 @@ from domain.dataset.model.chart import Adjustment, Bar, Chart, Timeframe
 from tests.tests_service.factory.domain.dataset.chart import factory_chart
 
 
-def test_bar_from_json():
+def test_bar_from_api_data():
     """
     bodyの要素Barsの１要素が変換できていることを確認
     """
@@ -21,6 +21,23 @@ def test_bar_from_json():
     }
     bar = Bar.from_api_data(data)
     # 時間がきちんとpythonに則った形に変換されているかを確認(Z => +00:00)
+    assert bar.time_stamp == datetime.fromisoformat("2024-02-20T05:00:00+00:00")
+    assert bar.open == 139.63
+
+
+def test_bar_from_row():
+    row = {
+        "time_stamp": "2024-02-20T05:00:00+00:00",
+        "open": 139.63,
+        "high": 142.075,
+        "low": 139.55,
+        "close": 141.15,
+        "volume": 485786,
+        "trade_count": 6395,
+        "vwap": 140.9291
+    }
+    bar = Bar.from_row(row)
+    assert isinstance(bar, Bar)
     assert bar.time_stamp == datetime.fromisoformat("2024-02-20T05:00:00+00:00")
     assert bar.open == 139.63
 
