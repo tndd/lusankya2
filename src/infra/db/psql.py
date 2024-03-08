@@ -68,7 +68,8 @@ class PsqlClient:
 
 
     def executemany(
-            self, query: str,
+            self,
+            query: str,
             data: list,
             parallel_mode: bool = False
         ):
@@ -124,7 +125,7 @@ class PsqlClient:
     def _executemany(self, query: str, data: list):
         """
         単発のexecutemanyを実行。
-        
+
         これは部品として呼び出されることを想定している。
         """
         def _f(_cur, query, data):
