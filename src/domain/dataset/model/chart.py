@@ -81,9 +81,13 @@ class Bar:
     def from_row(row: dict) -> "Bar":
         """
         dbから取得してきた1行のデータをBarモデルに変換
+
+        Memo:
+            rowから取得するtime_stampは、はじめからdatetime型として取得されるため、
+            parse_datetimeを使わなくてもよい。
         """
         return Bar(
-            time_stamp=parse_timestamp(row["time_stamp"]),
+            time_stamp=row["time_stamp"],
             open=row['open'],
             high=row['high'],
             low=row['low'],
