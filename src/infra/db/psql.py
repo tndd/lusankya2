@@ -82,9 +82,13 @@ class PsqlClient:
             # 並列実行モード
             n_process = self._calc_optimum_process_num(data)
             with ProcessPoolExecutor(max_workers=n_process) as executor:
+                futures = []
                 for i in range(n_process):
                     chunk = data[i::n_process]
-                    executor.submit(self._executemany, query, chunk)
+                    futures.append(executor.submit(self._executemany, query, chunk))
+                # 各タスクが完了するのを待つ
+                for future in futures:
+                    future.result()
         else:
             # 通常実行
             self._executemany(query, data)
