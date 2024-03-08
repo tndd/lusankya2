@@ -29,18 +29,10 @@ def multi_requests_api_and_store(
         api_requests: List[ApiRequest],
         parallel_mode: bool = False
     ) -> None:
-    """
-    APIリクエストの内容を実行し、リクエストとその結果の保存を行う。
-
-    parallel_modeが有効な場合、並列で処理が実行される。
-    """
     def _serial_requests_api_and_store(
             repo: DataBrokerApiRepository,
             api_requests: List[ApiRequest]
     ) -> None:
-        """
-        単純な、リクエストを実行し結果を保存する関数。
-        """
         for req in api_requests:
             res = request_api(req)
             repo.store_request_and_response(req, res)
@@ -48,8 +40,12 @@ def multi_requests_api_and_store(
     if parallel_mode:
         # 並列処理を行う
         with ThreadPoolExecutor(max_workers=4) as executor:
-            for request in api_requests:
+            futures = [
                 executor.submit(_serial_requests_api_and_store, repo, [request])
+                for request in api_requests
+            ]
+            for future in futures:
+                future.result()  # 各タスクが完了するのを待つ
     else:
         # シリアル処理を行う
         _serial_requests_api_and_store(repo, api_requests)

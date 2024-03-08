@@ -102,8 +102,13 @@ def multi_requests_todo_api_alpaca_bar(
     # リクエスト実行
     if parallel_mode:
         with ThreadPoolExecutor(max_workers=4) as executor:
-            for request in todo_bar_requests:
+            futures = [
                 executor.submit(chain_api_request, repo, request)
+                for request in todo_bar_requests
+            ]
+            # 各タスクの完了を待つ
+            for future in futures:
+                future.result()
     else:
         for request in todo_bar_requests:
             chain_api_request(repo, request)
