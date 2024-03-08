@@ -27,6 +27,22 @@ class Adjustment(Enum):
     ALL = "all"
 
 
+def parse_timestamp(time_stamp: str) -> datetime:
+    """
+    概要:
+        ISOフォーマットのタイムスタンプ文字列をdatetimeオブジェクトに変換する。
+        'Z'が含まれている場合は'+00:00'に置き換える。
+
+    注意:
+        この置き換えしなければ、datetimeがエラーになってしまう。
+        pythonはデフォルトで'Z'という表記に対応していないようだ。
+
+    引数:
+        ts_str (str): ISOフォーマットのタイムスタンプ文字列。
+    """
+    return datetime.fromisoformat(time_stamp.replace("Z", "+00:00"))
+
+
 @dataclass
 class Bar:
     """
@@ -35,7 +51,7 @@ class Bar:
     注意:
         - ローソク足は自身の時間軸あるいはシンボルの情報を保持しない。
     """
-    ts: datetime
+    time_stamp: datetime
     open: float
     high: float
     low: float
@@ -48,13 +64,9 @@ class Bar:
     def from_api_data(data: dict) -> "Bar":
         """
         apiの生形式のデータをBarモデルに変換
-
-        Note:
-            - 変換が失敗するのでZを+00:00に置き換える
         """
-        ts = data["t"].replace("Z", "+00:00")
         return Bar(
-            ts=datetime.fromisoformat(ts),
+            time_stamp=parse_timestamp(data["t"]),
             open=data["o"],
             high=data["h"],
             low=data["l"],
@@ -64,12 +76,30 @@ class Bar:
             vwap=data["vw"],
         )
 
+
+    @staticmethod
+    def from_row(row: dict) -> "Bar":
+        """
+        dbから取得してきた1行のデータをBarモデルに変換
+        """
+        return Bar(
+            time_stamp=parse_timestamp(row["time_stamp"]),
+            open=row['open'],
+            high=row['high'],
+            low=row['low'],
+            close=row['close'],
+            volume=row['volume'],
+            trade_count=row['trade_count'],
+            vwap=row['vwap'],
+        )
+
+
     def to_parameter(self) -> dict:
         """
         クエリ用のパラメータに変換
         """
         return {
-            "time_stamp": self.ts.isoformat(),
+            "time_stamp": self.time_stamp.isoformat(),
             "open": self.open,
             "high": self.high,
             "low": self.low,
