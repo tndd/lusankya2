@@ -23,7 +23,7 @@ class ChartRepository:
         # BUG: 情報が保存されない
         query = get_query_insert_bar()
         bars_params = chart.to_parameter()
-        self.db_cli.executemany(query, bars_params, parallel_mode=True)
+        self.db_cli.executemany(query, bars_params, parallel_mode=False)
 
 
     def fetch_chart(
