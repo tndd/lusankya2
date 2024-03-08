@@ -27,7 +27,7 @@ def test_bar_from_api_data():
 
 def test_bar_from_row():
     row = {
-        "time_stamp": "2024-02-20T05:00:00+00:00",
+        "time_stamp": datetime.fromisoformat("2024-02-20T05:00:00+00:00"),
         "open": 139.63,
         "high": 142.075,
         "low": 139.55,
