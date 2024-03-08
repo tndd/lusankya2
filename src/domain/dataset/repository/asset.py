@@ -23,7 +23,7 @@ class AssetRepository:
         Note:
             - 絞り込み条件はAND形式
         """
-        assets = [self._to_asset(d) for d in self._fetch_raw_assets()]
+        assets = [self.from_data(d) for d in self._fetch_raw_assets()]
         if keyword:
             # keywordに部分一致するAsset情報を絞り込み
             assets = [a for a in assets if keyword in a.name]
@@ -47,7 +47,7 @@ class AssetRepository:
 
 
     @staticmethod
-    def _to_asset(data: dict) -> 'Asset':
+    def from_data(data: dict) -> 'Asset':
         """
         dict形式のAsset情報をAssetモデルに変換
         """
