@@ -21,7 +21,7 @@ def test_bar_from_json():
     }
     bar = Bar.from_api_data(data)
     # 時間がきちんとpythonに則った形に変換されているかを確認(Z => +00:00)
-    assert bar.ts == datetime.fromisoformat("2024-02-20T05:00:00+00:00")
+    assert bar.time_stamp == datetime.fromisoformat("2024-02-20T05:00:00+00:00")
     assert bar.open == 139.63
 
 
@@ -30,7 +30,7 @@ def test_bar_to_parameter():
     パラメータに変換できていることを確認
     """
     bar = Bar(
-        ts=datetime.fromisoformat("2024-02-20T05:00:00+00:00"),
+        time_stamp=datetime.fromisoformat("2024-02-20T05:00:00+00:00"),
         open=139.63,
         high=142.075,
         low=139.55,
