@@ -12,7 +12,7 @@ def get_query_create_table_bar() -> str:
     return """
     CREATE TABLE IF NOT EXISTS alpaca.bar (
         time_stamp TIMESTAMP WITH TIME ZONE NOT NULL,
-        time_frame TEXT NOT NULL,
+        timeframe TEXT NOT NULL,
         symbol TEXT NOT NULL,
         adjustment TEXT NOT NULL,
         open DOUBLE PRECISION,
@@ -22,7 +22,7 @@ def get_query_create_table_bar() -> str:
         trade_count BIGINT,
         volume BIGINT,
         vwap DOUBLE PRECISION,
-        PRIMARY KEY(time_stamp, time_frame, symbol, adjustment)
+        PRIMARY KEY(time_stamp, timeframe, symbol, adjustment)
     );
     SELECT create_hypertable('alpaca.bar', 'time_stamp', if_not_exists => TRUE);
     """
