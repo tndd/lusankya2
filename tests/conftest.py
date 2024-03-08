@@ -17,8 +17,8 @@ def setup_session():
     # 環境変数の読み込み
     load_dotenv()
     # 環境構築のためのマイグレーション実行
-    cli_db = factory_psql_client()
-    migrate(cli_db)
+    db_cli = factory_psql_client()
+    migrate(db_cli)
 
 
 @pytest.fixture

@@ -15,7 +15,7 @@ from infra.query.databroker.select import (
 
 @dataclass
 class DataBrokerApiRepository:
-    cli_db: PsqlClient
+    db_cli: PsqlClient
 
     def store_request(self, request: ApiRequest) -> None:
         """
@@ -26,7 +26,7 @@ class DataBrokerApiRepository:
         """
         query = get_query_insert_api_request()
         param = request.to_query_parameter()
-        self.cli_db.execute(query, param)
+        self.db_cli.execute(query, param)
 
 
     def store_response(self, response: ApiResponse) -> None:
@@ -35,7 +35,7 @@ class DataBrokerApiRepository:
         """
         query = get_query_insert_api_response()
         param = response.to_query_parameter()
-        self.cli_db.execute(query, param)
+        self.db_cli.execute(query, param)
 
 
     def store_request_and_response(self, request: ApiRequest, response: ApiResponse) -> None:
@@ -50,7 +50,7 @@ class DataBrokerApiRepository:
         # 引数用のペアを作成
         queries_with_params = [(query_rq, param_rq), (query_rs, param_rs)]
         # 実行
-        self.cli_db.execute_queries(queries_with_params)
+        self.db_cli.execute_queries(queries_with_params)
 
 
     def fetch_todo_requests(self, endpoint: Optional[str] = None) -> List[ApiRequest]:
@@ -58,7 +58,7 @@ class DataBrokerApiRepository:
         未実行あるいは失敗したAPIのリクエスト一覧を取得する。
         """
         query = get_query_select_todo_api_request()
-        fetched_data = self.cli_db.execute(query)
+        fetched_data = self.db_cli.execute(query)
         api_requests = [ApiRequest.from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
@@ -73,7 +73,7 @@ class DataBrokerApiRepository:
             このメタデータを元に適宜bodyをDBから取り出す用途で使用される。
         """
         query = get_query_select_api_result_metadata_should_be_moved()
-        fetched_data = self.cli_db.execute(query)
+        fetched_data = self.db_cli.execute(query)
         api_results_metadata = [ApiResultMetadata.from_fetched_data(d) for d in fetched_data]
         # エンドポイント指定がある場合、絞り込みを行う
         if endpoint:
@@ -95,6 +95,6 @@ class DataBrokerApiRepository:
         """
         query = get_query_select_api_response_body()
         param = (response_id,)
-        fetched_data = self.cli_db.execute(query, param)
+        fetched_data = self.db_cli.execute(query, param)
         # IDは存在するがbodyが空、あるいはレスポンス自体が存在しない場合はNoneを返す
         return fetched_data[0]['body'] if fetched_data else None

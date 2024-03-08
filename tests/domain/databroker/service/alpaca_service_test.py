@@ -54,12 +54,12 @@ def test_chain_api_request(databroker_api_repository):
             次のリクエストの'page_token'になっていることを確認する。
     """
     # リクエスト数の確認
-    r_req = databroker_api_repository.cli_db.execute(
+    r_req = databroker_api_repository.db_cli.execute(
         'SELECT * FROM databroker.api_request'
     )
     assert len(r_req) == 4
     # レスポンス数の確認
-    r_res = databroker_api_repository.cli_db.execute(
+    r_res = databroker_api_repository.db_cli.execute(
         'SELECT * FROM databroker.api_response'
     )
     assert len(r_res) == 3

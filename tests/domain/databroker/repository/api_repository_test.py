@@ -17,7 +17,7 @@ def test_store_request(databroker_api_repository):
     query_confirm_api_request = f"""
         SELECT id FROM databroker.api_request WHERE id = '{request_id}';
     """
-    result = databroker_api_repository.cli_db.execute(query_confirm_api_request)
+    result = databroker_api_repository.db_cli.execute(query_confirm_api_request)
     assert len(result) == 1
 
 
@@ -53,7 +53,7 @@ def test_store_response(databroker_api_repository):
     query_confirm_api_response = f"""
         SELECT id FROM databroker.api_response WHERE id = '{response_id}';
     """
-    result = databroker_api_repository.cli_db.execute(query_confirm_api_response)
+    result = databroker_api_repository.db_cli.execute(query_confirm_api_response)
     assert len(result) == 1
 
 
@@ -83,13 +83,13 @@ def test_store_request_and_response(databroker_api_repository):
     query_confirm_api_request = f"""
         SELECT id FROM databroker.api_request WHERE id = '{request_id}';
     """
-    result = databroker_api_repository.cli_db.execute(query_confirm_api_request)
+    result = databroker_api_repository.db_cli.execute(query_confirm_api_request)
     assert len(result) == 1
     # api_requestが保存されたかの確認
     query_confirm_api_response = f"""
         SELECT id FROM databroker.api_response WHERE id = '{response_id}';
     """
-    result = databroker_api_repository.cli_db.execute(query_confirm_api_response)
+    result = databroker_api_repository.db_cli.execute(query_confirm_api_response)
     assert len(result) == 1
 
 

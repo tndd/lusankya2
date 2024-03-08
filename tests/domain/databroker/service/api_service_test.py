@@ -62,9 +62,9 @@ def test_multi_requests_api_and_store(databroker_api_repository):
     api_requests = [request1, request2]
     multi_requests_api_and_store(databroker_api_repository, api_requests)
     # リクエストとレスポンスがデータベースに保存されているかの検証
-    r_req = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_request')
+    r_req = databroker_api_repository.db_cli.execute('SELECT count(*) FROM databroker.api_request')
     assert r_req[0][0] == 2
-    r_res = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_response')
+    r_res = databroker_api_repository.db_cli.execute('SELECT count(*) FROM databroker.api_response')
     assert r_res[0][0] == 2
 
 
@@ -99,9 +99,9 @@ def test_multi_requests_api_and_store_parallel(databroker_api_repository):
     api_requests = [request1, request2]
     multi_requests_api_and_store(databroker_api_repository, api_requests, parallel_mode=True)
     # リクエストとレスポンスがデータベースに保存されているかの検証
-    r_req = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_request')
+    r_req = databroker_api_repository.db_cli.execute('SELECT count(*) FROM databroker.api_request')
     assert r_req[0][0] == 2
-    r_res = databroker_api_repository.cli_db.execute('SELECT count(*) FROM databroker.api_response')
+    r_res = databroker_api_repository.db_cli.execute('SELECT count(*) FROM databroker.api_response')
     assert r_res[0][0] == 2
 
 
@@ -217,19 +217,19 @@ def test_multi_requests_todo_api_and_store(databroker_api_repository):
             - ２つのレスポンスが登録されている
             - （事前登録された失敗分および成功分の２つ）
     """
-    r_rs1 = databroker_api_repository.cli_db.execute(
+    r_rs1 = databroker_api_repository.db_cli.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq1.id_}'"
     )
     assert r_rs1[0][0] == 1
-    r_rs2 = databroker_api_repository.cli_db.execute(
+    r_rs2 = databroker_api_repository.db_cli.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq2.id_}'"
     )
     assert r_rs2[0][0] == 1
-    r_rs3 = databroker_api_repository.cli_db.execute(
+    r_rs3 = databroker_api_repository.db_cli.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq3.id_}'"
     )
     assert r_rs3[0][0] == 2
-    r_rs4 = databroker_api_repository.cli_db.execute(
+    r_rs4 = databroker_api_repository.db_cli.execute(
         f"SELECT count(*) FROM databroker.api_response where request_id = '{rq4.id_}'"
     )
     assert r_rs4[0][0] == 2
