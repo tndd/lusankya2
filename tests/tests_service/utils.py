@@ -1,8 +1,6 @@
 from functools import wraps
 
 from infra.db.psql import PsqlClient
-from infra.query.databroker.truncate import (get_query_truncate_api_request,
-                                             get_query_truncate_api_response)
 
 
 ### Decorator ###
@@ -22,31 +20,24 @@ def test_only(f):
 @test_only
 def clear_tables(db_cli: PsqlClient):
     """
-    全てのテーブルの初期化
+    全ての対象テーブルの初期化を行う
     """
-    clear_tables_databroker(db_cli)
-    clear_tables_alpaca(db_cli)
-
-
-@test_only
-def clear_tables_databroker(db_cli: PsqlClient):
-    """
-    databrokerにまつわるテーブルを全てtruncateする。
-    """
-    queries_truncate = [
-        get_query_truncate_api_response() +
-        get_query_truncate_api_request()
+    # 対象スキーマの指定
+    target_tables = [
+        'databroker',
+        'alpaca'
     ]
-    db_cli.execute_queries(queries_truncate)
+    for table_name in target_tables:
+        clear_tables_by_schema(db_cli, table_name)
 
 
 @test_only
-def clear_tables_alpaca(db_cli: PsqlClient):
+def clear_tables_by_schema(db_cli: PsqlClient, schema: str):
     """
-    alpacaにまつわるテーブルを全てtruncateする。
+    指定スキーマのテーブルをすべてtruncateする。
     """
-
-    query_get_tables = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'alpaca';"
+    query_get_tables = f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema}' AND table_type = 'BASE TABLE';"
     tables = db_cli.execute(query_get_tables)
-    queries_truncate = [f"TRUNCATE TABLE alpaca.{table[0]} CASCADE;" for table in tables]
+    # スキーマ名を動的に挿入するように修正
+    queries_truncate = [f"TRUNCATE TABLE {schema}.{table[0]} CASCADE;" for table in tables]
     db_cli.execute_queries(queries_truncate)
