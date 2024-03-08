@@ -13,7 +13,7 @@ def factory_chart() -> Chart:
         symbol='AAPL',
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
-        bars=[Bar.from_json(data) for data in bar_data]
+        bars=[Bar.from_api_data(data) for data in bar_data]
     )
 
 

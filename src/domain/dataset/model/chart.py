@@ -45,9 +45,9 @@ class Bar:
     vwap: float
 
     @staticmethod
-    def from_json(data: dict) -> "Bar":
+    def from_api_data(data: dict) -> "Bar":
         """
-        json形式のデータをBarモデルに変換
+        apiの生形式のデータをBarモデルに変換
 
         Note:
             - 変換が失敗するのでZを+00:00に置き換える
@@ -99,7 +99,7 @@ class Chart:
             symbol=body['symbol'],
             timeframe=Timeframe(metadata.parameter['timeframe']),
             adjustment=Adjustment(metadata.parameter['adjustment']),
-            bars=[Bar.from_json(data) for data in body['bars']],
+            bars=[Bar.from_api_data(data) for data in body['bars']],
         )
 
     def to_parameter(self) -> List[dict]:
@@ -112,3 +112,12 @@ class Chart:
             }
             for bar in self.bars
         ]
+
+    @staticmethod
+    def from_rows(rows: List[dict]) -> "Chart":
+        return Chart(
+            symbol=rows[0]['symbol'],
+            timeframe=Timeframe(rows[0]['timeframe']),
+            adjustment=Adjustment(rows[0]['adjustment']),
+            bars=[Bar.from_api_data(r['']) for r in rows],
+        )

@@ -19,7 +19,7 @@ def test_bar_from_json():
         "v": 485786,
         "vw": 140.9291
     }
-    bar = Bar.from_json(data)
+    bar = Bar.from_api_data(data)
     # 時間がきちんとpythonに則った形に変換されているかを確認(Z => +00:00)
     assert bar.ts == datetime.fromisoformat("2024-02-20T05:00:00+00:00")
     assert bar.open == 139.63
