@@ -20,10 +20,9 @@ class ChartRepository:
             parallel_modeが有効である場合、並列でinsertが実行される。
             デフォルトではTrueとする。
         """
-        # BUG: 情報が保存されない
         query = get_query_insert_bar()
         bars_params = chart.to_parameter()
-        self.db_cli.executemany(query, bars_params, parallel_mode=False)
+        self.db_cli.executemany(query, bars_params, parallel_mode=True)
 
 
     def fetch_chart(
