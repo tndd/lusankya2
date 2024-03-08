@@ -79,12 +79,14 @@ class PsqlClient:
         parallel_modeが有効な場合のみ並列処理を行う。
         """
         if parallel_mode:
+            # 並列実行モード
             n_process = self._calc_optimum_process_num(data)
             with ProcessPoolExecutor(max_workers=n_process) as executor:
                 for i in range(n_process):
                     chunk = data[i::n_process]
                     executor.submit(self._executemany, query, chunk)
         else:
+            # 通常実行
             self._executemany(query, data)
 
 
