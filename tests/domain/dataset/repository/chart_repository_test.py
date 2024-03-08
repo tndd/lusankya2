@@ -1,3 +1,4 @@
+from domain.dataset.model.chart import Adjustment, Chart, Timeframe
 from domain.dataset.repository.chart import ChartRepository
 from tests.tests_service.factory.domain.dataset.chart import factory_chart
 
@@ -14,4 +15,13 @@ def test_store_chart(chart_repository: ChartRepository):
 
 
 def test_fetch_chart(chart_repository: ChartRepository):
-    pass
+    # 取得のためのデータ取得
+    chart = factory_chart()
+    chart_repository.store_chart(chart)
+    # 取得
+    fetched_chart = chart_repository.fetch_chart(
+        symbol='AAPL',
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(Chart, fetched_chart)
