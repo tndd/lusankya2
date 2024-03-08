@@ -24,4 +24,8 @@ def test_fetch_chart(chart_repository: ChartRepository):
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
     )
-    assert isinstance(Chart, fetched_chart)
+    assert isinstance(fetched_chart, Chart)
+    assert fetched_chart.symbol == 'AAPL'
+    assert fetched_chart.timeframe == Timeframe.DAY
+    assert fetched_chart.adjustment == Adjustment.RAW
+    assert len(fetched_chart.bars) == 3

@@ -35,6 +35,10 @@ class ChartRepository:
         start: Optional[str] = None,
         end: Optional[str] = None
     ) -> Chart:
+        """
+        条件を元にChartモデルを取得する。
+        start,endのみ任意の引数であり、これで取得する時間幅を指定する。
+        """
         query = get_query_select_bar(start, end)
         param = {
             'symbol': symbol,
