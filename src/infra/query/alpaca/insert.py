@@ -2,7 +2,7 @@ def get_query_insert_bar() -> str:
     return """
     INSERT INTO alpaca.bar (
         time_stamp,
-        time_frame,
+        timeframe,
         symbol,
         open,
         high,
@@ -13,15 +13,15 @@ def get_query_insert_bar() -> str:
         vwap
     )
     VALUES (
-        %(t)s,
-        %(time_frame)s,
+        %(time_stamp)s,
+        %(timeframe)s,
         %(symbol)s,
-        %(o)s,
-        %(h)s,
-        %(l)s,
-        %(c)s,
-        %(n)s,
-        %(v)s,
-        %(vw)s
+        %(open)s,
+        %(high)s,
+        %(low)s,
+        %(close)s,
+        %(trade_count)s,
+        %(volume)s,
+        %(vwap)s
     );
     """
