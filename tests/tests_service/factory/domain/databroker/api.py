@@ -1,14 +1,42 @@
-import random
 from datetime import datetime, timedelta
-from random import choices
+from random import choices, randint
 from string import ascii_uppercase
-from uuid import uuid4
 
 from domain.databroker.model.api import ApiRequest
 from domain.databroker.repository.api import DataBrokerApiRepository
 from infra.api.alpaca.bar import (Adjustment_Q, QueryBar, Timeframe_Q,
                                   convert_query_bar_to_api_request)
 from infra.db.psql import PsqlClient
+
+
+def factroy_api_request(
+        endpoint: str | None = None,
+        parameter: dict | None = None,
+        header: dict | None = None
+) -> ApiRequest:
+    """
+    汎用的なApiRequestを作成する。
+
+    endpointの形式:
+        endpoint/{ランダムな文字列8~16}/{ランダムな数字4~8桁}
+
+    parameterの形式:
+        要素の数は4~8個
+        keyはp_{n}という形式
+        valueの値はランダムな英数字8桁
+
+    headerの形式:
+        基本的にparameterと同様。
+        要素の数は4~8個
+        keyはh_{n}という形式
+        valueの値はランダムな英数字8桁
+    """
+    if endpoint is None:
+        endpoint = f'endpoint/{"".join(choices(ascii_uppercase, k=randint(8, 16)))}/{"".join(choices(ascii_uppercase + "0123456789", k=randint(4, 8)))}'
+    if parameter is None:
+        pass
+    if header is None:
+        pass
 
 
 def factory_alpaca_bar_api_request(
@@ -24,8 +52,8 @@ def factory_alpaca_bar_api_request(
         2020-01-01からランダムな範囲が設定される。
         範囲は１~３０日の間。
     """
-    start_date = datetime(2020, 1, 1) + timedelta(days=random.randint(0, 365))
-    end_date = start_date + timedelta(days=random.randint(1, 30))
+    start_date = datetime(2020, 1, 1) + timedelta(days=randint(0, 365))
+    end_date = start_date + timedelta(days=randint(1, 30))
     query = QueryBar(
         symbol=symbol,
         timeframe=timeframe,
