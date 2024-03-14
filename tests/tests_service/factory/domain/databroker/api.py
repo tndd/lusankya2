@@ -11,7 +11,7 @@ from infra.api.alpaca.bar import (Adjustment_Q, QueryBar, Timeframe_Q,
 from infra.db.psql import PsqlClient
 
 
-def factory_api_request_alpaca_bar(
+def factory_alpaca_bar_api_request(
         timeframe: Timeframe_Q = Timeframe_Q.DAY,
         adjustment: Adjustment_Q = Adjustment_Q.RAW,
 ) -> ApiRequest:
@@ -42,7 +42,7 @@ def factory_api_request_alpaca_bar(
     return convert_query_bar_to_api_request(query)
 
 
-def factory_api_response():
+def factory_api_response_alpaca_bar():
     pass
 
 
