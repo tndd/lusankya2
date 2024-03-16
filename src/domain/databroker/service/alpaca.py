@@ -2,7 +2,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from domain.databroker.model.api import ApiRequest
+from domain.databroker.model.api import ApiRequest, ApiResultMetadata
 from domain.databroker.repository.api import DataBrokerApiRepository
 from domain.databroker.service.api import request_api
 from infra.api.alpaca.common import APCA_ENDPOINT
@@ -137,3 +137,25 @@ def regist_schedule_bars(
     # APIリクエストを保存
     for api_request in api_requests:
         repo.store_request(api_request)
+
+
+def fetch_todo_requests_alpaca_bar(
+        repo: DataBrokerApiRepository
+) -> List[ApiRequest]:
+    """
+    alpacaのbarエンドポイントを対象とし、
+    未実行あるいは失敗したAPIのリクエスト一覧を取得する。
+    """
+    endpoint = r'https://data.alpaca.markets/v2/stocks/.+/bars'
+    return repo.fetch_todo_requests(endpoint)
+
+
+def fetch_api_result_metadata_should_be_moved_alpaca_bar(
+        repo: DataBrokerApiRepository
+) -> List[ApiResultMetadata]:
+    """
+    alpacaのbarエンドポイントを対象とし、
+    まだdatasetに未移動の成功したAPIレスポンスボディのメタデータの取得。
+    """
+    endpoint = r'https://data.alpaca.markets/v2/stocks/.+/bars'
+    return repo.fetch_api_result_metadata_should_be_moved(endpoint)
