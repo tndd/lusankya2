@@ -9,7 +9,7 @@ from infra.api.alpaca.bar import (Adjustment_Q, QueryBar, Timeframe_Q,
 from infra.db.psql import PsqlClient
 
 
-def factroy_api_request(
+def factory_api_request(
         endpoint: str | None = None,
         parameter: dict | None = None,
         header: dict | None = None
@@ -32,11 +32,24 @@ def factroy_api_request(
         valueの値はランダムな英数字8桁
     """
     if endpoint is None:
-        endpoint = f'endpoint/{"".join(choices(ascii_uppercase, k=randint(8, 16)))}/{"".join(choices(ascii_uppercase + "0123456789", k=randint(4, 8)))}'
+        random_chars = "".join(choices(ascii_uppercase, k=randint(8, 16)))
+        random_digits = "".join(choices(ascii_uppercase + "0123456789", k=randint(4, 8)))
+        endpoint = f'endpoint/{random_chars}/{random_digits}'
     if parameter is None:
-        pass
+        random_parameter = {}
+        for i in range(randint(4, 8)):
+            random_parameter[f'p_{i}'] = ''.join(choices(ascii_uppercase + "0123456789", k=randint(4, 8)))
+        parameter = random_parameter
     if header is None:
-        pass
+        random_header = {}
+        for i in range(randint(4, 8)):
+            random_header[f'h_{i}'] = ''.join(choices(ascii_uppercase + "0123456789", k=randint(4, 8)))
+        header = random_header
+    return ApiRequest(
+        endpoint=endpoint,
+        parameter=parameter,
+        header=header
+    )
 
 
 def factory_alpaca_bar_api_request(
