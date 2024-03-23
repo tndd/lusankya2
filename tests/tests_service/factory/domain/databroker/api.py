@@ -66,6 +66,7 @@ def factory_alpaca_bar_api_request(
         Start: 2020年~2021年のランダムな日付
         End: Startから1~30日後
     """
+    # TODO: symbol,start,endを手動で設定できるようにする
     symbol = ''.join(choices(ascii_uppercase, k=5))
     """
     日付の設定:
