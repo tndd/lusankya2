@@ -58,6 +58,13 @@ def factory_alpaca_bar_api_request(
 ) -> ApiRequest:
     """
     alpacaのbarリクエストを作成する。
+
+    パラメータの設定:
+        Symbol: シンボル名はランダムな大文字５つ。
+        Timeframe: 日足。
+        Adjustment: RAW
+        Start: 2020年~2021年のランダムな日付
+        End: Startから1~30日後
     """
     symbol = ''.join(choices(ascii_uppercase, k=5))
     """
