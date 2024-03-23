@@ -2,6 +2,9 @@ def move_chart_data_from_broker_to_dataset():
     """
     databroker内に存在する未移動のchartデータをdatasetに移動する。
 
+    注意:
+        chartデータの対象となるデータソースはalpacaであることを前提とする
+
     工程:
         1. databrokerから対象かつ未移動のchartデータを取得
         2. 各データをapi生形式からdatasetの形式に変換
